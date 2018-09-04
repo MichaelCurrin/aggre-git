@@ -9,7 +9,7 @@ TBC
 
 ## Instructions
 
-See the following within the [docs](docs/) folder
+See the following within the [docs](docs/) directory:
 
 - [Installation](docs/installation.md)
 - [Usage](docs/usage.md)
