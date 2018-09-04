@@ -37,7 +37,7 @@ $ pip install -r requirements
 ## Configure the project
 
 
-1. Go to the Developer Settings [Tokens section](https://github.com/settings/tokens) of your Github account.
+1. Go to [Tokens](https://github.com/settings/tokens) within the Developer Settings area of your Github account.
 2. Create a new token. The following scopes are recommended:
     * repo
     * user
@@ -53,3 +53,5 @@ $ pip install -r requirements
     $ TOKEN=PASTEYOURTOKENHERE
     $ echo "ACCESS_TOKEN = '$TOKEN'" > aggregate/etc/config.py
     ```
+
+_TODO: Setting up config file_
