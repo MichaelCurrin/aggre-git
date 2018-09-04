@@ -1,6 +1,6 @@
 # Installation Instructions
 
-## Install Python and VirtualEnv
+## Install OS dependencies
 
 ### For Linux
 
@@ -16,11 +16,11 @@ $ brew install python@3
 $ pip3 install virtualenv
 ```
 
-## Setup the project
+## Install packages
 
 ```bash
 $ git clone git@github.com:MichaelCurrin/aggre-git.git
-$ cd aggre-git 
+$ cd aggre-git
 ```
 
 Create the virtualenv environment. Make sure it is activated when installing project dependencies or running the project application.
@@ -33,3 +33,23 @@ $ source venv/bin/activate
 ```bash
 $ pip install -r requirements
 ```
+
+## Configure the project
+
+
+1. Go to the Developer Settings [Tokens section](https://github.com/settings/tokens) of your Github account.
+2. Create a new token. The following scopes are recommended:
+    * repo
+    * user
+        - read
+        - email
+    * org
+        - read
+    * discussion
+        - read
+3. Copy the generated token.
+4. Create a config file which contains your token.
+    ```bash
+    $ TOKEN=PASTEYOURTOKENHERE
+    $ echo "ACCESS_TOKEN = '$TOKEN'" > aggregate/etc/config.py
+    ```
