@@ -2,24 +2,24 @@
 Sample user module.
 """
 from etc import config
-from lib.connection import CONN
 
 
 def print_details(user):
     details = {
-        'Username': user.login,
-        'Email': user.email,
-        'Name': user.name,
-        'Location': user.location,
-        'Company': user.company,
+        'Username': "@{}".format(user.login),
+        'Email': user.email if user.email else "N/A",
+        'Name': user.name if user.name else "N/A",
+        'Location': user.location if user.location else "N/A",
+        'Company': user.company if user.company else "N/A",
         'Created At': str(user.created_at.date()),
     }
     for k, v in details.items():
-        print("{}: {}".format(k, v))
-        print()
+        print("{:20}: {}".format(k, v))
+    print()
 
 
 def main():
+    from lib.connection import CONN
     login = config.MY_HANDLE
     user = CONN.get_user(login)
     print_details(user)
