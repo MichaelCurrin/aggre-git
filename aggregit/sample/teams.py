@@ -17,7 +17,7 @@ def main():
             print(t.name)
             print("---")
             for m in t.get_members():
-                print(user.print_details(m))
+                user.print_details(m)
 
 
 if __name__ == '__main__':
