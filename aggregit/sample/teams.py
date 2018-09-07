@@ -18,8 +18,7 @@ def print_details(team):
 
     if team.repos_count:
         # .get_repos() is a generator so slice outside the list comprehension.
-        details['5_repos'] = " ".join([repo.name for repo
-                                       in team.get_repos()][:5]),
+        details['5_repos'] = [repo.name for repo in team.get_repos()][:5]
 
     for k, v in details.items():
         print("{:20}: {}".format(k, v))
