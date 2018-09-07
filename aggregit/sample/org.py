@@ -15,7 +15,6 @@ def print_details(org):
     print("Members: {}".format(len(members)))
     print("Issues: {}".format(len(issues)))
     print("Repos: {}".format(len(repos)))
-    print()
 
 
 def main():
