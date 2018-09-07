@@ -5,9 +5,8 @@ from etc import config
 
 
 def print_details(team):
-    print(team.id)
-    print(team.name)
     details = {
+        'id': team.id,
         'name': team.name,
         'slug': team.slug,
         'description': team.description if team.description else "N/A",
