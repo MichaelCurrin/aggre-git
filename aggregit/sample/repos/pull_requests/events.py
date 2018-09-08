@@ -27,15 +27,26 @@ def main():
         events_c.update(ev)
 
         for e in events:
-            print(e.actor.login)
-            print(str(e.created_at.date()))
-            print(e.type)
+            data = dict(
+                username=e.actor.login,
+                created_at=str(e.created_at.date()),
+                type=e.type
+            )
+            print(data)
 
             p = e.payload
-            action = p.get('action')
-            if action:
-                print(action)
-            print()
+            payload_data = dict(
+                action=p.get('action'),
+                comments=p.get('comment'),
+                pull_request=p.get('pull_request'),
+                issue=p.get('issue')
+            )
+            for k, v in payload_data.items():
+                if v:
+                    if isinstance(v, dict):
+                        new_v = list(v.keys())
+                        payload_data[k] = new_v
+            pprint.pprint(payload_data)
         print()
 
     pprint.pprint(events_c.most_common())
