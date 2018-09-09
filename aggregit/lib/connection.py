@@ -1,5 +1,5 @@
 """
-Library connection module.
+Connection library module.
 
 Usage:
     >>> from lib.connection import CONN
