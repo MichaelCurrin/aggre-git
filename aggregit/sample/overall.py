@@ -58,7 +58,9 @@ for repo_name in config.REPOS:
                     if commit.author and commit.author.login == login:
                         u_commits += 1
 
-                        date = lib.parse_commit_date(commit.stats.last_modified)
+                        date = lib.parse_commit_date(
+                            commit.stats.last_modified
+                        ).date()
                         commit_data = dict(
                             SHA=commit.sha,
                             last_modified=str(date),
