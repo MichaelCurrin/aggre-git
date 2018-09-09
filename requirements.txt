@@ -1,1 +1,1 @@
-pygithub==1.40
+PyGithub==1.40
