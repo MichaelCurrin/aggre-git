@@ -1,20 +1,26 @@
 """
 Sample events module.
 """
+import lib
 from etc import config
 
 
 def print_details(event):
+    # Each event will have its own keys in its payload.
+    # Created at is datetime but modified is a string.
+    modified = lib.parse_commit_date(event.last_modified)
     details = {
         'repo_full_name': event.repo.full_name,
         'repo_name': event.repo.name,
         'org': event.org.login if event.org else "N/A",
         'type': event.type,
-        'data_keys': list(event.payload.keys())
+        'data_keys': list(event.payload.keys()),
+        'created_at': str(event.created_at),
+        'modified_at': str(modified)
     }
 
     for k, v in details.items():
-        print("{:20}: {}".format(k, v))
+        print("{:14}: {}".format(k, v))
     print()
 
 
@@ -23,8 +29,7 @@ def main():
 
     login = config.MY_HANDLE
     user = CONN.get_user(login)
-    # Due to apparent bug, the repo will be name shown for a single event
-    # but within a for loop the full_name is used instead.
+
     for event in user.get_events():
         print_details(event)
 
