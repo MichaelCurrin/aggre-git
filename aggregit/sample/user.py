@@ -15,7 +15,17 @@ def print_details(user):
     }
     for k, v in details.items():
         print("{:20}: {}".format(k, v))
-    print()
+
+    # Orgs seems to be created, not belong to.
+    counts = {
+        'Repos': list(user.get_repos()),
+        'Orgs': list(user.get_orgs()),
+        'Events': list(user.get_events()),
+        'Watched': list(user.get_watched()),
+        'Starred': list(user.get_starred()),
+    }
+    for k, v in counts.items():
+        print("{:7}: {:,d}".format(k, len(v)))
 
 
 def main():
