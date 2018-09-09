@@ -8,7 +8,7 @@ from etc import config
 def print_details(event):
     # Each event will have its own keys in its payload.
     # Created at is datetime but modified is a string.
-    modified = lib.parse_commit_date(event.last_modified)
+    modified = lib.parse_datetime(event.last_modified)
     details = {
         'repo_full_name': event.repo.full_name,
         'repo_name': event.repo.name,

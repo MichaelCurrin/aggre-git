@@ -9,7 +9,7 @@ from lib.connection import CONN
 
 
 def extract(commit):
-    date = lib.parse_commit_date(commit.stats.last_modified).date()
+    date = lib.parse_datetime(commit.stats.last_modified).date()
 
     return dict(
         author=commit.author.login if commit.author else "N/A",
