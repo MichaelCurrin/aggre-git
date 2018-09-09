@@ -1,7 +1,10 @@
 """
 Overall sample report.
 
-Iterate through configured repos and the PRs within it. Count the commits
+This script is not easy to maintain or extend but it used as a demo of
+how stats can be aggregated down to a commit level for a specific user.
+
+Iterates through configured repos and the PRs within it. Count the commits
 which the configured users contributed to the PR.
 
 https://developer.github.com/v3/git/commits/
@@ -50,7 +53,9 @@ for repo_name in config.REPOS:
             print("--- Commits ---")
             if pr.commits:
                 for commit in pr.get_commits():
-                    if commit.author.login == login:
+                    # Sometimes author can be None. Perhaps if the user is
+                    # inactive or it was left off the of config file.
+                    if commit.author and commit.author.login == login:
                         u_commits += 1
 
                         date = lib.parse_commit_date(commit.stats.last_modified)
@@ -81,7 +86,6 @@ for repo_name in config.REPOS:
                             u_deletions += file_.deletions
                             print()
                     else:
-                        # Sometimes author can be none
                         print(pr.title)
                         print("Expected: {}".format(login))
                         print(commit)
