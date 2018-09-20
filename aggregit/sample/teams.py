@@ -1,23 +1,22 @@
 """
 Sample teams module.
 """
-import user
+from . import user
 from etc import config
 
 
 def main():
     from lib.connection import CONN
-    o = CONN.get_organization(config.ORGANIZATION)
+    o = CONN.get_organization(config.REPO_OWNER)
     teams = o.get_teams()
 
-    print("Members for configured teams")
-    print("===")
     for t in teams:
-        if t.name in config.TEAMS:
-            print(t.name)
-            print("---")
-            for m in t.get_members():
-                user.print_details(m)
+        print(f"Team: {t.name}")
+        print("---")
+        for m in t.get_members():
+            user.print_details(m)
+            print()
+        print()
 
 
 if __name__ == '__main__':
