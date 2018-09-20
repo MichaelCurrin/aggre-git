@@ -19,9 +19,9 @@ import lib
 from lib.connection import CONN
 
 
-login = config.MY_HANDLE
+login = config.REPO_OWNER
 
-for repo_name in config.REPOS:
+for repo_name in config.REPO_PATHS:
     repo = CONN.get_repo(repo_name)
 
     print("######## REPO ########")
