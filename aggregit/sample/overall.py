@@ -18,8 +18,8 @@ from etc import config
 import lib
 from lib.connection import CONN
 
-
-login = config.REPO_OWNER
+# TODO: Refactor to do counts for each user with one pass through the repos.
+login = config.USERNAMES[0]
 
 for repo_name in config.REPO_PATHS:
     repo = CONN.get_repo(repo_name)
@@ -37,17 +37,18 @@ for repo_name in config.REPO_PATHS:
     # Note that .totalCount gives an error so can't be used to count PRs
     # in a repo.
 
+    # Only activity in PRs is counted, not direct commits to a branch.
     for pr in repo.get_pulls():
         pr_author = pr.user
 
         if pr.user.login == login:
             u_prs += 1
             print("### PR ###")
-            print("ID: {}".format(pr.number))
-            print("Title: {}".format(pr.title))
+            print(f"ID: {pr.number}")
+            print(f"Title: {pr.title}")
 
-            print("Author: @{}".format(pr_author.login))
-            print("Commits: {}".format(pr.commits))
+            print(f"Author: @{pr_author.login}")
+            print(f"Commits: {pr.commits}")
             print()
 
             print("--- Commits ---")
@@ -71,17 +72,17 @@ for repo_name in config.REPO_PATHS:
                         print(commit_data)
 
                         comments = list(commit.get_comments())
-                        print("Comments: {}".format(len(comments)))
+                        print(f"Comments: {len(comments)}")
 
                         for file_ in commit.files:
                             print(file_.filename)
-                            print("  Changes: {}".format(file_.changes))
-                            print("  Additions: {}".format(file_.additions))
-                            print("  Deletions: {}".format(file_.deletions))
-                            print("  Status: {}".format(file_.status))
+                            print(f"  Changes: {file_.changes}")
+                            print(f"  Additions: {file_.additions}")
+                            print(f"  Deletions: {file_.deletions}")
+                            print(f"  Status: {file_.status}")
 
-                            print("  Raw URL: {}".format(file_.raw_url))
-                            print("  Blob URL: {}".format(file_.blob_url))
+                            print(f"  Raw URL: {file_.raw_url}")
+                            print(f"  Blob URL: {file_.blob_url}")
                             # See also file_.patch for the diff.
 
                             u_additions += file_.additions
@@ -89,14 +90,14 @@ for repo_name in config.REPO_PATHS:
                             print()
                     else:
                         print(pr.title)
-                        print("Expected: {}".format(login))
+                        print(f"Expected: {login}")
                         print(commit)
 
                 print()
         print()
 print()
 
-print("Totals for {} for configured repos".format(login))
+print(f"Totals for {login} for configured repos")
 data = {
    'prs': u_prs,
    'commits': u_commits,
