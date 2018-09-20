@@ -25,11 +25,9 @@ def print_details(team):
 
 def main():
     from lib.connection import CONN
-    o = CONN.get_organization(config.ORGANIZATION)
+    o = CONN.get_organization(config.REPO_OWNER)
     teams = o.get_teams()
 
-    print("Summary of all teams")
-    print("===")
     for t in teams:
         print_details(t)
     print()
