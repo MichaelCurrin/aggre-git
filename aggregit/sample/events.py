@@ -2,6 +2,7 @@
 Sample events module.
 """
 import lib
+from lib.connection import CONN
 from etc import config
 
 
@@ -25,8 +26,6 @@ def print_details(event):
 
 
 def main():
-    from lib.connection import CONN
-
     login = config.REPO_OWNER
     user = CONN.get_user(login)
 

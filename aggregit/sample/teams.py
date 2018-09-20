@@ -3,10 +3,10 @@ Sample teams module.
 """
 from . import user
 from etc import config
+from lib.connection import CONN
 
 
 def main():
-    from lib.connection import CONN
     o = CONN.get_organization(config.REPO_OWNER)
     teams = o.get_teams()
 
