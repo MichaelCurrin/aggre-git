@@ -20,7 +20,7 @@ def extract(org):
 
 def main():
     from lib.connection import CONN
-    org = CONN.get_organization(config.ORGANIZATION)
+    org = CONN.get_organization(config.REPO_OWNER)
     details = extract(org)
     print(details)
 
