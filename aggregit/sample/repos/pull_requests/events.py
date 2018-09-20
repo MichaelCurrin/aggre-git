@@ -17,7 +17,7 @@ from lib.connection import CONN
 
 
 def main():
-    for repo_name in config.REPOS:
+    for repo_name in config.REPO_PATHS:
         repo = CONN.get_repo(repo_name)
         print(repo.name)
         events_c = Counter()
@@ -54,5 +54,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
-

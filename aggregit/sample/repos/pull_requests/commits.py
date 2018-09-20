@@ -22,7 +22,7 @@ def extract(commit):
 
 
 def main():
-    repos = [CONN.get_repo(repo_name) for repo_name in config.REPOS]
+    repos = [CONN.get_repo(repo_name) for repo_name in config.REPO_PATHS]
 
     for repo in repos:
         print(repo.name)
