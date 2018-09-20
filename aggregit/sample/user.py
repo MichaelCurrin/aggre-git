@@ -30,7 +30,7 @@ def print_details(user):
 
 def main():
     from lib.connection import CONN
-    login = config.MY_HANDLE
+    login = config.REPO_OWNER
     user = CONN.get_user(login)
     print_details(user)
 
