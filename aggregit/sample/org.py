@@ -2,6 +2,7 @@
 Sample organization module.
 """
 from etc import config
+from lib.connection import CONN
 
 
 def extract(org):
@@ -19,7 +20,6 @@ def extract(org):
 
 
 def main():
-    from lib.connection import CONN
     org = CONN.get_organization(config.REPO_OWNER)
     details = extract(org)
     print(details)

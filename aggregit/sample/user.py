@@ -2,6 +2,7 @@
 Sample user module.
 """
 from etc import config
+from lib.connection import CONN
 
 
 def print_details(user):
@@ -29,7 +30,6 @@ def print_details(user):
 
 
 def main():
-    from lib.connection import CONN
     login = config.REPO_OWNER
     user = CONN.get_user(login)
     print_details(user)
