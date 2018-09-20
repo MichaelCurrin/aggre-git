@@ -38,6 +38,7 @@ for repo_name in config.REPO_PATHS:
     # in a repo.
 
     # Only activity in PRs is counted, not direct commits to a branch.
+    # Note state could be set as 'open', 'closed' or 'all'.
     for pr in repo.get_pulls():
         pr_author = pr.user
 
