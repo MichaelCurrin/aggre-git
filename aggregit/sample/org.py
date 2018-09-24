@@ -20,13 +20,13 @@ def extract(org):
     try:
         issues = len(list(org.get_issues()))
     except UnknownObjectException as e:
-        # This occured on the twitter org and may occur on others.
+        # This occurred on the 'twitter' org and may occur on others.
         issues = f"UnknownObjectException: {str(e)}"
 
     try:
         teams = len(list(org.get_teams()))
     except GithubException as e:
-        # May get an access error..
+        # May get an access error.
         teams = f"GithubException: {str(e)}"
 
     details = dict(
