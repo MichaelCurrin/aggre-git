@@ -21,6 +21,16 @@ from lib.connection import CONN
 # TODO: Refactor to do counts for each user with one pass through the repos.
 login = config.USERNAMES[0]
 
+data = {
+    'prs': 0,
+    'commits': {'own': None, 'other': None},
+    'additions': 0,
+    'deletions': 0,
+    'review_comments': {'own': None, 'other': None},
+    'issue_comments': {'own': None, 'other': None},
+    'reviews': {'own': None, 'other': None},
+}
+
 for repo_name in config.REPO_PATHS:
     repo = CONN.get_repo(repo_name)
 
@@ -28,37 +38,41 @@ for repo_name in config.REPO_PATHS:
     print(repo.full_name)
     print(repo.name)
     print(repo.description)
-
-    u_prs = 0
-    u_commits = 0
-    u_additions = 0
-    u_deletions = 0
+    print()
 
     # Note that .totalCount gives an error so can't be used to count PRs
     # in a repo.
 
-    # Only activity in PRs is counted, not direct commits to a branch.
+    # Note - only activity in PRs is counted, not direct commits to a branch.
     # Note state could be set as 'open', 'closed' or 'all'.
-    for pr in repo.get_pulls():
+    for pr in repo.get_pulls(state='all'):
         pr_author = pr.user
 
         if pr.user.login == login:
-            u_prs += 1
+            data['prs'] += 1
             print("### PR ###")
             print(f"ID: {pr.number}")
             print(f"Title: {pr.title}")
 
             print(f"Author: @{pr_author.login}")
-            print(f"Commits: {pr.commits}")
+            print(f"Commits: {pr.commits} (by all users)")
+            print(f"Reviews: {len(list(pr.get_reviews()))}")
+
+            print(f"Changed files: {pr.changed_files}")
+
+            # TODO: Count only comments by this user.
+            print(f"Review comments: {len(list(pr.get_review_comments()))}")
+            print(f"Issue comments: {len(list(pr.get_issue_comments()))}")
             print()
 
             print("--- Commits ---")
+
             if pr.commits:
                 for commit in pr.get_commits():
                     # Sometimes author can be None. Perhaps if the user is
                     # inactive or it was left off the of config file.
                     if commit.author and commit.author.login == login:
-                        u_commits += 1
+                        data['commits']['own'] += 1
 
                         date = lib.parse_datetime(
                             commit.stats.last_modified
@@ -72,9 +86,6 @@ for repo_name in config.REPO_PATHS:
                         )
                         print(commit_data)
 
-                        comments = list(commit.get_comments())
-                        print(f"Comments: {len(comments)}")
-
                         for file_ in commit.files:
                             print(file_.filename)
                             print(f"  Changes: {file_.changes}")
@@ -86,23 +97,14 @@ for repo_name in config.REPO_PATHS:
                             print(f"  Blob URL: {file_.blob_url}")
                             # See also file_.patch for the diff.
 
-                            u_additions += file_.additions
-                            u_deletions += file_.deletions
+                            data['additions'] += file_.additions
+                            data['deletions'] += file_.deletions
                             print()
                     else:
-                        print(pr.title)
-                        print(f"Expected: {login}")
-                        print(commit)
-
+                        data['commits']['other'] += 1
                 print()
         print()
 print()
 
 print(f"Totals for {login} for configured repos")
-data = {
-   'prs': u_prs,
-   'commits': u_commits,
-   'additions': u_additions,
-   'deletions': u_deletions,
-}
 print(data)
