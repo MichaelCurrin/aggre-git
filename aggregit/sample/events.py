@@ -21,7 +21,7 @@ def print_details(event):
     }
 
     for k, v in details.items():
-        print("{:14}: {}".format(k, v))
+        print(f"{k:14}: {v}")
     print()
 
 
