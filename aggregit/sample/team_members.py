@@ -1,7 +1,10 @@
 """
 Sample team members module.
 """
+from github import GithubException
+
 from etc import config
+from lib.connection import CONN
 
 
 def print_details(team):
@@ -19,20 +22,18 @@ def print_details(team):
         details['5_repos'] = [repo.name for repo in team.get_repos()][:5]
 
     for k, v in details.items():
-        print("{:20}: {}".format(k, v))
+        print(f"{k:20}: {v}")
     print()
 
 
 def main():
-    from lib.connection import CONN
-    o = CONN.get_organization(config.ORGANIZATION)
-    teams = o.get_teams()
-
-    print("Summary of all teams")
-    print("===")
-    for t in teams:
-        print_details(t)
-    print()
+    o = CONN.get_organization(config.REPO_OWNER)
+    try:
+        for t in o.get_teams():
+            print_details(t)
+        print()
+    except GithubException:
+        print(f"Unable to access teams for org: {config.REPO_OWNER}")
 
 
 if __name__ == '__main__':

@@ -1,12 +1,15 @@
 """
 Sample user module.
+
+Gets stats for a username of a user or organization.
 """
 from etc import config
+from lib.connection import CONN
 
 
 def print_details(user):
     details = {
-        'Username': "@{}".format(user.login),
+        'Username': f"@{user.login}",
         'Email': user.email if user.email else "N/A",
         'Name': user.name if user.name else "N/A",
         'Location': user.location if user.location else "N/A",
@@ -14,7 +17,7 @@ def print_details(user):
         'Created At': str(user.created_at.date()),
     }
     for k, v in details.items():
-        print("{:20}: {}".format(k, v))
+        print(f"{k:20}: {v}")
 
     # Orgs seems to be created, not belong to.
     counts = {
@@ -25,12 +28,11 @@ def print_details(user):
         'Starred': list(user.get_starred()),
     }
     for k, v in counts.items():
-        print("{:7}: {:,d}".format(k, len(v)))
+        print(f"{k:7}: {len(v):,d}")
 
 
 def main():
-    from lib.connection import CONN
-    login = config.MY_HANDLE
+    login = config.REPO_OWNER
     user = CONN.get_user(login)
     print_details(user)
 

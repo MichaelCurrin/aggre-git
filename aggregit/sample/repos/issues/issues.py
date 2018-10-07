@@ -41,7 +41,7 @@ def extract(issue):
 
 
 def main():
-    for repo_name in config.REPOS:
+    for repo_name in config.REPO_PATHS:
         repo = CONN.get_repo(repo_name)
         for issue in repo.get_issues():
             data = extract(issue)
@@ -52,4 +52,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-

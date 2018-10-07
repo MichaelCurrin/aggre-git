@@ -18,45 +18,61 @@ from etc import config
 import lib
 from lib.connection import CONN
 
+# TODO: Refactor to do counts for each user with one pass through the repos.
+login = config.USERNAMES[0]
 
-login = config.MY_HANDLE
+data = {
+    'prs': 0,
+    'commits': {'own': None, 'other': None},
+    'additions': 0,
+    'deletions': 0,
+    'review_comments': {'own': None, 'other': None},
+    'issue_comments': {'own': None, 'other': None},
+    'reviews': {'own': None, 'other': None},
+}
 
-for repo_name in config.REPOS:
+for repo_name in config.REPO_PATHS:
     repo = CONN.get_repo(repo_name)
 
     print("######## REPO ########")
     print(repo.full_name)
     print(repo.name)
     print(repo.description)
-
-    u_prs = 0
-    u_commits = 0
-    u_additions = 0
-    u_deletions = 0
+    print()
 
     # Note that .totalCount gives an error so can't be used to count PRs
     # in a repo.
 
-    for pr in repo.get_pulls():
+    # Note - only activity in PRs is counted, not direct commits to a branch.
+    # Note state could be set as 'open', 'closed' or 'all'.
+    for pr in repo.get_pulls(state='all'):
         pr_author = pr.user
 
         if pr.user.login == login:
-            u_prs += 1
+            data['prs'] += 1
             print("### PR ###")
-            print("ID: {}".format(pr.number))
-            print("Title: {}".format(pr.title))
+            print(f"ID: {pr.number}")
+            print(f"Title: {pr.title}")
 
-            print("Author: @{}".format(pr_author.login))
-            print("Commits: {}".format(pr.commits))
+            print(f"Author: @{pr_author.login}")
+            print(f"Commits: {pr.commits} (by all users)")
+            print(f"Reviews: {len(list(pr.get_reviews()))}")
+
+            print(f"Changed files: {pr.changed_files}")
+
+            # TODO: Count only comments by this user.
+            print(f"Review comments: {len(list(pr.get_review_comments()))}")
+            print(f"Issue comments: {len(list(pr.get_issue_comments()))}")
             print()
 
             print("--- Commits ---")
+
             if pr.commits:
                 for commit in pr.get_commits():
                     # Sometimes author can be None. Perhaps if the user is
                     # inactive or it was left off the of config file.
                     if commit.author and commit.author.login == login:
-                        u_commits += 1
+                        data['commits']['own'] += 1
 
                         date = lib.parse_datetime(
                             commit.stats.last_modified
@@ -70,37 +86,25 @@ for repo_name in config.REPOS:
                         )
                         print(commit_data)
 
-                        comments = list(commit.get_comments())
-                        print("Comments: {}".format(len(comments)))
-
                         for file_ in commit.files:
                             print(file_.filename)
-                            print("  Changes: {}".format(file_.changes))
-                            print("  Additions: {}".format(file_.additions))
-                            print("  Deletions: {}".format(file_.deletions))
-                            print("  Status: {}".format(file_.status))
+                            print(f"  Changes: {file_.changes}")
+                            print(f"  Additions: {file_.additions}")
+                            print(f"  Deletions: {file_.deletions}")
+                            print(f"  Status: {file_.status}")
 
-                            print("  Raw URL: {}".format(file_.raw_url))
-                            print("  Blob URL: {}".format(file_.blob_url))
+                            print(f"  Raw URL: {file_.raw_url}")
+                            print(f"  Blob URL: {file_.blob_url}")
                             # See also file_.patch for the diff.
 
-                            u_additions += file_.additions
-                            u_deletions += file_.deletions
+                            data['additions'] += file_.additions
+                            data['deletions'] += file_.deletions
                             print()
                     else:
-                        print(pr.title)
-                        print("Expected: {}".format(login))
-                        print(commit)
-
+                        data['commits']['other'] += 1
                 print()
         print()
 print()
 
-print("Totals for {} for configured repos".format(login))
-data = {
-   'prs': u_prs,
-   'commits': u_commits,
-   'additions': u_additions,
-   'deletions': u_deletions,
-}
+print(f"Totals for {login} for configured repos")
 print(data)

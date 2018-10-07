@@ -2,6 +2,7 @@
 Sample events module.
 """
 import lib
+from lib.connection import CONN
 from etc import config
 
 
@@ -20,14 +21,12 @@ def print_details(event):
     }
 
     for k, v in details.items():
-        print("{:14}: {}".format(k, v))
+        print(f"{k:14}: {v}")
     print()
 
 
 def main():
-    from lib.connection import CONN
-
-    login = config.MY_HANDLE
+    login = config.REPO_OWNER
     user = CONN.get_user(login)
 
     for event in user.get_events():
