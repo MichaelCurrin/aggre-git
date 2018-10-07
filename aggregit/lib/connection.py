@@ -1,8 +1,13 @@
 """
-Connection module.
+Connection library module.
 
-Note that username and password can be used as arguments instead of token, but
-you can error if your account is setup for security to use OTP.
+Usage:
+    >>> from lib.connection import CONN
+    >>> CONN.get_repo('PyGithub/PyGithub')
+
+Note that this script does not actually validate credentials or connect to
+Github. If you do a request using bad credentials, you will get
+a `github.BadCredentialsException` error.
 """
 from github import Github
 

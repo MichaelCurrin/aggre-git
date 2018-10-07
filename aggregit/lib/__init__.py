@@ -1,5 +1,5 @@
 """
-Initliazation for library module.
+Initliazation file for library module.
 """
 import datetime
 from email.utils import mktime_tz, parsedate_tz

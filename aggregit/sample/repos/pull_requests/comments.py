@@ -8,7 +8,7 @@ from lib.connection import CONN
 
 
 def main():
-    for repo_name in config.REPOS:
+    for repo_name in config.REPO_PATHS:
         repo = CONN.get_repo(repo_name)
         print(repo.name)
 
@@ -19,7 +19,7 @@ def main():
                 reactions=[]
             )
 
-            reactions=list(comment.get_reactions())
+            reactions = list(comment.get_reactions())
             for r in reactions:
                 reaction_data = {
                     'username': r.user.login,
