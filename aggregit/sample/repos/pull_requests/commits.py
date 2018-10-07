@@ -1,5 +1,7 @@
 """
 Sample pull request commits module.
+
+Get all commits for configured repos.
 """
 import pprint
 
