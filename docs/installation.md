@@ -56,7 +56,9 @@ The minimum requirement to run the project is to create a Github token for your 
 
 1. Go to the [Tokens](https://github.com/settings/tokens) page within the Developer Settings area of your Github account.
 2. Create a new token. The following scopes are recommended to be set:
-    * ☑ repo
+    * ☐ repo
+       - ☑ repo:status
+       - ☑ public:repo
     * ☐ admin:org
         - ☑ read:org
     * ☐ write:discussion
@@ -65,5 +67,4 @@ The minimum requirement to run the project is to create a Github token for your 
         - ☑ read
         - ☑ email
 3. Copy the generated token value.
-4. Replace the `configlocal.py` placeholder value for `ACCESS_TOKEN` with your value.
-
+4. Open `configlocal.py` and paste your value for `ACCESS_TOKEN`.
