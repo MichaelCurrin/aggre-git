@@ -37,21 +37,26 @@ for repo in repos:
         if author_login in config.USERNAMES:
             print(f"PR #{pr.number}")
             pr_data = PullRequest(pr)
-
             out_row = {
-                'owner': repo.owner.login,
+                'repo_owner': repo.owner.login,
                 'repo': repo.name,
-                'pr_author': author_login,
-                'pr_assignees': ", ".join(pr_data.assignee_logins()),
-                'pr_date': str(pr_data.created_at),
-                'pr_no': pr_data.number,
-                'pr_title': pr_data.title,
-                'pr_status': pr_data.status
+                'author': author_login,
+                'assignees': ", ".join(pr_data.assignee_logins()),
+                'no': pr_data.number,
+                'date': str(pr_data.created_at),
+                'title': pr_data.title,
+                'status': pr_data.status(),
+                'reviewers': ", ".join(pr_data.reviewer_logins()),
+                'reviews': ", ".join(pr_data.review_summary())
             }
             out_data.append(out_row)
 
-header = ('owner', 'repo', 'pr_author', 'pr_assignees', 'pr_date', 'pr_no',
-          'pr_title', 'pr_status')
+header = (
+    'repo_owner', 'repo',
+    'author', 'assignees',
+    'no', 'date', 'title', 'status',
+    'reviewers', 'reviews',
+)
 with open(config.PR_CSV_PATH, 'w') as f_out:
     writer = csv.DictWriter(f_out, fieldnames=header)
     writer.writeheader()
