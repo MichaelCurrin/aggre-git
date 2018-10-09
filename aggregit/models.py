@@ -33,7 +33,7 @@ class Review:
     Model a Git pull request review, with just data of interest.
 
     Expects a PyGithub Commit object as returned from the API.
-    Review stats must be one of:
+    Review state should be one of:
         'COMMENTED' 'APPROVED' 'DISMISSED' 'CHANGES_REQUESTED'
     """
 
