@@ -47,7 +47,7 @@ class Review:
         return self.reviewer.login
 
     def summary(self):
-        return f"{str(self.submitted_at)}:{self.reviewer_login()}:{self.state}"
+        return f"{str(self.submitted_at)} {self.reviewer_login()} {self.state}"
 
 
 class PullRequest:
@@ -70,14 +70,17 @@ class PullRequest:
         else:
             self.merged_at = None
             self.merged_by = None
+        self.closed_at = pr.closed_at.date() if pr.closed_at else None
 
         self.created_at = pr.created_at.date()
         self.updated_at = pr.updated_at.date()
 
-        # Counts across all users, not just the author.
+        # Note that counts across all users who contributed.
         self.commit_count = pr.commits
-
+        self.comment_count = pr.comments
         self.changed_files = pr.changed_files
+        self.additions = pr.additions
+        self.deletions = pr.deletions
 
         # This is optional but not sure if this is assigned to do the work or
         # review, as its separate to reviewers. This comes as a list not a
@@ -87,12 +90,14 @@ class PullRequest:
         # TODO: Add methods to get dates and results of reviews.
         self.reviews = [Review(review) for review in pr.get_reviews()]
 
-    def status(self):
-        if self.state == 'closed':
-            return 'CLOSED'
+    def merged_or_closed_date(self):
+        return self.merged_at or self.closed_at
 
+    def status(self):
         if self.merged:
             return 'MERGED'
+        elif self.state == 'closed':
+            return 'CLOSED'
         else:
             return 'OPEN'
 
