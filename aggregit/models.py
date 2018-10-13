@@ -38,16 +38,12 @@ class Review:
     """
 
     def __init__(self, review: github.PullRequestReview.PullRequestReview):
-
         self.state = review.state
         self.submitted_at = review.submitted_at.date()
         self.reviewer = review.user
 
-    def reviewer_login(self):
-        return self.reviewer.login
-
     def summary(self):
-        return f"{str(self.submitted_at)} {self.reviewer_login()} {self.state}"
+        return f"{self.submitted_at} {lib.display(self.reviewer)} {self.state}"
 
 
 class PullRequest:
@@ -60,13 +56,13 @@ class PullRequest:
     def __init__(self, pr: github.PullRequest.PullRequest):
         self.number = pr.number
         self.title = pr.title
-        self.author = pr.user.login
+        self.author = pr.user
 
         self.state = pr.state
         self.merged = pr.merged
         if pr.merged:
             self.merged_at = pr.merged_at.date()
-            self.merged_by = pr.merged_by.login
+            self.merged_by = pr.merged_by
         else:
             self.merged_at = None
             self.merged_by = None
@@ -91,7 +87,7 @@ class PullRequest:
         self.reviews = [Review(review) for review in pr.get_reviews()]
 
     def merged_or_closed_date(self):
-        return self.merged_at or self.closed_at
+        return f"{self.merged_at} {self.closed_at}"
 
     def status(self):
         if self.merged:
@@ -101,11 +97,14 @@ class PullRequest:
         else:
             return 'OPEN'
 
-    def assignee_logins(self):
-        return sorted([user.login for user in self.assignees])
+    def merged_by_name(self):
+        return lib.display(self.merged_by) if self.merged else None
 
-    def reviewer_logins(self):
-        return sorted([review.reviewer_login() for review in self.reviews])
+    def assignee_names(self):
+        return sorted([lib.display(user) for user in self.assignees])
+
+    def reviewer_names(self):
+        return sorted([lib.display(review.reviewer) for review in self.reviews])
 
     def review_summary(self):
         return [review.summary() for review in self.reviews]
