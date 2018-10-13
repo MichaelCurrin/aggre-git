@@ -14,6 +14,7 @@ author as it probably was.
 import csv
 
 from etc import config
+import lib
 from lib.connection import CONN
 from models import PullRequest
 
@@ -32,44 +33,48 @@ else:
 for repo in repos:
     print(f"REPO: {repo.name}")
     for pr in repo.get_pulls(state=config.PR_STATE):
-        author_login = pr.user.login
+        author = pr.user
 
-        if author_login in config.USERNAMES:
+        if author.login in config.USERNAMES:
             print(f"PR #{pr.number}")
             pr_data = PullRequest(pr)
             out_row = {
-                'repo_owner': repo.owner.login,
+                'repo_url': repo.html_url,
+                'repo_owner': lib.display(repo.owner),
                 'repo': repo.name,
 
-                'author': author_login,
-                'assignees': ", ".join(pr_data.assignee_logins()),
+                'author': lib.display(author),
+                'assignees': ", ".join(pr_data.assignee_names()),
 
                 'no': pr_data.number,
                 'title': pr_data.title,
 
                 'created_at': str(pr_data.created_at),
                 'updated_at': str(pr_data.updated_at),
-                'status': pr_data.status(),
-                'merged_or_closed_at': str(pr_data.merged_or_closed_date()),
 
-                'reviewers': ", ".join(pr_data.reviewer_logins()),
+                'status': pr_data.status(),
+
+                'merged_or_closed_at': str(pr_data.merged_or_closed_date()),
+                'merged_by': pr_data.merged_by_name(),
+
+                'reviewers': ", ".join(pr_data.reviewer_names()),
                 'reviews': ", ".join(pr_data.review_summary()),
 
-                'commits': pr_data.commit_count,
                 'comments': pr_data.comment_count,
+                'commits': pr_data.commit_count,
                 'changed_files': pr_data.changed_files,
-                'additions': pr_data.additions,
-                'deletions': pr_data.deletions,
+                'added_lines': pr_data.additions,
+                'deleted_lines': pr_data.deletions,
             }
             out_data.append(out_row)
 
 header = (
-    'repo_owner', 'repo',
+    'repo_url', 'repo_owner', 'repo',
     'author', 'assignees',
     'no', 'title',
     'created_at', 'updated_at', 'status', 'merged_or_closed_at',
-    'reviewers', 'reviews',
-    'commits', 'comments', 'changed_files', 'additions', 'deletions',
+    'commits', 'changed_files', 'added_lines', 'deleted_lines',
+    'merged_by', 'reviewers', 'reviews', 'comments',
 )
 with open(config.PR_CSV_PATH, 'w') as f_out:
     writer = csv.DictWriter(f_out, fieldnames=header)
