@@ -51,6 +51,10 @@ class PullRequest:
     Model a Git pull request,with just data of interest.
 
     Expects a PyGithub Pull Request object as returned from the API.
+
+    The 'state' attribute  only records 'open' or 'closed' values.
+    Therefore for easy of reporting, in this model we use status to
+    represent one of 'OPEN', 'MERGED' or 'CLOSED'.
     """
 
     def __init__(self, pr: github.PullRequest.PullRequest):
@@ -58,7 +62,6 @@ class PullRequest:
         self.title = pr.title
         self.author = pr.user
 
-        self.state = pr.state
         self.merged = pr.merged
         if pr.merged:
             self.merged_at = pr.merged_at.date()
@@ -66,36 +69,37 @@ class PullRequest:
         else:
             self.merged_at = None
             self.merged_by = None
-        self.closed_at = pr.closed_at.date() if pr.closed_at else None
+        self.closed = (pr.state == 'closed')
+        self.closed_at = pr.closed_at.date() if self.closed else None
+
+        if self.merged:
+            self.status = 'MERGED'
+        elif self.closed:
+            self.status = 'CLOSED'
+        else:
+            self.status = 'OPEN'
 
         self.created_at = pr.created_at.date()
         self.updated_at = pr.updated_at.date()
 
-        # Note that counts across all users who contributed.
+        # Note that counts are across all users who contributed.
         self.commit_count = pr.commits
         self.comment_count = pr.comments
         self.changed_files = pr.changed_files
         self.additions = pr.additions
         self.deletions = pr.deletions
 
-        # This is optional but not sure if this is assigned to do the work or
-        # review, as its separate to reviewers. This comes as a list not a
-        # paginated list.
+        # This comes as a list not a paginated list.
         self.assignees = pr.assignees
 
-        # TODO: Add methods to get dates and results of reviews.
         self.reviews = [Review(review) for review in pr.get_reviews()]
 
-    def merged_or_closed_date(self):
-        return f"{self.merged_at} {self.closed_at}"
-
-    def status(self):
-        if self.merged:
-            return 'MERGED'
-        elif self.state == 'closed':
-            return 'CLOSED'
-        else:
-            return 'OPEN'
+    def status_changed_at(self):
+        """
+        Return the date the PR was merged or closed on, or "N/A" if open.
+        If a PR is merged, it is also closed and has a closed_at date.
+        """
+        return self.closed_at or "N/A"
 
     def merged_by_name(self):
         return lib.display(self.merged_by) if self.merged else None
