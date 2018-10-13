@@ -52,9 +52,9 @@ for repo in repos:
                 'created_at': str(pr_data.created_at),
                 'updated_at': str(pr_data.updated_at),
 
-                'status': pr_data.status(),
+                'status': pr_data.status,
 
-                'merged_or_closed_at': str(pr_data.merged_or_closed_date()),
+                'status_changed_at': str(pr_data.status_changed_at()),
                 'merged_by': pr_data.merged_by_name(),
 
                 'reviewers': ", ".join(pr_data.reviewer_names()),
@@ -72,9 +72,9 @@ header = (
     'repo_url', 'repo_owner', 'repo',
     'author', 'assignees',
     'no', 'title',
-    'created_at', 'updated_at', 'status', 'merged_or_closed_at',
+    'status', 'status_changed_at', 'updated_at', 'created_at',
     'commits', 'changed_files', 'added_lines', 'deleted_lines',
-    'merged_by', 'reviewers', 'reviews', 'comments',
+    'comments', 'merged_by', 'reviewers', 'reviews',
 )
 with open(config.PR_CSV_PATH, 'w') as f_out:
     writer = csv.DictWriter(f_out, fieldnames=header)
