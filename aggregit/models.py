@@ -33,7 +33,7 @@ class Review:
     Model a Git pull request review, with just data of interest.
 
     Expects a PyGithub Commit object as returned from the API.
-    Review state should be one of:
+    Review state will be one of:
         'COMMENTED' 'APPROVED' 'DISMISSED' 'CHANGES_REQUESTED'
     """
 
@@ -89,26 +89,44 @@ class PullRequest:
         self.additions = pr.additions
         self.deletions = pr.deletions
 
-        # This comes as a list not a paginated list.
+        # This comes as a list, not a paginated list.
         self.assignees = pr.assignees
 
         self.reviews = [Review(review) for review in pr.get_reviews()]
 
     def status_changed_at(self):
         """
-        Return the date the PR was merged or closed on, or "N/A" if open.
-        If a PR is merged, it is also closed and has a closed_at date.
+        Return the date the PR was merged or closed on.
+
+        :return: Closed at date of PR. If it was merged, this will be the same
+            as the merged date. If the PR is still open, the value will be
+            `None`.
         """
         return self.closed_at or "N/A"
 
     def merged_by_name(self):
+        """
+        Return a display name for the user who merged the PR, if merged.
+        """
         return lib.display(self.merged_by) if self.merged else None
 
     def assignee_names(self):
+        """
+        Return a sorted list of display names for users who are assigned.
+
+        This makes more sense for Issues than PRs.
+        """
         return sorted([lib.display(user) for user in self.assignees])
 
     def reviewer_names(self):
+        """
+        Return a sorted list of display names for users who are reviewers for
+        the PR.
+        """
         return sorted([lib.display(review.reviewer) for review in self.reviews])
 
     def review_summary(self):
+        """
+        Return a list of review summary data for each of the PR's reviews.
+        """
         return [review.summary() for review in self.reviews]
