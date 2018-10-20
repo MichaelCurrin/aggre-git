@@ -102,7 +102,7 @@ class PullRequest:
             as the merged date. If the PR is still open, the value will be
             `None`.
         """
-        return self.closed_at or "N/A"
+        return self.closed_at
 
     def merged_by_name(self):
         """

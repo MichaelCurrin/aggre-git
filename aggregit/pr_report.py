@@ -54,7 +54,7 @@ for repo in repos:
 
                 'status': pr_data.status,
 
-                'status_changed_at': str(pr_data.status_changed_at()),
+                'status_changed_at': pr_data.status_changed_at(),
                 'merged_by': pr_data.merged_by_name(),
 
                 'reviewers': ", ".join(pr_data.reviewer_names()),
