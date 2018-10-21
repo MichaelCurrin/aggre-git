@@ -44,7 +44,6 @@ for repo in repos:
                 'Repo Name': repo.name,
 
                 'Author': lib.display(author),
-                'Assignees': ", ".join(pr_data.assignee_names()),
 
                 'ID': f"#{pr_data.number}",
                 'Title': pr_data.title,
@@ -71,7 +70,7 @@ for repo in repos:
 
 header = (
     'Repo URL', 'Repo Owner', 'Repo Name',
-    'Author', 'Assignees',
+    'Author',
     'ID', 'Title',
     'Status', 'Status Changed At', 'Updated At', 'Created At',
     'Commits', 'Changed Files', 'Added Lines', 'Deleted Lines', 'Changed Lines',
