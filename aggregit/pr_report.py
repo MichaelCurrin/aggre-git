@@ -44,9 +44,9 @@ for repo in repos:
                 'Repo Name': repo.name,
 
                 'Author': lib.display(author),
-
-                'ID': f"#{pr_data.number}",
-                'Title': pr_data.title,
+                'PR ID': f"#{pr_data.number}",
+                'PR Title': pr_data.title,
+                'PR URL': pr_data.url,
 
                 'Created At': pr_data.created_at,
                 'Updated At': pr_data.updated_at,
@@ -69,9 +69,8 @@ for repo in repos:
             out_data.append(out_row)
 
 header = (
-    'Repo URL', 'Repo Owner', 'Repo Name',
-    'Author',
-    'ID', 'Title',
+    'Repo Owner', 'Repo Name', 'Repo URL',
+    'PR ID', 'PR Title', 'Author', 'PR URL',
     'Status', 'Status Changed At', 'Updated At', 'Created At',
     'Commits', 'Changed Files', 'Added Lines', 'Deleted Lines', 'Changed Lines',
     'Comments', 'Merged By', 'Reviewers', 'Reviews',
