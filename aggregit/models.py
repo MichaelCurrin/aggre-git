@@ -70,6 +70,7 @@ class PullRequest:
         self.number = pr.number
         self.title = pr.title
         self.author = pr.user
+        self.url = pr.html_url
 
         self.merged = pr.merged
         if pr.merged:
