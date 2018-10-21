@@ -21,7 +21,7 @@ class Commit:
 
     def __init__(self, commit: github.GitCommit.GitCommit):
         self.sha = commit.sha
-        # Store as datetime.data object.
+        # Store as datetime.date object.
         self.last_modified = lib.parse_datetime(commit.stats.last_modified).date()
         self.additions = commit.stats.additions
         self.deletions = commit.stats.deletions
