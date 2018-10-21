@@ -39,42 +39,43 @@ for repo in repos:
             print(f"PR #{pr.number}")
             pr_data = PullRequest(pr)
             out_row = {
-                'repo_url': repo.html_url,
-                'repo_owner': lib.display(repo.owner),
-                'repo': repo.name,
+                'Repo URL': repo.html_url,
+                'Repo Owner': lib.display(repo.owner),
+                'Repo Name': repo.name,
 
-                'author': lib.display(author),
-                'assignees': ", ".join(pr_data.assignee_names()),
+                'Author': lib.display(author),
+                'Assignees': ", ".join(pr_data.assignee_names()),
 
-                'no': pr_data.number,
-                'title': pr_data.title,
+                'ID': f"#{pr_data.number}",
+                'Title': pr_data.title,
 
-                'created_at': str(pr_data.created_at),
-                'updated_at': str(pr_data.updated_at),
+                'Created At': pr_data.created_at,
+                'Updated At': pr_data.updated_at,
 
-                'status': pr_data.status,
+                'Status': pr_data.status,
 
-                'status_changed_at': pr_data.status_changed_at(),
-                'merged_by': pr_data.merged_by_name(),
+                'Status Changed At': pr_data.status_changed_at(),
+                'Merged By': pr_data.merged_by_name(),
 
-                'reviewers': ", ".join(pr_data.reviewer_names()),
-                'reviews': ", ".join(pr_data.review_summary()),
+                'Reviewers': ", ".join(pr_data.reviewer_names()),
+                'Reviews': ", ".join(pr_data.review_summary()),
 
-                'comments': pr_data.comment_count,
-                'commits': pr_data.commit_count,
-                'changed_files': pr_data.changed_files,
-                'added_lines': pr_data.additions,
-                'deleted_lines': pr_data.deletions,
+                'Comments': pr_data.comment_count,
+                'Commits': pr_data.commit_count,
+                'Changed Files': pr_data.changed_files,
+                'Added Lines': pr_data.additions,
+                'Deleted Lines': pr_data.deletions,
+                'Changed Lines': pr_data.additions + pr.deletions,
             }
             out_data.append(out_row)
 
 header = (
-    'repo_url', 'repo_owner', 'repo',
-    'author', 'assignees',
-    'no', 'title',
-    'status', 'status_changed_at', 'updated_at', 'created_at',
-    'commits', 'changed_files', 'added_lines', 'deleted_lines',
-    'comments', 'merged_by', 'reviewers', 'reviews',
+    'Repo URL', 'Repo Owner', 'Repo Name',
+    'Author', 'Assignees',
+    'ID', 'Title',
+    'Status', 'Status Changed At', 'Updated At', 'Created At',
+    'Commits', 'Changed Files', 'Added Lines', 'Deleted Lines', 'Changed Lines',
+    'Comments', 'Merged By', 'Reviewers', 'Reviews',
 )
 with open(config.PR_CSV_PATH, 'w') as f_out:
     writer = csv.DictWriter(f_out, fieldnames=header)
