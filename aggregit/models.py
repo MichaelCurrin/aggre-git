@@ -52,9 +52,18 @@ class PullRequest:
 
     Expects a PyGithub Pull Request object as returned from the API.
 
+    The ID attribute on the source PR object is a hash, which we do not need.
+    Therefore use the number. Note that a PR is also an Issue, so when a PR
+    is created on Github its number will follow the next open Issue number
+    increment.
+
     The 'state' attribute  only records 'open' or 'closed' values.
     Therefore for easy of reporting, in this model we use status to
     represent one of 'OPEN', 'MERGED' or 'CLOSED'.
+
+    All values which are from int columns are across users, so bear this in
+    mind when interpreting the values. For example, multiple users may
+    contribute commits to a PR and the commit count is the sum of all.
     """
 
     def __init__(self, pr: github.PullRequest.PullRequest):
@@ -82,7 +91,6 @@ class PullRequest:
         self.created_at = pr.created_at.date()
         self.updated_at = pr.updated_at.date()
 
-        # Note that counts are across all users who contributed.
         self.commit_count = pr.commits
         self.comment_count = pr.comments
         self.changed_files = pr.changed_files
