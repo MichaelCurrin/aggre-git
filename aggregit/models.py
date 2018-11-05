@@ -36,13 +36,25 @@ class Review:
     Expects a PyGithub Commit object as returned from the API.
         https://pygithub.readthedocs.io/en/latest/github_objects/PullRequestReview.html
     """
-    # Possible values, according to the docs.
-    STATES = ('COMMENTED', 'APPROVED', 'DISMISSED', 'CHANGES_REQUESTED')
+    # Use 4 possible values, according to the docs.
+    STATES = ('COMMENTED', 'APPROVED', 'DISMISSED', 'CHANGES REQUESTED')
 
     def __init__(self, review: github.PullRequestReview.PullRequestReview):
-        self.state = review.state
+        self._state = review.state
         self.submitted_at = review.submitted_at.date()
         self.reviewer = review.user
+
+    @classmethod
+    def format_state(cls, s):
+        return f'Review {s.replace("_", " ").title()}'
+
+    @classmethod
+    def get_states(cls):
+        return tuple(cls.format_state(s) for s in cls.STATES)
+
+    @property
+    def state(self):
+        return self.format_state(self._state)
 
     def summary(self):
         return f"{self.submitted_at} {lib.display(self.reviewer)} {self.state}"
