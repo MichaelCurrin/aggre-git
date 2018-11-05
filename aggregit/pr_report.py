@@ -15,8 +15,11 @@ author as it probably was.
 import csv
 from collections import Counter
 
+from github import UnknownObjectException
+
 from etc import config
 import lib
+import lib.validate_objects
 from lib.connection import CONN
 from models import PullRequest, Review
 
@@ -83,11 +86,16 @@ def main():
         user = CONN.get_user(config.REPO_OWNER)
         repos = user.get_repos()
     else:
-        # TODO: Consider whether lazy=False affects memory and total time,
-        # since it is useful for checking paths are valid up front. Unless
-        # this can be checked another way which requires requests but then
-        # ignores the objects.
-        repos = [CONN.get_repo(repo_path) for repo_path in config.REPO_PATHS]
+        repos = []
+        for repo_path in config.REPO_PATHS:
+            print(f"Fetching repo: {repo_path}")
+            try:
+                # Get all repos upfront so bad config will cause early failure.
+                repo = CONN.get_repo(repo_path, lazy=False)
+            except UnknownObjectException:
+                raise ValueError(f"Bad repo path: {repo_path}")
+            repos.append(repo)
+    print()
 
     for repo in repos:
         print(f"REPO: {repo.name}")
