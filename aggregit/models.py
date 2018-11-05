@@ -17,6 +17,7 @@ class Commit:
     Model a Git commit, with just data of interest.
 
     Expects a PyGithub Commit object as returned from the API.
+        https://pygithub.readthedocs.io/en/latest/github_objects/Commit.html
     """
 
     def __init__(self, commit: github.GitCommit.GitCommit):
@@ -33,9 +34,10 @@ class Review:
     Model a Git pull request review, with just data of interest.
 
     Expects a PyGithub Commit object as returned from the API.
-    Review state will be one of:
-        'COMMENTED' 'APPROVED' 'DISMISSED' 'CHANGES_REQUESTED'
+        https://pygithub.readthedocs.io/en/latest/github_objects/PullRequestReview.html
     """
+    # Possible values, according to the docs.
+    STATES = ('COMMENTED', 'APPROVED', 'DISMISSED', 'CHANGES_REQUESTED')
 
     def __init__(self, review: github.PullRequestReview.PullRequestReview):
         self.state = review.state
@@ -51,6 +53,7 @@ class PullRequest:
     Model a Git pull request,with just data of interest.
 
     Expects a PyGithub Pull Request object as returned from the API.
+        https://pygithub.readthedocs.io/en/latest/github_objects/PullRequest.html
 
     The ID attribute on the source PR object is a hash, which we do not need.
     Therefore use the number. Note that a PR is also an Issue, so when a PR
