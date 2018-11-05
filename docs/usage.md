@@ -26,7 +26,7 @@ $ ./pr_report.py
 
 ### Samples
 
-The following sample scripts are used explorations and demonstration of PyGithub functionality, with some parsing and aggregation logic. They are not maintained much but are kept for easy references for working examples focused on a particular area such as a User, Pull Request or Event.
+The project contains sample scripts for explorations and demonstration of PyGithub functionality, with some parsing and aggregation logic. They are not maintained much but are kept for easy references for working examples focused on a particular area such as a User, Pull Request or Event. Some of them could become main reports with some improvement, especially for getting a list of repos or users within an organization without any activity associated with them.
 
 The scripts must be imported as modules. They do not take arguments. Example usage is shown below for a few in the [sample](/aggregit/sample) directory. 
 
