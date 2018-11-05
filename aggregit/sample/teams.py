@@ -11,9 +11,10 @@ from lib.connection import CONN
 def main():
     try:
         o = CONN.get_organization(config.REPO_OWNER)
-    except UnknownObjectException as e:
-        e.data['message'] = f"Could not finder organization: {config.REPO_OWNER}"
-        raise
+    except UnknownObjectException:
+        msg = f"Could not finder organization: {config.REPO_OWNER}." \
+              f" Did you provide a user by accident?"
+        raise ValueError(msg)
 
     teams = list(o.get_teams())
 
