@@ -28,8 +28,8 @@ def main():
     else:
         # TODO: Consider whether lazy=False affects memory and total time,
         # since it is useful for checking paths are valid up front. Unless
-        # this can be checked another way which requires requests but then ignores
-        # the objects.
+        # this can be checked another way which requires requests but then
+        # ignores the objects.
         repos = [CONN.get_repo(repo_path) for repo_path in config.REPO_PATHS]
 
     for repo in repos:
@@ -72,8 +72,8 @@ def main():
                     }
                     out_data.append(out_row)
                 except Exception as e:
-                    # Keep the report generation robust by logging and skipping over
-                    # any errors.
+                    # Keep the report generation robust by logging and skipping
+                    # over any errors.
                     print(f"Could not fetch or parse PR."
                           f" {type(e).__name__}: {str(e)}")
 
@@ -81,7 +81,8 @@ def main():
         'Repo Owner', 'Repo Name', 'Repo URL',
         'PR ID', 'PR Title', 'Author', 'PR URL',
         'Status', 'Status Changed At', 'Updated At', 'Created At',
-        'Commits', 'Changed Files', 'Added Lines', 'Deleted Lines', 'Changed Lines',
+        'Commits', 'Changed Files', 'Added Lines', 'Deleted Lines',
+        'Changed Lines',
         'Comments', 'Merged By', 'Reviewers', 'Reviews',
     )
     with open(config.PR_CSV_PATH, 'w') as f_out:
