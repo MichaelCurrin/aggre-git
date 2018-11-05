@@ -1,7 +1,7 @@
 """
 Sample team members module.
 """
-from github import GithubException
+from github import UnknownObjectException
 
 from etc import config
 from lib.connection import CONN
@@ -27,13 +27,19 @@ def print_details(team):
 
 
 def main():
-    o = CONN.get_organization(config.REPO_OWNER)
+    try:
+        o = CONN.get_organization(config.REPO_OWNER)
+    except UnknownObjectException:
+        msg = f"Could not finder organization: {config.REPO_OWNER}." \
+              f" Did you provide a user by accident?"
+        raise ValueError(msg)
+
     try:
         for t in o.get_teams():
             print_details(t)
-        print()
-    except GithubException:
-        print(f"Unable to access teams for org: {config.REPO_OWNER}")
+    except UnknownObjectException as e:
+        msg = f"Unable to access teams for org: {config.REPO_OWNER}"
+        raise ValueError(msg)
 
 
 if __name__ == '__main__':
