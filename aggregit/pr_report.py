@@ -13,11 +13,12 @@ A commit doesn't have to have an author - if blank assume it was by the PR
 author as it probably was.
 """
 import csv
+from collections import Counter
 
 from etc import config
 import lib
 from lib.connection import CONN
-from models import PullRequest
+from models import PullRequest, Review
 
 
 def main():
@@ -62,7 +63,6 @@ def main():
                         'Merged By': pr_data.merged_by_name(),
 
                         'Reviewers': ", ".join(pr_data.reviewer_names()),
-                        'Reviews': ", ".join(pr_data.review_summary()),
 
                         'Comments': pr_data.comment_count,
                         'Commits': pr_data.commit_count,
@@ -71,6 +71,12 @@ def main():
                         'Deleted Lines': pr_data.deletions,
                         'Changed Lines': pr_data.additions + pr.deletions,
                     }
+
+                    # Count review states and split them into columns.
+                    review_states = Counter([r.state for r in pr_data.reviews])
+                    [review_states.setdefault(s, 0) for s in Review.STATES]
+                    out_row.update(**dict(review_states))
+
                     out_data.append(out_row)
                 except Exception as e:
                     # Keep the report generation robust by logging and skipping
@@ -84,8 +90,9 @@ def main():
         'Status', 'Status Changed At', 'Updated At', 'Created At',
         'Commits', 'Changed Files', 'Added Lines', 'Deleted Lines',
         'Changed Lines',
-        'Comments', 'Merged By', 'Reviewers', 'Reviews',
-    )
+        'Comments', 'Merged By', 'Reviewers',
+    ) + Review.STATES
+
     with open(config.PR_CSV_PATH, 'w') as f_out:
         writer = csv.DictWriter(f_out, fieldnames=header)
         writer.writeheader()
