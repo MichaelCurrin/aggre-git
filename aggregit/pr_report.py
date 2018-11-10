@@ -109,8 +109,8 @@ def main():
                     out_row = to_row(repo, author, pr)
                 except Exception as e:
                     # Keep the report generation robust by logging and skipping
-                    # over any errors. Create an bug issue in the Aggregit repo
-                    # on Github so that the error will be handled.
+                    # over any errors. Create a bug issue in the aggre-git repo
+                    # on Github so that the error will be addressed.
                     print(f"Could not fetch or parse PR."
                           f" {type(e).__name__}: {str(e)}")
                 else:

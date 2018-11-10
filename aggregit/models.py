@@ -97,7 +97,7 @@ class PullRequest:
     class. But, we still keep merged- and closed-related values, as there is
     value in having the date and user where applicable.
 
-    All values which are from int columns are across users, so bear this in
+    All values which are from `int` columns are across users, so bear this in
     mind when interpreting the values. For example, multiple users may
     contribute commits to a PR and the commit count is the sum of all.
     """
@@ -138,7 +138,8 @@ class PullRequest:
         self.additions = pr.additions
         self.deletions = pr.deletions
 
-        # This comes as a list, not a paginated list.
+        # No iteration, needed since in this case the value comes as list and
+        # not a paginated list.
         self.assignees = pr.assignees
 
         self.reviews = [Review(review) for review in pr.get_reviews()
