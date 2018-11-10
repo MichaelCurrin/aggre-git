@@ -33,11 +33,30 @@ class Review:
     """
     Model a Git pull request review, with just data of interest.
 
+    Notes on PR states:
+        The web UI gives the following options when writing a PR review.
+        - Comment
+        - Approve
+        - Request changes
+
+        The Github API docs also covers a dismissed state. And a pending state
+        was found, though not covered in that section of docs. The pending
+        review state is possibly from adding a user with Request Review button
+        but with no review submitted yet.
+
+        See:
+          https://help.github.com/articles/about-pull-request-reviews/
+
     Expects a PyGithub Commit object as returned from the API.
         https://pygithub.readthedocs.io/en/latest/github_objects/PullRequestReview.html
     """
-    # Use 4 possible values, according to the docs.
-    STATES = ('COMMENTED', 'APPROVED', 'DISMISSED', 'CHANGES REQUESTED')
+    STATES = (
+        'APPROVED',
+        'DISMISSED',
+        'CHANGES REQUESTED',
+        'COMMENTED',
+        'PENDING',
+    )
 
     def __init__(self, review: github.PullRequestReview.PullRequestReview):
         self._state = review.state
