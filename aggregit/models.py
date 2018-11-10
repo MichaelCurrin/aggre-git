@@ -163,10 +163,12 @@ class PullRequest:
 
     def reviewer_names(self):
         """
-        Return a sorted list of display names for users who are reviewers for
-        the PR.
+        Return a sorted list of display names for users which performed a
+        review-related action on the PR.
         """
-        return sorted([lib.display(review.reviewer) for review in self.reviews])
+        names = set(lib.display(review.reviewer) for review in self.reviews)
+
+        return sorted(names)
 
     def review_summary(self):
         """
