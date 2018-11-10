@@ -12,4 +12,4 @@ configlocal.py
 
 # Local CSVs and lock files.
 aggregit/var/*.csv
-aggregit/var/.~*.csv#
+aggregit/var/.~lock*.csv#
