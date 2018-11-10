@@ -5,8 +5,11 @@
 # Python compiled binaries.
 __pycache__/
 
+# Python virtual environment.
 venv
 
 configlocal.py
 
+# Local CSVs and lock files.
 aggregit/var/*.csv
+aggregit/var/.~*.csv#
