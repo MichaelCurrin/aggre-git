@@ -33,16 +33,17 @@ class Review:
     """
     Model a Git pull request review, with just data of interest.
 
-    Notes on PR states:
+    Notes on states of PR Reviews:
         The web UI gives the following options when writing a PR review.
         - Comment
         - Approve
         - Request changes
 
-        The Github API docs also covers a dismissed state. And a pending state
-        was found, though not covered in that section of docs. The pending
-        review state is possibly from adding a user with Request Review button
-        but with no review submitted yet.
+        The Github API docs also covers a dismissed state. There is a pending
+        state as well which came up in testing, but this appears to be hidden
+        from other users and has no value for this project so can be ignored.
+        To exclude it, apply a filter to only create a Review instance
+        from a review which has a state which is in the Review.STATES values.
 
         See:
           https://help.github.com/articles/about-pull-request-reviews/
@@ -55,7 +56,6 @@ class Review:
         'DISMISSED',
         'CHANGES REQUESTED',
         'COMMENTED',
-        'PENDING',
     )
 
     def __init__(self, review: github.PullRequestReview.PullRequestReview):
@@ -135,7 +135,8 @@ class PullRequest:
         # This comes as a list, not a paginated list.
         self.assignees = pr.assignees
 
-        self.reviews = [Review(review) for review in pr.get_reviews()]
+        self.reviews = [Review(review) for review in pr.get_reviews()
+                        if review.state in Review.STATES]
 
     def status_changed_at(self):
         """
