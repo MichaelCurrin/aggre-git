@@ -91,14 +91,19 @@ class PullRequest:
     is created on Github its number will follow the next open Issue number
     increment.
 
-    The 'state' attribute  only records 'open' or 'closed' values.
-    Therefore for easy of reporting, in this model we use status to
-    represent one of 'OPEN', 'MERGED' or 'CLOSED'.
+    Github records merged as a boolean and it limits 'state' to only be 'open'
+    or 'closed' values. For our own easy reporting, we rather use a system of
+    three possible values on 'status', with labels set as constants on the
+    class. But, we still keep merged- and closed-related values, as there is
+    value in having the date and user where applicable.
 
     All values which are from int columns are across users, so bear this in
     mind when interpreting the values. For example, multiple users may
     contribute commits to a PR and the commit count is the sum of all.
     """
+    STATUS_MERGED = "Merged"
+    STATUS_CLOSED = "Closed"
+    STATUS_OPEN = "Open"
 
     def __init__(self, pr: github.PullRequest.PullRequest):
         self.number = pr.number
@@ -113,15 +118,16 @@ class PullRequest:
         else:
             self.merged_at = None
             self.merged_by = None
+
         self.closed = (pr.state == 'closed')
         self.closed_at = pr.closed_at.date() if self.closed else None
 
         if self.merged:
-            self.status = 'MERGED'
+            self.status = self.STATUS_MERGED
         elif self.closed:
-            self.status = 'CLOSED'
+            self.status = self.STATUS_CLOSED
         else:
-            self.status = 'OPEN'
+            self.status = self.STATUS_OPEN
 
         self.created_at = pr.created_at.date()
         self.updated_at = pr.updated_at.date()
