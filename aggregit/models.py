@@ -159,7 +159,7 @@ class PullRequest:
 
         This makes more sense for Issues than PRs.
         """
-        return sorted([lib.display(user) for user in self.assignees])
+        return sorted(lib.display(user) for user in self.assignees)
 
     def reviewer_names(self):
         """
