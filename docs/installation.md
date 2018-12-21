@@ -56,9 +56,8 @@ The minimum requirement to run the project is to create a Github token for your 
 
 1. Go to the [Tokens](https://github.com/settings/tokens) page within the Developer Settings area of your Github account.
 2. Create a new token. The following scopes are recommended to be set:
-    * ☐ repo
-       - ☑ repo:status
-       - ☑ public:repo
+    * ☑ repo 
+        - Tick the top level for access to private repos. Otherwise just tick _repo:status_ and _public:repo_.
     * ☐ admin:org
         - ☑ read:org
     * ☐ write:discussion

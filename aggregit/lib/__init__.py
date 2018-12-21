@@ -4,6 +4,8 @@ Initliazation file for library module.
 import datetime
 from email.utils import mktime_tz, parsedate_tz
 
+import github
+
 
 def parse_datetime(standard_datetime):
     """
@@ -21,3 +23,16 @@ def parse_datetime(standard_datetime):
     timestamp = mktime_tz(time_tuple)
 
     return datetime.datetime.fromtimestamp(timestamp)
+
+
+def display(user: github.NamedUser.NamedUser):
+    """
+    Return an easy to read reference for a Github user account.
+
+    @return: Return user's name if set, otherwise user's login
+        including an '@' prefix to show that it is a username.
+    """
+    if user.name:
+        return user.name
+    else:
+        return f"@{user.login}"
