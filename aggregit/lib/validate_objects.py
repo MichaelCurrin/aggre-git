@@ -29,16 +29,16 @@ def check_repo(repo_path):
     The lazy parameter must be used when retrieving repos in order
     to fail immediately. This parameter does not exist for `.get_users()`.
 
-    @param repo_path: str in the format "some_user/some_repo_name".
+    :param repo_path: str in the format "some_user/some_repo_name".
 
-    @return: None
-    @raises: ValueError
+    :return: None
+    :raises: ValueError
     """
     print(repo_path, end=" ")
     try:
         CONN.get_repo(repo_path, lazy=False)
         print("OK")
-    except UnknownObjectException as e:
+    except UnknownObjectException:
         print()
         raise ValueError("Could not find repo: {}".format(repo_path))
 
@@ -47,16 +47,16 @@ def check_user(username):
     """
     Request a username on Github raise an error if it cannot be retrieved.
 
-    @param username: str
+    :param username: str
 
-    @return: None
-    @raises: ValueError
+    :return: None
+    :raises: ValueError
     """
     print(username, end=" ")
     try:
         CONN.get_user(username)
         print("OK")
-    except UnknownObjectException as e:
+    except UnknownObjectException:
         print()
         raise ValueError("Could not find username: {}".format(username))
 

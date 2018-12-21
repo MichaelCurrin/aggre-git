@@ -13,6 +13,7 @@ from github import Github
 
 from etc import config
 
+
 # TODO: Consider configuring the per_page argument from the default and see how
 # it affects paging and rate limits.
 CONN = Github(config.ACCESS_TOKEN)
