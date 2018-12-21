@@ -27,10 +27,10 @@ def parse_datetime(standard_datetime):
 
 def display(user: github.NamedUser.NamedUser):
     """
-    Return an easily to read reference for a Github user account.
+    Return an easy to read reference for a Github user account.
 
-    @return: Expect a user object and return name if set, otherwise their
-    login with a '@' prefix.
+    @return: Return user's name if set, otherwise user's login
+        including an '@' prefix to show that it is a username.
     """
     if user.name:
         return user.name
