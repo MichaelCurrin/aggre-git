@@ -12,7 +12,7 @@ def main():
     try:
         o = CONN.get_organization(config.REPO_OWNER)
     except UnknownObjectException:
-        msg = f"Could not finder organization: {config.REPO_OWNER}." \
+        msg = f"Could not find organization: {config.REPO_OWNER}." \
               f" Did you provide a user by accident?"
         raise ValueError(msg)
 
