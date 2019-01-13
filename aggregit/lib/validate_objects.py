@@ -8,9 +8,14 @@ Usage:
     >>> from lib.validate_objects import validate_config
     >>> validate_config()
 
-Validate some values in the config details by request the objects from
+Validate some values in the config details by requesting the objects from
 the API. This is useful to do upfront to fail early when getting details
 for several objects as part of a report.
+
+This does not need to be called each time running a report as it adds to
+the time, but it is recommended to run this after making changes to the config
+before starting report creation, to ensure fields are entered logically and
+that the objects can be accessed online, to avoid typos.
 
 Note that there are CONN.get_repos() and CONN.get_users() methods but they
 only take a `since` parameter and appear to return *all* objects on Github
@@ -45,9 +50,9 @@ def check_repo(repo_path):
 
 def check_user(username):
     """
-    Request a username on Github raise an error if it cannot be retrieved.
+    Request a username on Github and raise an error if it cannot be retrieved.
 
-    :param username: str
+    :param str username: Name of Github user or organization.
 
     :return: None
     :raises: ValueError
