@@ -13,9 +13,9 @@ See docs/installation.md for instructions.
 ACCESS_TOKEN = ""
 
 
-#####################
-# General filtering #
-#####################
+##################
+# Global filters #
+##################
 
 # Lookup activity by these Github usernames.
 USERNAMES = (
@@ -35,6 +35,16 @@ REPO_OWNER = 'MichaelCurrin'
 REPO_PATHS = (
     'MichaelCurrin/aggre-git',
 )
+
+
+# Cutoff date for activity - ignore commits before this date.
+#
+# Set as either:
+# - `None`: No limit.
+# - An integer: Number of days ago (inclusive). Set as 1 for yesterday and today.
+# - Date as string: Earliest date (inclusive) in 'YYYY-MM-DD' format. Set
+#       as yesterday's date for yesterday and today.
+MIN_DATE = '2018-12-01'
 
 
 #####################
