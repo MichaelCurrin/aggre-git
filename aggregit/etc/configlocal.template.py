@@ -15,16 +15,16 @@ REPO_PATHS = (
     'MichaelCurrin/aggre-git',
 )
 # Username of user or organization. Only lookup activity in repos under this
-# account. This does not have to correspond to the REPO_NAMES value as when
-# this is used it is used in place of REPO_NAMES.
+# account. This does not have to correspond to the REPO_PATHS value as when
+# this is used it is used in place of REPO_PATHS.
 REPO_OWNER = 'MichaelCurrin'
 
 # If True, then lookup all repos within configured REPO_OWNER. Otherwise only
-# lookup activity within REPO_NAMES.
+# lookup activity within REPO_PATHS.
 BY_OWNER = False
 
 # Lookup activity for these Github users. Note only activity within the
-# selected repos will be counted, as set in either REPO_NAMES or REPO_OWNER.
+# selected repos will be counted, as set in either REPO_PATHS or REPO_OWNER.
 USERNAMES = (
     'MichaelCurrin',
 )
