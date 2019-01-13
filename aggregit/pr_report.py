@@ -106,7 +106,10 @@ def main():
     print()
 
     if config.MIN_DATE:
-        print(f"Cutoff date PRs with no updates: {config.MIN_DATE}\n")
+        print(f"PR updates min date: {config.MIN_DATE}")
+    else:
+        print("No PR updates min date set")
+    print()
 
     for repo in repos:
         print(f"REPO: {repo.name}")
