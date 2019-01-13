@@ -1,5 +1,7 @@
 """
-Sample branches script.
+Sample repo branches script.
+
+Explore getting details of a branch object within a repo.
 
 PyGithub doc on Branches:
     https://pygithub.readthedocs.io/en/latest/github_objects/Branch.html
@@ -15,10 +17,10 @@ def display_commit(commit):
     """
     print("COMMIT")
     print(commit.sha)
+    print(commit.url)
     print(commit.author.login)
     print(commit.last_modified)
     print(f"{commit.stats.total} | +{commit.stats.additions} | -{commit.stats.deletions})")
-    print(commit.url)
     print()
 
 
@@ -28,10 +30,10 @@ def display_file(file_):
     """
     print("FILE")
     print(file_.filename)
+    print(file_.blob_url)
     print(file_.last_modified)
     print(file_.status)
     print(f"{file_.changes} | +{file_.additions} | -{file_.deletions}")
-    print(file_.blob_url)
     print()
 
 
@@ -66,6 +68,7 @@ def main():
     repo = CONN.get_repo("PyGithub/PyGithub")
     branches = list(repo.get_branches())
     branch = branches[0]
+    print(branch.name)
 
     head_commit = branch.commit
 
