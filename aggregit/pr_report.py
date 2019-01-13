@@ -81,6 +81,11 @@ def main():
     """
     Main command-line function to fetch PR data then write a CSV.
 
+    If using the BY_OWNER setting, it's best to try retrieve the profile as an
+    org first, since  getting an org as a user object only gives as access to
+    public repos. Fallback to getting a user object if it wasn't actually
+    an org.
+
     Use the MIN_DATE value in the config to exclude PRs which were last updated
     before the cutoff date. The API's default setting is to return PRs ordered
     by most recently created first.
@@ -91,7 +96,14 @@ def main():
     out_data = []
 
     if config.BY_OWNER:
-        user = CONN.get_user(config.REPO_OWNER)
+        try:
+            user = CONN.get_organization(config.REPO_OWNER)
+            print(f"Fetched org: {config.REPO_OWNER}")
+        except UnknownObjectException:
+            user = CONN.get_user(config.REPO_OWNER)
+            print(f"Fetched user: {config.REPO_OWNER}")
+
+        # This is a paginated list, so we do not get all repos upfront.
         repos = user.get_repos()
     else:
         repos = []
