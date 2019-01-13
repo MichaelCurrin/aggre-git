@@ -116,13 +116,8 @@ def main():
 
         for pr in repo.get_pulls(state=config.PR_STATE):
             author = pr.user
-
             if author.login in config.USERNAMES:
-                if config.MIN_DATE and pr.updated_at < config.MIN_DATE:
-                    print("Remaining PRs are inactive")
-                    break
-
-                print(f"PR #{pr.number}")
+                print(f"PR #{pr.number} - @{author.login}")
                 try:
                     out_row = to_row(repo, author, pr)
                 except Exception as e:
@@ -133,6 +128,7 @@ def main():
                           f" {type(e).__name__}: {str(e)}")
                 else:
                     out_data.append(out_row)
+                print(f"PR #{pr.number} - SKIPPING")
 
     header = (
         'Repo Owner', 'Repo Name', 'Repo URL',
