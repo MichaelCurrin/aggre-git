@@ -10,21 +10,23 @@ import os
 
 def parse_cutoff_date(value):
     """
-    Convert a cutoff date in various formats to a date object.
+    Convert a cutoff date in various formats.
 
     :param value: Cutoff date. One of:
         - Date in 'YYYY-MM-DD' format e.g. '2019-01-01'
-        - Integer as number of days ago e.g. 1
+        - Integer as number of days ago e.g. 1. Note that this will not round
+              down so the current time will be used as the time for the cutoff day.
         - `None` for no limit, such that earliest possible unix date is returned.
 
-    :return datetime.date cutoff: Parsed cutoff date value as date object.
+    :return datetime.datetime cutoff: Parsed cutoff date as datetime object
+        for easy comparison with Github activity datetime values.
     """
     if isinstance(value, str):
-        cutoff = datetime.datetime.strptime(value, '%Y-%m-%d').date()
+        cutoff = datetime.datetime.strptime(value, '%Y-%m-%d')
     elif isinstance(value, int):
-        cutoff = datetime.date.today() - datetime.timedelta(days=value)
+        cutoff = datetime.datetime.today() - datetime.timedelta(days=value)
     else:
-        cutoff = datetime.date.fromtimestamp(0)
+        cutoff = datetime.datetime.fromtimestamp(0)
 
     return cutoff
 
