@@ -144,6 +144,7 @@ def main():
                           f" {type(e).__name__}: {str(e)}")
                 else:
                     out_data.append(out_row)
+            else:
                 print(f"PR #{pr.number} - SKIPPING")
 
     header = (
