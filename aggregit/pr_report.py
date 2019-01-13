@@ -133,7 +133,7 @@ def main():
 
             author = pr.user
             if author.login in config.USERNAMES:
-                print(f"PR #{pr.number} - @{author.login}")
+                print(f"PR #{pr.number} - author: @{author.login}")
                 try:
                     out_row = to_row(repo, author, pr)
                 except Exception as e:
@@ -145,7 +145,7 @@ def main():
                 else:
                     out_data.append(out_row)
             else:
-                print(f"PR #{pr.number} - SKIPPING")
+                print(f"PR #{pr.number} - skipping")
 
     header = (
         'Repo Owner', 'Repo Name', 'Repo URL',
