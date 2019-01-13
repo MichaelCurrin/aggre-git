@@ -37,14 +37,16 @@ REPO_PATHS = (
 )
 
 
-# Cutoff date for activity - ignore commits before this date.
+# Cutoff date for activity.
+# For the PR report, any PRs which have not been updated since this date will be
+# ignored.
 #
 # Set as either:
-# - `None`: No limit.
 # - An integer: Number of days ago (inclusive). Set as 1 for yesterday and today.
 # - Date as string: Earliest date (inclusive) in 'YYYY-MM-DD' format. Set
 #       as yesterday's date for yesterday and today.
-MIN_DATE = '2018-12-01'
+# - `None`: No limit.
+MIN_DATE = None
 
 
 #####################
