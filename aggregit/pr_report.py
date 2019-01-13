@@ -2,15 +2,17 @@
 """
 Pull Request report script.
 
-Get all Pull Requests and print out summary data.
+Get all Pull Requests and print out summary data. This report is orientated
+around PRs, so ignores any work in branches which do not have PR. It is also
+focused on when a PR was created or last updated, rather than when the activity
+in the PR occurred.
 
 Requires either a configured repo owner (as user or organization) to retrieve
 repos for, otherwise the paths for required repos.
-Also requires configured usernames, such that only PRs created by these users
-are included.
 
-A commit doesn't have to have an author - if blank assume it was by the PR
-author as it probably was.
+Also requires configured usernames, such that only PRs created by these users
+are included. A commit doesn't have to have an author - if blank assume it
+was by the PR author (as it probably was).
 """
 import csv
 from collections import Counter
