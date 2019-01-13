@@ -18,7 +18,13 @@ def display_commit(commit):
     print("COMMIT")
     print(commit.sha)
     print(commit.url)
-    print(commit.author.login)
+    if commit.author:
+        # This was observed in a case where the commit in the Github site
+        # has an author who wrote the patch but there is no link to his profile
+        # so perhaps he was deleted. So author can be None.
+        print(commit.author.login)
+    else:
+        print("NO AUTHOR")
     print(commit.last_modified)
     print(f"{commit.stats.total} | +{commit.stats.additions} | -{commit.stats.deletions})")
     print()
