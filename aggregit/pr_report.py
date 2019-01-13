@@ -19,7 +19,6 @@ from github import UnknownObjectException
 
 from etc import config
 import lib
-import lib.validate_objects
 from lib.connection import CONN
 from models import PullRequest, Review
 
@@ -32,12 +31,13 @@ def to_row(repo, author, pr):
     get the counts for each possible review action and add them as columns to
     the row (using zero as default value).
 
-    :param repo: github.Repository.Repository
-    :param author: github.NamedUser.NamedUser
-    :param pr: github.PullRequest.PullRequest
+    :param github.Repository.Repository repo: Github repo object.
+    :param github.NamedUser.NamedUser author: Github user object.
+    :param github.PullRequest.PullRequest pr: Github PR object.
 
-    :return out_row: dict of data around a PR's repo, the PR author and the PR
-        itself.
+    :return dict out_row: dict of data around a PR's repo, the PR author and
+        the PR itself. The status changed, created and updated date will be kept
+        as datetime.datetime objects.
     """
     pr_data = PullRequest(pr)
 
@@ -79,11 +79,30 @@ def to_row(repo, author, pr):
 def main():
     """
     Main command-line function to fetch PR data then write a CSV.
+
+    If using the BY_OWNER setting, it's best to try retrieve the profile as an
+    org first, since  getting an org as a user object only gives as access to
+    public repos. Fallback to getting a user object if it wasn't actually
+    an org.
+
+    Use the MIN_DATE value in the config to exclude PRs which were last updated
+    before the cutoff date. The API's default setting is to return PRs ordered
+    by most recently created first.
+        https://developer.github.com/v3/pulls/#list-pull-requests
+    Therefore if we encounter an old PR then skip remaining PRs and go the next
+    repo.
     """
     out_data = []
 
     if config.BY_OWNER:
-        user = CONN.get_user(config.REPO_OWNER)
+        try:
+            user = CONN.get_organization(config.REPO_OWNER)
+            print(f"Fetched org: {config.REPO_OWNER}")
+        except UnknownObjectException:
+            user = CONN.get_user(config.REPO_OWNER)
+            print(f"Fetched user: {config.REPO_OWNER}")
+
+        # This is a paginated list, so we do not get all repos upfront.
         repos = user.get_repos()
     else:
         repos = []
@@ -97,14 +116,23 @@ def main():
             repos.append(repo)
     print()
 
+    if config.MIN_DATE:
+        print(f"PR updates min date: {config.MIN_DATE}")
+    else:
+        print("No PR updates min date set")
+    print()
+
     for repo in repos:
         print(f"REPO: {repo.name}")
 
         for pr in repo.get_pulls(state=config.PR_STATE):
-            author = pr.user
+            if config.MIN_DATE and pr.updated_at < config.MIN_DATE:
+                print("Remaining PRs are inactive")
+                break
 
+            author = pr.user
             if author.login in config.USERNAMES:
-                print(f"PR #{pr.number}")
+                print(f"PR #{pr.number} - author: @{author.login}")
                 try:
                     out_row = to_row(repo, author, pr)
                 except Exception as e:
@@ -115,6 +143,8 @@ def main():
                           f" {type(e).__name__}: {str(e)}")
                 else:
                     out_data.append(out_row)
+            else:
+                print(f"PR #{pr.number} - skipping")
 
     header = (
         'Repo Owner', 'Repo Name', 'Repo URL',

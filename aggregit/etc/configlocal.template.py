@@ -4,30 +4,56 @@ Local config.
 See docs/installation.md for instructions.
 """
 
+########
+# Auth #
+########
 
 # Github API token to authenticate with.
 # This is MUST be set with a valid value - see docs/installation.md.
-ACCESS_TOKEN = "..."
+ACCESS_TOKEN = ""
 
-# Paths for repos to report on (as account name and then repo name).
-# Only lookup activity within these repos.
-REPO_PATHS = (
-    'MichaelCurrin/aggre-git',
-)
-# Username of user or organization. Only lookup activity in repos under this
-# account. This does not have to correspond to the REPO_NAMES value as when
-# this is used it is used in place of REPO_NAMES.
-REPO_OWNER = 'MichaelCurrin'
 
-# If True, then lookup all repos within configured REPO_OWNER. Otherwise only
-# lookup activity within REPO_NAMES.
-BY_OWNER = False
+##################
+# Global filters #
+##################
 
-# Lookup activity for these Github users. Note only activity within the
-# selected repos will be counted, as set in either REPO_NAMES or REPO_OWNER.
+# Lookup activity by these Github usernames.
 USERNAMES = (
     'MichaelCurrin',
 )
+
+# Boolean value to switch between two inputs for reporting.
+# - True: Use `REPO_OWNER` value. (So `REPO_PATHS` could be empty tuple or `None`.)
+# - False: Use `REPO_PATHS` value. (So `REPO_OWNER` could be empty string or `None`.)
+BY_OWNER = False
+
+# Filter to activity within ALL repos owned by this account. This can be a
+# Github user or organization.
+REPO_OWNER = 'MichaelCurrin'
+
+# Filter to activity within these Github repos. Format: 'username/repo-name'.
+REPO_PATHS = (
+    'MichaelCurrin/aggre-git',
+)
+
+
+# Cutoff date for activity.
+# For the PR report, any PRs which have not been updated since this date will be
+# ignored.
+#
+# Set as either:
+# - An integer: Number of days ago (inclusive). Set as 1 for yesterday and today.
+#       This will be parsed to a datetime object relative to today's date.
+# - Date as string: Earliest date (inclusive) in 'YYYY-MM-DD' format. Set
+#       as yesterday's date for yesterday and today. This will be parsed to a
+#       datetime object.
+# - `None`: No limit.
+MIN_DATE = None
+
+
+#####################
+# PR Report filters #
+#####################
 
 # Include only PRs in this state. Must be one of 'open', 'closed' or 'all'.
 PR_STATE = 'all'
