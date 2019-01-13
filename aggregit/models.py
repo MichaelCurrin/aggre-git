@@ -81,7 +81,7 @@ class Review:
 
 class PullRequest:
     """
-    Model a Git pull request,with just data of interest.
+    Model a Git pull request, with just data of interest.
 
     Expects a PyGithub Pull Request object as returned from the API.
         https://pygithub.readthedocs.io/en/latest/github_objects/PullRequest.html
@@ -106,6 +106,9 @@ class PullRequest:
     STATUS_OPEN = "Open"
 
     def __init__(self, pr: github.PullRequest.PullRequest):
+        """
+        Initialize customized PR object based on an existing Github PR object.
+        """
         self.number = pr.number
         self.title = pr.title
         self.author = pr.user
@@ -147,7 +150,7 @@ class PullRequest:
 
     def status_changed_at(self):
         """
-        Return the date the PR was merged or closed on.
+        If merged or closed, get the date that the change happened on.
 
         :return: Closed at date of PR. If it was merged, this will be the same
             as the merged date. If the PR is still open, the value will be
@@ -157,20 +160,23 @@ class PullRequest:
 
     def merged_by_name(self):
         """
-        Return a display name for the user who merged the PR, if merged.
+        Get the display name for the user who merged the PR, if it was merged.
         """
         return lib.display(self.merged_by) if self.merged else None
 
     def assignee_names(self):
         """
-        Return a sorted list of display names for users who are assigned.
+        Get names of assignees of the PR, if any.
 
+        Return a sorted list of display names for users who are assigned.
         This makes more sense for Issues than PRs.
         """
         return sorted(lib.display(user) for user in self.assignees)
 
     def reviewer_names(self):
         """
+        Get names of reviewers of the PR, if any.
+
         Return a sorted list of display names for users which performed a
         review-related action on the PR.
         """
