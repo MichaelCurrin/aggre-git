@@ -43,8 +43,10 @@ REPO_PATHS = (
 #
 # Set as either:
 # - An integer: Number of days ago (inclusive). Set as 1 for yesterday and today.
+#       This will be parsed to a datetime object relative to today's date.
 # - Date as string: Earliest date (inclusive) in 'YYYY-MM-DD' format. Set
-#       as yesterday's date for yesterday and today.
+#       as yesterday's date for yesterday and today. This will be parsed to a
+#       datetime object.
 # - `None`: No limit.
 MIN_DATE = None
 
