@@ -19,7 +19,6 @@ from github import UnknownObjectException
 
 from etc import config
 import lib
-import lib.validate_objects
 from lib.connection import CONN
 from models import PullRequest, Review
 

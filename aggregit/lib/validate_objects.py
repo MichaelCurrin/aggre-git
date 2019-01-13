@@ -65,8 +65,8 @@ def validate_config():
     """
     Request configured repos and users and raise errors if they do not exist.
 
-    @return: None
-    @raises: ValueError, AssertionError
+    :return: None
+    :raises: ValueError, AssertionError
     """
     print("REPOS")
     if config.BY_OWNER:
