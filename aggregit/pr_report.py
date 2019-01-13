@@ -36,8 +36,9 @@ def to_row(repo, author, pr):
     :param github.NamedUser.NamedUser author: Github user object.
     :param github.PullRequest.PullRequest pr: Github PR object.
 
-    :return out_row: dict of data around a PR's repo, the PR author and the PR
-        itself.
+    :return dict out_row: dict of data around a PR's repo, the PR author and
+        the PR itself. The status changed, created and updated date will be kept
+        as datetime.datetime objects.
     """
     pr_data = PullRequest(pr)
 
@@ -79,6 +80,13 @@ def to_row(repo, author, pr):
 def main():
     """
     Main command-line function to fetch PR data then write a CSV.
+
+    Use the MIN_DATE value in the config to exclude PRs which were last updated
+    before the cutoff date. The API's default setting is to return PRs ordered
+    by most recently created first.
+        https://developer.github.com/v3/pulls/#list-pull-requests
+    Therefore if we encounter an old PR then skip remaining PRs and go the next
+    repo.
     """
     out_data = []
 
@@ -97,6 +105,9 @@ def main():
             repos.append(repo)
     print()
 
+    if config.MIN_DATE:
+        print(f"Cutoff date PRs with no updates: {config.MIN_DATE}\n")
+
     for repo in repos:
         print(f"REPO: {repo.name}")
 
@@ -104,6 +115,10 @@ def main():
             author = pr.user
 
             if author.login in config.USERNAMES:
+                if config.MIN_DATE and pr.updated_at < config.MIN_DATE:
+                    print("Remaining PRs are inactive")
+                    break
+
                 print(f"PR #{pr.number}")
                 try:
                     out_row = to_row(repo, author, pr)
