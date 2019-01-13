@@ -35,6 +35,7 @@ def extract(org):
         events=events,
         members=members,
         repos=repos,
+        private_repos=org.total_private_repos,
         issues=issues,
         teams=teams
     )
