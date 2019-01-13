@@ -40,7 +40,7 @@ def check_repo(repo_path):
         print("OK")
     except UnknownObjectException:
         print()
-        raise ValueError("Could not find repo: {}".format(repo_path))
+        raise ValueError(f"Could not find repo: {repo_path}")
 
 
 def check_user(username):
@@ -58,7 +58,7 @@ def check_user(username):
         print("OK")
     except UnknownObjectException:
         print()
-        raise ValueError("Could not find username: {}".format(username))
+        raise ValueError(f"Could not find username: {username}")
 
 
 def validate_config():
