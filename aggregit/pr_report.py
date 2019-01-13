@@ -115,6 +115,10 @@ def main():
         print(f"REPO: {repo.name}")
 
         for pr in repo.get_pulls(state=config.PR_STATE):
+            if config.MIN_DATE and pr.updated_at < config.MIN_DATE:
+                print("Remaining PRs are inactive")
+                break
+
             author = pr.user
             if author.login in config.USERNAMES:
                 print(f"PR #{pr.number} - @{author.login}")
