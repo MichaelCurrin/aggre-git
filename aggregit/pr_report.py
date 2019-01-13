@@ -32,9 +32,9 @@ def to_row(repo, author, pr):
     get the counts for each possible review action and add them as columns to
     the row (using zero as default value).
 
-    :param repo: github.Repository.Repository
-    :param author: github.NamedUser.NamedUser
-    :param pr: github.PullRequest.PullRequest
+    :param github.Repository.Repository repo: Github repo object.
+    :param github.NamedUser.NamedUser author: Github user object.
+    :param github.PullRequest.PullRequest pr: Github PR object.
 
     :return out_row: dict of data around a PR's repo, the PR author and the PR
         itself.
