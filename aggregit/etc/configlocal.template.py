@@ -7,7 +7,7 @@ See docs/installation.md for instructions.
 
 # Github API token to authenticate with.
 # This is MUST be set with a valid value - see docs/installation.md.
-ACCESS_TOKEN = "..."
+ACCESS_TOKEN = ""
 
 # Paths for repos to report on (as account name and then repo name).
 # Only lookup activity within these repos.
