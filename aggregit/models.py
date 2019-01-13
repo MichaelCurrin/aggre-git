@@ -65,7 +65,7 @@ class Review:
 
     @classmethod
     def format_state(cls, s):
-        return f'Review {s.replace("_", " ").title()}'
+        return f"Review {s.replace('_', ' ').title()}"
 
     @classmethod
     def get_states(cls):
