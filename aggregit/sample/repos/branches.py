@@ -3,8 +3,13 @@ Sample repo branches script.
 
 Explore getting details of a branch object within a repo.
 
-PyGithub doc on Branches:
+PyGithub docs
+ - Branches:
     https://pygithub.readthedocs.io/en/latest/github_objects/Branch.html
+ - Commits:
+    https://pygithub.readthedocs.io/en/latest/github_objects/Commit.html
+ - Files:
+    https://pygithub.readthedocs.io/en/latest/github_objects/File.html
 """
 import time
 
