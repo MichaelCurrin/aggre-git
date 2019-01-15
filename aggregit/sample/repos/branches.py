@@ -3,6 +3,13 @@ Sample repo branches script.
 
 Explore getting details of a branch object within a repo.
 
+The problem with getting parent's commits and the history behind that is that
+the same commits will start coming up. When there is a merge commit from
+a feature branch and master, you can split into the getting the history for
+each but they will eventually have a common commit. You have to check for this
+and ignore that object and its parents, otherwise you'll print (or count)
+the common history for both tree paths.
+
 PyGithub docs
  - Branches:
     https://pygithub.readthedocs.io/en/latest/github_objects/Branch.html
@@ -13,6 +20,7 @@ PyGithub docs
 """
 import string
 import time
+from textwrap import shorten
 
 from lib.connection import CONN
 
@@ -32,7 +40,8 @@ def display_commit(commit):
     else:
         print("NO AUTHOR")
     print(commit.last_modified)
-    print(commit.commit.message.replace("\n", "\t"))
+    message = shorten(commit.commit.message.replace("\n", "\t"), 80)
+    print(message)
     print(f"{commit.stats.total} | +{commit.stats.additions} | -{commit.stats.deletions})")
     print()
 
@@ -50,7 +59,7 @@ def display_file(file_):
     print()
 
 
-def traverse_commits_detailed(commit):
+def traverse_commits_detailed(commit, seen_commits=None):
     """
     Display details, stats and files for a given commit and all its parents.
 
@@ -61,37 +70,52 @@ def traverse_commits_detailed(commit):
     Then use recursive logic to get all the commits in the chain, starting
     with the commit's parents.
     """
-    display_commit(commit)
+    if not seen_commits:
+        seen_commits = set()
 
-    if commit.files:
-        print([file_.filename for file_ in commit.files])
-        print()
-        display_file(commit.files[0])
+    if commit.sha not in seen_commits:
+        display_commit(commit)
+
+        if commit.files:
+            print([file_.filename for file_ in commit.files])
+            print()
+            display_file(commit.files[0])
+        else:
+            print("No files on commit")
+
+        time.sleep(1)
+
+        # For a merge there could be multiple parents.
+        # When storing objects rather than just printing, consider using
+        # `yield` to avoid doing a return on the first only.
+        for parent in commit.parents:
+            traverse_commits_detailed(parent)
     else:
-        print("No files on commit")
-
-    time.sleep(1)
-
-    # For a merge there could be multiple parents.
-    # When storing objects rather than just printing, consider using
-    # `yield` to avoid doing a return on the first only.
-    for parent in commit.parents:
-        traverse_commits_detailed(parent)
+        print("Skipping seen commit and parents")
 
 
-def traverse_commits_short(commit, depth=1, parent_index=0):
+def traverse_commits_short(commit, depth=1, parent_index=0, seen_commits=None):
     """
     Display summarized data for commits in a chain.
 
     Display attributes recursively for a commit and its parents.
     """
-    depth_display = f"depth {depth:3}"
-    parent_symbol = f"path {string.ascii_uppercase[parent_index]}"
-    elements = (commit.sha, depth_display, parent_symbol, commit.commit.message.replace("\n", "\t"))
-    print(" | ".join(elements))
+    if not seen_commits:
+        seen_commits = set()
 
-    for i, parent in enumerate(commit.parents):
-        traverse_commits_short(parent, depth+1, i+parent_index)
+    if commit.sha not in seen_commits:
+        seen_commits.update([commit.sha])
+        seen_display = f"seen commits {len(seen_commits):3}"
+        depth_display = f"depth {depth:3}"
+        parent_symbol = f"path {string.ascii_uppercase[parent_index]}"
+        message = shorten(commit.commit.message.replace("\n", "\t"), 70)
+        elements = (commit.sha, seen_display, depth_display, parent_symbol, message)
+        print(" | ".join(elements))
+
+        for i, parent in enumerate(commit.parents):
+            traverse_commits_short(parent, depth+1, i+parent_index, seen_commits)
+    else:
+        print("Skipping seen commit and parents")
 
 
 def main():
