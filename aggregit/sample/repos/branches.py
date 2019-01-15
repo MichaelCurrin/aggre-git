@@ -96,7 +96,7 @@ def main():
     repo = CONN.get_repo("MichaelCurrin/aggre-git")
     branches = list(repo.get_branches())
     branch = branches[0]
-    print(branch.name)
+    print(f"Branch: {branch.name}")
 
     head_commit = branch.commit
     traverse_commits_short(head_commit)
