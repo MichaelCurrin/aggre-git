@@ -119,6 +119,13 @@ def traverse_commits_short(commit, depth=1, parent_index=0, seen_commits=None):
 
 
 def main():
+    """
+    Main command-line function to demonstration iterating through commits on
+    a branch. All commits in the branch's history are printed, including ones
+    that come from merging a feature branch into master. There is an escape
+    though in the traversal to avoid printing a commit which has been seen
+    before in the traversal.
+    """
     repo = CONN.get_repo("MichaelCurrin/aggre-git")
     branches = list(repo.get_branches())
     branch = branches[0]
