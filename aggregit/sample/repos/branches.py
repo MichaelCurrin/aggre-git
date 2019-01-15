@@ -31,7 +31,7 @@ def display_commit(commit):
     """
     print("COMMIT")
     print(commit.sha)
-    print(commit.url)
+    print(commit.html_url)
     if commit.author:
         # This was observed in a case where the commit in the Github site
         # has an author who wrote the patch but there is no link to his profile
@@ -132,7 +132,11 @@ def main():
     print(f"Branch: {branch.name}")
 
     head_commit = branch.commit
+
     traverse_commits_short(head_commit)
+
+    #traverse_commits_detailed(head_commit)
+
 
 
 if __name__ == '__main__':
