@@ -93,7 +93,7 @@ def traverse_commits_short(commit):
 
 
 def main():
-    repo = CONN.get_repo("PyGithub/PyGithub")
+    repo = CONN.get_repo("MichaelCurrin/aggre-git")
     branches = list(repo.get_branches())
     branch = branches[0]
     print(branch.name)
