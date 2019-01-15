@@ -17,7 +17,8 @@ ACCESS_TOKEN = ""
 # Global filters #
 ##################
 
-# Lookup activity by these Github usernames.
+# Filter activity to those by Github usernames. Set as None or empty tuple
+# to disable filter.
 USERNAMES = (
     'MichaelCurrin',
 )
