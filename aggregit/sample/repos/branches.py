@@ -31,6 +31,7 @@ def display_commit(commit):
     else:
         print("NO AUTHOR")
     print(commit.last_modified)
+    print(commit.commit.message.replace("\n", "\t"))
     print(f"{commit.stats.total} | +{commit.stats.additions} | -{commit.stats.deletions})")
     print()
 
@@ -48,7 +49,7 @@ def display_file(file_):
     print()
 
 
-def traverse_commits(commit):
+def traverse_commits_detailed(commit):
     """
     Display details, stats and files for a given commit and all its parents.
 
@@ -71,8 +72,24 @@ def traverse_commits(commit):
     time.sleep(1)
 
     # For a merge there could be multiple parents.
+    # When storing objects rather than just printing, consider using
+    # `yield` to avoid doing a return on the first only.
     for parent in commit.parents:
-        traverse_commits(parent)
+        traverse_commits_detailed(parent)
+
+
+def traverse_commits_short(commit):
+    """
+    Display summarized data for commits in a chain.
+
+    Display attributes recursively for a commit and its parents.
+    """
+    print(commit.sha, commit.commit.message.replace("\n", "\t"))
+
+    time.sleep(1)
+
+    for parent in commit.parents:
+        traverse_commits_short(parent)
 
 
 def main():
@@ -82,8 +99,7 @@ def main():
     print(branch.name)
 
     head_commit = branch.commit
-
-    traverse_commits(head_commit)
+    traverse_commits_short(head_commit)
 
 
 if __name__ == '__main__':
