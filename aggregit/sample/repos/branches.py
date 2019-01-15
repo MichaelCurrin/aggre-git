@@ -11,6 +11,7 @@ PyGithub docs
  - Files:
     https://pygithub.readthedocs.io/en/latest/github_objects/File.html
 """
+import string
 import time
 
 from lib.connection import CONN
@@ -78,18 +79,19 @@ def traverse_commits_detailed(commit):
         traverse_commits_detailed(parent)
 
 
-def traverse_commits_short(commit):
+def traverse_commits_short(commit, depth=1, parent_index=0):
     """
     Display summarized data for commits in a chain.
 
     Display attributes recursively for a commit and its parents.
     """
-    print(commit.sha, commit.commit.message.replace("\n", "\t"))
+    depth_display = f"depth {depth:3}"
+    parent_symbol = f"path {string.ascii_uppercase[parent_index]}"
+    elements = (commit.sha, depth_display, parent_symbol, commit.commit.message.replace("\n", "\t"))
+    print(" | ".join(elements))
 
-    time.sleep(1)
-
-    for parent in commit.parents:
-        traverse_commits_short(parent)
+    for i, parent in enumerate(commit.parents):
+        traverse_commits_short(parent, depth+1, i+parent_index)
 
 
 def main():
