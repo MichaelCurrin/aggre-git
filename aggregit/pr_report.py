@@ -84,6 +84,9 @@ def main():
     """
     Main command-line function to fetch PR data then write a CSV.
 
+    Set the usernames value in the config so that the report will either
+    filter to specific usernames or show activity for all.
+
     If using the BY_OWNER setting, it's best to try retrieve the profile as an
     org first, since  getting an org as a user object only gives as access to
     public repos. Fallback to getting a user object if it wasn't actually
