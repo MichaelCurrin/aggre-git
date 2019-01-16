@@ -81,7 +81,7 @@ class Review:
 
 class PullRequest:
     """
-    Model a Git pull request, with just data of interest.
+    Model a Gitub pull request, with just data of interest.
 
     Expects a PyGithub Pull Request object as returned from the API.
         https://pygithub.readthedocs.io/en/latest/github_objects/PullRequest.html
