@@ -2,6 +2,7 @@
 Initliazation file for library module.
 """
 import datetime
+from textwrap import shorten
 from email.utils import mktime_tz, parsedate_tz
 
 import github
@@ -36,3 +37,18 @@ def display(user: github.NamedUser.NamedUser):
         return user.name
     else:
         return f"@{user.login}"
+
+
+def truncate(text, limit):
+    """
+    Format text for easy reading on a single line.
+
+    Newline characters are replaced  and if the text has to be shortened
+    then an ellipsis will be added at the end.
+
+    :param text: Text to format.
+    :param limit: Number of characters to limit to.
+
+    :return: Formatted message.
+    """
+    return shorten(text.replace("\n", "  "), limit)
