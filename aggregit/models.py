@@ -191,3 +191,52 @@ class PullRequest:
         Return a list of review summary data for each of the PR's reviews.
         """
         return [review.summary() for review in self.reviews]
+
+
+class Commit:
+    """
+    Model a Github commit, with just data of interest.
+
+    An author wrote the patch while the committer applied the patch,
+    perhaps with a merge? Note that author maybe None - this was noted
+    in a case where a user was labeled but not clickable in the
+    Github site.
+
+    Expect a PyGithub Commit as returned from the API:
+        https://pygithub.readthedocs.io/en/latest/github_objects/Commit.html
+    """
+
+    def __init__(self, commit: github.GitCommit.GitCommit):
+        """
+        Note using just commit.last_modified gives `None` somehow, so use
+        commit.commit.last_modified instead.
+        """
+        self.sha = commit.sha
+        self.url = commit.html_url
+
+        self.author = commit.author
+        self.committer = commit.committer
+        self.last_modified = lib.parse_datetime(commit.commit.last_modified)
+        self.message = commit.commit.message
+
+        self.files = commit.files
+        self.additions = commit.stats.additions
+        self.deletions = commit.stats.deletions
+
+    @property
+    def short_sha(self):
+        """
+        Return first 7 characters of the SHA value.
+        """
+        return self.sha[:7]
+
+    @property
+    def short_message(self):
+        """
+        Return truncated form of the commit message, for neat printing.
+        """
+        return lib.truncate(self.message, 50)
+
+    def __repr__(self):
+        return f"<Commit sha: '{self.short_sha}', author: '{self.author.login}'" \
+               f" message: '{self.short_message}', ...>"
