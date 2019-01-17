@@ -80,8 +80,8 @@ def main():
     Main command-line function to create a report of Github commit activity.
 
     For the configured repos, get all available branches. Start with
-    master, then develop, then the feature branches (which are already
-    in alphabetical order. Get the stats across the commits by starting
+    master, then develop, then the feature branches (leaving them
+    in alphabetical order). Get the stats across the commits by starting
     with the HEAD commit and get its parents recursively. Skip commits older
     than the min date. Once commits are fetched (each requiring a GET request),
     then filter to just those by the configured users. Filter out commits
