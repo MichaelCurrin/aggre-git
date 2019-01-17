@@ -193,8 +193,8 @@ class Commit:
         Initialize Commit object based on a Github commit object.
 
         Note that using just `commit.last_modified` gives `None` somehow, so we
-        use `commit.commit.last_modified` instead. `commit.stats.last_modified`
-        also works.
+        use `commit.commit.last_modified` instead. Though
+        `commit.stats.last_modified` also works).
         """
         self.sha = commit.sha
         self.url = commit.html_url
