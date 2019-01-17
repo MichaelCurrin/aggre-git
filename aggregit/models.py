@@ -239,5 +239,9 @@ class Commit:
         return lib.truncate(self.message, 50)
 
     def __repr__(self):
-        return f"<Commit sha: '{self.short_sha}', author: '{self.author.login}'" \
+        """
+        Summarize attributes when printing an instance.
+        """
+        login = self.author.login if self.author else "(not set)"
+        return f"<Commit sha: '{self.short_sha}', author: '{login}'" \
                f" message: '{self.short_message}', ...>"
