@@ -99,6 +99,12 @@ def traverse_commits_short(commit, depth=1, parent_index=0, seen_commits=None):
     Display summarized data for commits in a chain.
 
     Display attributes recursively for a commit and its parents.
+
+    Depth is the level of commits where the current commit has depth 1 and
+    the parent is 2 and so on. When going into paths from a merge commit, the
+    depth will drop to 1 again for that path.
+
+    Print how many commits have been seen for interest.
     """
     if not seen_commits:
         seen_commits = set()
@@ -126,17 +132,33 @@ def main():
     though in the traversal to avoid printing a commit which has been seen
     before in the traversal.
     """
-    repo = CONN.get_repo("MichaelCurrin/aggre-git")
-    branches = list(repo.get_branches())
-    branch = branches[0]
-    print(f"Branch: {branch.name}")
+    # A good showcase of a repo with many branches.
+    repo = CONN.get_repo("Python/CPython")
 
-    head_commit = branch.commit
+    fetched_branches = list(repo.get_branches())
+    branch_dict = {x.name: x for x in fetched_branches}
 
-    traverse_commits_short(head_commit)
+    branch_list = []
+    for b in ('master', 'develop'):
+        branch = branch_dict.pop(b, None)
+        if branch:
+            branch_list.append(branch)
 
-    #traverse_commits_detailed(head_commit)
+    remaining = branch_dict.values()
+    branch_list.extend(remaining)
 
+    for branch in branch_list:
+        print(f"Branch: {branch.name}")
+
+        head_commit = branch.commit
+        print(head_commit)
+    print()
+
+    repo = CONN.get_repo('MichaelCurrin/aggre-git')
+    for branch in repo.get_branches():
+        head_commit = branch.commit
+        traverse_commits_short(head_commit)
+        #traverse_commits_detailed(head_commit)
 
 
 if __name__ == '__main__':
