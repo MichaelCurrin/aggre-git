@@ -226,9 +226,9 @@ class Commit:
     @property
     def short_sha(self):
         """
-        Return first 7 characters of the SHA value.
+        Return first 8 characters of the SHA value.
         """
-        return self.sha[:7]
+        return self.sha[:8]
 
     @property
     def short_message(self):
