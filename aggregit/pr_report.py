@@ -14,14 +14,10 @@ Also requires configured usernames, such that only PRs created by these users
 are included. A commit doesn't have to have an author - if blank assume it
 was by the PR author (as it probably was).
 """
-import csv
 from collections import Counter
-
-from github import UnknownObjectException
 
 from etc import config
 import lib
-from lib.connection import CONN
 from models import PullRequest, Review
 
 
@@ -99,37 +95,14 @@ def main():
     Therefore if we encounter an old PR then skip remaining PRs and go the next
     repo.
     """
-    out_data = []
-
-    if config.BY_OWNER:
-        try:
-            user = CONN.get_organization(config.REPO_OWNER)
-            print(f"Fetched org: {config.REPO_OWNER}")
-        except UnknownObjectException:
-            user = CONN.get_user(config.REPO_OWNER)
-            print(f"Fetched user: {config.REPO_OWNER}")
-
-        # This is a paginated list, so we do not get all repos upfront.
-        repos = user.get_repos()
-    else:
-        repos = []
-        for repo_path in config.REPO_PATHS:
-            print(f"Fetching repo: {repo_path}")
-            try:
-                # Get all repos upfront so bad config will cause early failure.
-                repo = CONN.get_repo(repo_path, lazy=False)
-            except UnknownObjectException:
-                raise ValueError(f"Bad repo path: {repo_path}")
-            repos.append(repo)
-    print()
-
     if config.MIN_DATE:
         print(f"PR updates min date: {config.MIN_DATE}")
     else:
         print("No PR updates min date set")
     print()
 
-    for repo in repos:
+    out_data = []
+    for repo in lib.get_repos():
         print(f"REPO: {repo.name}")
 
         for pr in repo.get_pulls(state=config.PR_STATE):
@@ -163,10 +136,7 @@ def main():
         'Comments', 'Merged By', 'Reviewers',
     ) + Review.get_states()
 
-    with open(config.PR_CSV_PATH, 'w') as f_out:
-        writer = csv.DictWriter(f_out, fieldnames=header)
-        writer.writeheader()
-        writer.writerows(out_data)
+    lib.write_csv(config.PR_CSV_PATH, header, out_data)
 
 
 if __name__ == '__main__':
