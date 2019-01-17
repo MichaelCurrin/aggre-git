@@ -63,7 +63,7 @@ def traverse_commits(commit, seen_commits):
 
     out_commit = Commit(commit)
 
-    print(".", end="")
+    print("-", end="")
     yield out_commit
     for parent in commit.parents:
         yield from traverse_commits(parent, seen_commits)
@@ -103,7 +103,21 @@ def main():
 
         seen_commits = set()
 
-        for branch in repo.get_branches():
+        fetched_branches = repo.get_branches()
+        branch_list = []
+
+        for branch in fetched_branches:
+            if not branch_list:
+                branch_list.append(branch)
+            elif branch.name == 'master':
+                branch_list.insert(0, branch)
+            elif branch.name == 'develop':
+                if branch_list[0] == 'master':
+                    branch_list.insert(1, branch)
+            else:
+                branch_list.append(branch)
+
+        for branch in branch_list:
             print(f"BRANCH: {branch.name}")
 
             print("Fetching commits ", end="")
