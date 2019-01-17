@@ -143,8 +143,7 @@ class PullRequest:
         self.additions = pr.additions
         self.deletions = pr.deletions
 
-        # No iteration, needed since in this case the value comes as list and
-        # not a paginated list.
+        # This is a plain list and not a paginated list.
         self.assignees = pr.assignees
 
         self.reviews = [Review(review) for review in pr.get_reviews()
@@ -208,8 +207,10 @@ class Commit:
 
     def __init__(self, commit: github.GitCommit.GitCommit):
         """
-        Note using just commit.last_modified gives `None` somehow, so use
-        commit.commit.last_modified instead.
+        Initialize Commit object based on a Github commit object.
+
+        Note that using just `commit.last_modified` gives `None` somehow, so we
+        use `commit.commit.last_modified` instead.
         """
         self.sha = commit.sha
         self.url = commit.html_url
