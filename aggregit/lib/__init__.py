@@ -1,11 +1,17 @@
 """
 Initliazation file for library module.
 """
+import csv
 import datetime
 from textwrap import shorten
 from email.utils import mktime_tz, parsedate_tz
 
 import github
+from github import UnknownObjectException
+
+
+from .connection import CONN
+from etc import config
 
 
 def parse_datetime(standard_datetime):
@@ -52,3 +58,55 @@ def truncate(text, limit):
     :return: Formatted message.
     """
     return shorten(text.replace("\n", "  "), limit)
+
+
+def get_repos():
+    """
+    Get repos to report on using configured details.
+
+    :return repos: A list of Github Repository objects. If getting all repos
+        for a user, this is a paginated list (requests are not made yet),
+        otherwise if getting repos by repo paths then each objects contains
+        data from a completed request.
+    """
+    if config.BY_OWNER:
+        try:
+            user = CONN.get_organization(config.REPO_OWNER)
+            print(f"Fetched org: {config.REPO_OWNER}")
+        except UnknownObjectException:
+            user = CONN.get_user(config.REPO_OWNER)
+            print(f"Fetched user: {config.REPO_OWNER}")
+
+        # This is a paginated list, so we do not get all repos upfront.
+        repos = user.get_repos()
+    else:
+        repos = []
+        for repo_path in config.REPO_PATHS:
+            print(f"Fetching repo: {repo_path}")
+            try:
+                # Get all repos upfront so bad config will cause early failure.
+                repo = CONN.get_repo(repo_path, lazy=False)
+            except UnknownObjectException:
+                raise ValueError(f"Bad repo path: {repo_path}")
+            repos.append(repo)
+    print()
+
+    return repos
+
+
+def write_csv(path, header, data):
+    """
+    Write rows to a CSV.
+
+    :param str path: Write file to this path, overwriting existing any file.
+    :param tuple header: Column names.
+    :param data: Rows of data to write, where each row is dict that has
+        keys matching the header.
+
+    :return: None
+    """
+    print(f"Writing to {path}")
+    with open(path, 'w') as f_out:
+        writer = csv.DictWriter(f_out, fieldnames=header)
+        writer.writeheader()
+        writer.writerows(data)
