@@ -48,7 +48,7 @@ def traverse_commits(commit, seen_commits):
         returned. This will stop the generator.
     """
     if commit.sha in seen_commits:
-        print("(skipping seen)")
+        print("(skipping seen)", end="")
 
         return None
 
@@ -57,7 +57,7 @@ def traverse_commits(commit, seen_commits):
 
     last_modified = lib.parse_datetime(commit.commit.last_modified)
     if config.MIN_DATE and last_modified < config.MIN_DATE:
-        print("(skipping old)")
+        print("(skipping old)", end="")
 
         return None
 
@@ -65,7 +65,13 @@ def traverse_commits(commit, seen_commits):
 
     print("-", end="")
     yield out_commit
+
+    if len(commit.parents) >= 2:
+        print("(merge)", end="")
+
     for parent in commit.parents:
+        if len(commit.parents) >= 2:
+            print("\n<", end="")
         yield from traverse_commits(parent, seen_commits)
 
 
@@ -120,7 +126,7 @@ def main():
         for branch in branch_list:
             print(f"BRANCH: {branch.name}")
 
-            print("Fetching commits ", end="")
+            print("Fetching commits")
             commits = list(traverse_commits(branch.commit, seen_commits))
             print(f"\nFound: {len(commits)}")
 
