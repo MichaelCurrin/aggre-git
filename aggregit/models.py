@@ -12,23 +12,6 @@ import github
 import lib
 
 
-class Commit:
-    """
-    Model a Git commit, with just data of interest.
-
-    Expects a PyGithub Commit object as returned from the API.
-        https://pygithub.readthedocs.io/en/latest/github_objects/Commit.html
-    """
-
-    def __init__(self, commit: github.GitCommit.GitCommit):
-        self.sha = commit.sha
-        # Store as datetime.date object.
-        self.last_modified = lib.parse_datetime(commit.stats.last_modified).date()
-        self.additions = commit.stats.additions
-        self.deletions = commit.stats.deletions
-        self.total = commit.stats.total
-
-
 class Review:
     """
     Model a Git pull request review, with just data of interest.
