@@ -154,10 +154,14 @@ def main():
         print(head_commit)
     print()
 
+    # Showcase iterating through commits on a repo with few branches.
+
     repo = CONN.get_repo('MichaelCurrin/aggre-git')
     for branch in repo.get_branches():
         head_commit = branch.commit
         traverse_commits_short(head_commit)
+
+        # Use this instead for more verbose output including the files.
         #traverse_commits_detailed(head_commit)
 
 
