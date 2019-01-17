@@ -132,7 +132,10 @@ def main():
     though in the traversal to avoid printing a commit which has been seen
     before in the traversal.
     """
+    #
     # A good showcase of a repo with many branches.
+    #
+
     repo = CONN.get_repo("Python/CPython")
 
     fetched_branches = list(repo.get_branches())
@@ -154,7 +157,13 @@ def main():
         print(head_commit)
     print()
 
+    #
     # Showcase iterating through commits on a repo with few branches.
+    #
+
+    # Note that seen commits are only keep track of here within a branch and
+    # then it resets. If you want to avoid counting the same activity across
+    # branches then this must be handled differently.
 
     repo = CONN.get_repo('MichaelCurrin/aggre-git')
     for branch in repo.get_branches():
