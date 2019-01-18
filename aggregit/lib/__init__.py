@@ -36,13 +36,16 @@ def display(user: github.NamedUser.NamedUser):
     """
     Return an easy to read reference for a Github user account.
 
-    :return: Return user's name if set, otherwise user's login
-        including an '@' prefix to show that it is a username.
+    :return: Return a label if the user object is None. Otherwise return
+        the user's name is set otherwise the username including an "@" prefix.
     """
-    if user.name:
-        return user.name
-    else:
-        return f"@{user.login}"
+    if user:
+        if user.name:
+            return user.name
+        else:
+            return f"@{user.login}"
+
+    return "<NOT USER>"
 
 
 def truncate(text, limit):
