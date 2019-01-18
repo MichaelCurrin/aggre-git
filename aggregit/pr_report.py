@@ -49,6 +49,8 @@ def to_row(repo, author, pr):
         'Author': lib.display(author),
         'PR ID': f"#{pr_data.number}",
         'PR Title': pr_data.title,
+        'PR From Branch': pr_data.from_branch_name,
+        'PR To Branch': pr_data.to_branch_name,
         'PR URL': pr_data.url,
 
         'Created At': pr_data.created_at,
@@ -148,7 +150,8 @@ def main():
 
     header = (
         'Repo Owner', 'Repo Name', 'Repo URL',
-        'PR ID', 'PR Title', 'Author', 'PR URL',
+        'PR ID', 'PR Title', 'PR From Branch', 'PR To Branch',
+        'Author', 'PR URL',
         'Status', 'Status Changed At', 'Updated At', 'Created At',
         'Commits', 'Changed Files', 'Added Lines', 'Deleted Lines',
         'Changed Lines',

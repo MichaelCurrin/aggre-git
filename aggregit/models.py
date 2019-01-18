@@ -111,6 +111,8 @@ class PullRequest:
         """
         self.number = pr.number
         self.title = pr.title
+        self.from_branch_name = pr.head.ref
+        self.to_branch_name = pr.base.ref
         self.author = pr.user
         self.url = pr.html_url
 
