@@ -52,7 +52,7 @@ def traverse_commits(commit, seen_commits):
 
         return None
 
-    sha = commit.sha[:7]
+    sha = commit.sha[:8]
     seen_commits.update([sha])
 
     last_modified = lib.parse_datetime(commit.commit.last_modified)
