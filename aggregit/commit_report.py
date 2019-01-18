@@ -4,9 +4,6 @@ Commit report script.
 Create a report of Github commits across configured repos and available
 branches. The report is bound by the configured usernames, repos and
 minimum date. The result is written out to a CSV.
-
-PyGithub doc on Branches:
-    https://pygithub.readthedocs.io/en/latest/github_objects/Branch.html
 """
 from etc import config
 import lib
@@ -39,12 +36,15 @@ def traverse_commits(commit, seen_commits):
         for comparing commits within a branch as collisions are unlikely.
 
     :return: Generator which yields details for the current commit and then its
-        parent commits, within the configured date range. If the commit
-        has multiple parents such as for a merge commit, then both paths
-        will be followed, one after the other.
+        parent commits, within the configured date range. The commit objects are
+        returned as Commit instances, formatted using the PyGithub GitCommit
+        object given as an argument.
+
+        If the commit has multiple parents such as for a merge commit,
+        then both paths will be followed, one after the other.
 
         When a commit has been seen, it is outside of the date range or it
-        has no parent commits (it is the inital commit), then None will be
+        has no parent commits (it is the initial commit), then None will be
         returned. This will stop the generator.
     """
     if commit.sha in seen_commits:
@@ -61,10 +61,8 @@ def traverse_commits(commit, seen_commits):
 
         return None
 
-    out_commit = Commit(commit)
-
     print("-", end="")
-    yield out_commit
+    yield Commit(commit)
 
     if len(commit.parents) >= 2:
         print("(merge)", end="")
@@ -75,9 +73,40 @@ def traverse_commits(commit, seen_commits):
         yield from traverse_commits(parent, seen_commits)
 
 
+def to_row(repo, branch, commit_data):
+    """
+    Format input data around a single commit and return as a row for a CSV.
+
+    :param repo: The repo the commit is in.
+    :param branch: The branch the commit is in.
+    :param commit: Instance of Commit, containing data for a single commit.
+
+    :return dict out_row: Formatted dict of repo, branch and commit data for
+        a single commit.
+    """
+    out_row = {
+        'Repo Owner': lib.display(repo.owner),
+        'Repo Name': repo.name,
+        'Branch': branch.name,
+        'Commit SHA': commit_data.short_sha,
+        'Commit Modified': commit_data.last_modified.date(),
+        'Commit Author': lib.display(commit_data.author),
+        'Changed Files': commit_data.changed_files,
+        'Added Lines': commit_data.additions,
+        'Deleted Lines': commit_data.deletions,
+        'Changed Lines': commit_data.additions + commit_data.deletions,
+    }
+
+    return out_row
+
+
 def main():
     """
     Main command-line function to create a report of Github commit activity.
+
+    Fetch and write commits out as a CSV report, where each row includes the
+    details of a single commit including stats, metadata and the repo and branch
+    labels.
 
     For the configured repos, get all available branches. Start with
     master, then develop, then the feature branches (leaving them
@@ -87,16 +116,13 @@ def main():
     then filter to just those by the configured users. Filter out commits
     which have no author set.
 
-    Keep track of the SHA commit values seen when iterating through a branch
+    We keep track of the SHA commit values seen when iterating through a branch
     (since a merge commit will have two histories which should have a common
     commit which they diverged from). Additionally, we keep track of SHA commit
     values across branches in a repo, so that after we have traversed master
     all the way back to its initial commit (if the date range allows), then
     we only have to look at commits which are previously traversed branches
     when going through develop (if it exists) and any feature branches.
-
-    Write out the commits out as a CSV report, where each row includes the
-    commit details of a commit along with its repo and branch.
     """
     if config.MIN_DATE:
         print(f"Commit min date: {config.MIN_DATE}")
@@ -104,6 +130,7 @@ def main():
         print("No commit min date set")
     print()
 
+    out_data = []
     for repo in lib.get_repos():
         print(f"REPO: {repo.name}")
 
@@ -135,8 +162,31 @@ def main():
                            x.author and x.author.login in config.USERNAMES]
                 print(f"After filtering: {len(commits)}")
 
+            for commit in commits:
+                try:
+                    out_row = to_row(repo, branch, commit)
+                except Exception as e:
+                    # Report error without aborting.
+                    print(f"Could not parse Commit."
+                          f" {type(e).__name__}: {str(e)}")
+                else:
+                    out_data.append(out_row)
             print()
         print()
+
+    header = (
+        'Repo Owner',
+        'Repo Name',
+        'Branch',
+        'Commit SHA',
+        'Commit Modified',
+        'Commit Author',
+        'Changed Files',
+        'Added Lines',
+        'Deleted Lines',
+        'Changed Lines',
+    )
+    lib.write_csv(config.COMMIT_CSV_PATH, header, out_data)
 
 
 if __name__ == '__main__':
