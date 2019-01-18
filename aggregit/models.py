@@ -6,6 +6,13 @@ store the data of interest in this project.
 
 This only is needed only printing, so wait until producing report rather
 and store the commit or pr etc. itself rather. In nested structure.
+
+Resources for objects which are not modeled use but are still used PyGithub
+objects.
+  - Branches:
+      https://pygithub.readthedocs.io/en/latest/github_objects/Branch.html
+  - Repos:
+      https://pygithub.readthedocs.io/en/latest/github_objects/Repository.html
 """
 import github
 
