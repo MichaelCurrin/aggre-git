@@ -131,7 +131,7 @@ def main():
                 break
 
             author = pr.user
-            if author.login in config.USERNAMES:
+            if not config.USERNAMES or author.login in config.USERNAMES:
                 print(f"PR #{pr.number} - author: @{author.login}")
                 try:
                     out_row = to_row(repo, author, pr)
