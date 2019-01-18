@@ -222,6 +222,10 @@ class Commit:
         """
         return lib.truncate(self.message, 50)
 
+    @property
+    def changed_files(self):
+        return len(self.files)
+
     def __repr__(self):
         """
         Summarize attributes when printing an instance.
