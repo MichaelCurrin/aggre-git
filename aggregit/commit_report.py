@@ -144,9 +144,9 @@ def main():
                 branch_list.append(branch)
             elif branch.name == 'master':
                 branch_list.insert(0, branch)
-            elif branch.name == 'develop':
-                if branch_list[0] == 'master':
-                    branch_list.insert(1, branch)
+            elif branch.name in ('develop', 'development'):
+                dev_insert_index = 1 if branch_list[0] == 'master' else 0
+                branch_list.insert(dev_insert_index, branch)
             else:
                 branch_list.append(branch)
 
