@@ -132,7 +132,7 @@ def main():
 
     out_data = []
     for repo in lib.get_repos():
-        print(f"REPO: {repo.name}")
+        print(f"REPO: {repo.name}\n")
 
         seen_commits = set()
 
@@ -172,7 +172,6 @@ def main():
                 else:
                     out_data.append(out_row)
             print()
-        print()
 
     header = (
         'Repo Owner',
