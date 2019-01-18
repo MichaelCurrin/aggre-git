@@ -46,7 +46,7 @@ def test():
 SRC_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUTPUT_PATH = os.path.join(SRC_DIR, 'var')
 PR_CSV_PATH = os.path.join(OUTPUT_PATH, 'pr_report.csv')
-
+COMMIT_CSV_PATH = os.path.join(OUTPUT_PATH, 'commit_report.csv')
 
 # Import, parse and validate user's local config in this config file.
 try:
