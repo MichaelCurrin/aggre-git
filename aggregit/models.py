@@ -177,7 +177,7 @@ class PullRequest:
 
     def review_summary(self):
         """
-        Return a list of review summary data for each of the PR's reviews.
+        Return a list of summary data for each of the PR's reviews, if any.
         """
         return [review.summary() for review in self.reviews]
 
