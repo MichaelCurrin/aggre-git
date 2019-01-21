@@ -37,7 +37,7 @@ from etc import config
 from lib.connection import CONN
 
 
-# Look for Jira ticket (i,e, issue) URL, if any, and take ticket ID.
+# Look for Jira ticket (i.e. issue) URL, if any, and take ticket ID.
 # There is one group and the whole pattern is not repeated, so there can be
 # at most one group in the results.
 # Expect jira.com or jira.my_org.com as domains.
