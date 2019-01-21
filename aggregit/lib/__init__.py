@@ -14,6 +14,9 @@ from .connection import CONN
 from etc import config
 
 
+# Match a URL a like "https://jira.myorg.com/browse/ABC-123", where domain can
+# either be jira.com or include your organization's name. Extract just the
+# ticket portion.
 JIRA_PATTERN = re.compile(r"https:\/\/jira.+/browse/([A-Z]+-\d+)")
 
 
@@ -120,12 +123,11 @@ def write_csv(path, header, data):
 
 def extract_jira_ticket(text):
     """
-    Extract Jira ticket ID from a Jira URL in the text, or None if not found.
+    Extract Jira ticket ID from a Jira URL in the text, if on can be found.
 
-    :param text: Text to search, which contain a URL in the pattern
-        of "https://jira<.DOMAIN>.com/browse/ABC-123"
+    :param text: Text to search, such as a PR description.
 
-    :return: First Jira ticket ID if found e.g. "ABC-123". Otherwise None
+    :return: The first Jira ticket ID if found e.g. "ABC-123". Or, None
         if no match.
     """
     match = JIRA_PATTERN.search(text)
