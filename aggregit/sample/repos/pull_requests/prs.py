@@ -104,9 +104,8 @@ def main():
         print()
 
         for pr in repo.get_pulls():
-            if pr.number == 595:
-                report(pr)
-                print("---")
+            report(pr)
+            print("---")
         print()
 
 
