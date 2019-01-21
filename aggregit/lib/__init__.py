@@ -3,15 +3,18 @@ Initliazation file for library module.
 """
 import csv
 import datetime
+import re
 from textwrap import shorten
 from email.utils import mktime_tz, parsedate_tz
 
 import github
 from github import UnknownObjectException
 
-
 from .connection import CONN
 from etc import config
+
+
+JIRA_PATTERN = re.compile(r"https:\/\/jira.+/browse/([A-Z]+-\d+)")
 
 
 def parse_datetime(standard_datetime):
@@ -113,3 +116,18 @@ def write_csv(path, header, data):
         writer = csv.DictWriter(f_out, fieldnames=header)
         writer.writeheader()
         writer.writerows(data)
+
+
+def extract_jira_ticket(text):
+    """
+    Extract Jira ticket ID from a Jira URL in the text, or None if not found.
+
+    :param text: Text to search, which contain a URL in the pattern
+        of "https://jira<.DOMAIN>.com/browse/ABC-123"
+
+    :return: First Jira ticket ID if found e.g. "ABC-123". Otherwise None
+        if no match.
+    """
+    match = JIRA_PATTERN.search(text)
+
+    return match.group(1) if match else None

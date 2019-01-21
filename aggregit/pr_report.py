@@ -50,6 +50,7 @@ def to_row(repo, author, pr):
         'PR From Branch': pr_data.from_branch_name,
         'PR To Branch': pr_data.to_branch_name,
         'PR URL': pr_data.url,
+        'Jira Ticket': pr_data.jira_ticket,
 
         'Created At': pr_data.created_at,
         'Updated At': pr_data.updated_at,
@@ -129,7 +130,7 @@ def main():
     header = (
         'Repo Owner', 'Repo Name', 'Repo URL',
         'PR ID', 'PR Title', 'PR From Branch', 'PR To Branch',
-        'Author', 'PR URL',
+        'Author', 'PR URL', 'Jira Ticket',
         'Status', 'Status Changed At', 'Updated At', 'Created At',
         'Commits', 'Changed Files', 'Added Lines', 'Deleted Lines',
         'Changed Lines',

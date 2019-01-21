@@ -139,6 +139,8 @@ class PullRequest:
         self.reviews = [Review(review) for review in pr.get_reviews()
                         if review.state in Review.STATES]
 
+        self.jira_ticket = lib.extract_jira_ticket(pr.body)
+
     def status_changed_at(self):
         """
         If merged or closed, get the date that the change happened on.
