@@ -31,17 +31,10 @@ Pull Request notes:
     reference a portion of the unified diff).
 """
 import pprint
-import re
 
+import lib
 from etc import config
 from lib.connection import CONN
-
-
-# Look for Jira ticket (i.e. issue) URL, if any, and take ticket ID.
-# There is one group and the whole pattern is not repeated, so there can be
-# at most one group in the results.
-# Expect jira.com or jira.my_org.com as domains.
-JIRA_PATTERN = re.compile(r"https:\/\/jira.+/browse/([A-Z]+-\d+)")
 
 
 def report(pr):
@@ -56,8 +49,7 @@ def report(pr):
 
     print('data')
     body = pr.body.replace("\r\n", "\n")
-    match = JIRA_PATTERN.search(body)
-    jira_ticket = match.group(1) if match else None
+    jira_ticket = lib.extract_jira_ticket(body)
 
     data = {
         'state': pr.state,
