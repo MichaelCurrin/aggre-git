@@ -31,9 +31,17 @@ Pull Request notes:
     reference a portion of the unified diff).
 """
 import pprint
+import re
 
 from etc import config
 from lib.connection import CONN
+
+
+# Look for Jira ticket (i,e, issue) URL, if any, and take ticket ID.
+# There is one group and the whole pattern is not repeated, so there can be
+# at most one group in the results.
+# Expect jira.com or jira.my_org.com as domains.
+JIRA_PATTERN = re.compile(r"https:\/\/jira.+/browse/([A-Z]+-\d+)")
 
 
 def report(pr):
@@ -47,9 +55,15 @@ def report(pr):
     print()
 
     print('data')
+    body = pr.body.replace("\r\n", "\n")
+    match = JIRA_PATTERN.search(body)
+    jira_ticket = match.group(1) if match else None
+
     data = {
         'state': pr.state,
         'title': pr.title,
+        'description': body,
+        'jira_ticket': jira_ticket,
         'additions': pr.additions,
         'deletions': pr.deletions,
         'created_at': str(pr.created_at.date()),
@@ -81,16 +95,19 @@ def report(pr):
         pprint.pprint(usernames)
         pprint.pprint(teamnames)
 
-    print('------')
-
 
 def main():
     repos = [CONN.get_repo(repo_name) for repo_name in config.REPO_PATHS]
 
     for repo in repos:
+        print(f"### REPO: {repo.name} ###")
+        print()
+
         for pr in repo.get_pulls():
-            report(pr)
-        print('======')
+            if pr.number == 595:
+                report(pr)
+                print("---")
+        print()
 
 
 if __name__ == '__main__':
