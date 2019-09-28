@@ -10,7 +10,7 @@ import os
 
 def parse_cutoff_date(value):
     """
-    Convert a cutoff date to a datetime.
+    Convert a cutoff date from various formats to a datetime object.
 
     This is for easily comparing a manually value against a datetime value in
     a Github object.
