@@ -12,9 +12,6 @@ def parse_cutoff_date(value):
     """
     Convert a cutoff date from various formats to a datetime object.
 
-    This is for easily comparing a manually value against a datetime value in
-    a Github object.
-
     :param value: Cutoff date to convert. One of:
         - Date in 'YYYY-MM-DD' format e.g. '2019-01-01'
         - Integer as number of days ago e.g. 1.
