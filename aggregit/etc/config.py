@@ -17,13 +17,13 @@ def parse_cutoff_date(value):
         - Integer as number of days ago e.g. 1.
         - Or anything else. Return None for no limit.
 
-    :return datetime.datetime cutoff: None, or parsed cutoff date as a datetime
-        object with time set to midnight.
+    :return datetime.datetime cutoff: Parsed cutoff date as a datetime
+        object with time set to midnight, or None if input value was None.
     """
     if isinstance(value, str):
         cutoff = datetime.datetime.strptime(value, '%Y-%m-%d')
     elif isinstance(value, int):
-        date = datetime.date.today() - datetime.timedelta(days=value)
+        date = datetime.date.today() - datetime.timedelta(days=value) + 1
         cutoff = datetime.datetime(date.year, date.month, date.day)
     else:
         cutoff = None
