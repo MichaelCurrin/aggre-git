@@ -23,7 +23,7 @@ def parse_cutoff_date(value):
     if isinstance(value, str):
         cutoff = datetime.datetime.strptime(value, '%Y-%m-%d')
     elif isinstance(value, int):
-        date = datetime.date.today() - datetime.timedelta(days=value) + 1
+        date = datetime.date.today() - datetime.timedelta(days=value) + datetime.timedelta(days=1)
         cutoff = datetime.datetime(date.year, date.month, date.day)
     else:
         cutoff = None
