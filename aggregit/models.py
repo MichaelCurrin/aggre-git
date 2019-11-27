@@ -77,8 +77,8 @@ class PullRequest:
         https://pygithub.readthedocs.io/en/latest/github_objects/PullRequest.html
 
     The ID attribute on the source PR object is a hash, which we do not need.
-    Therefore use the number. Note that a PR is also an Issue, so when a PR
-    is created on Github its number will follow the next open Issue number
+    Therefore use the number. Note that a PR is also an Issue, so when a PR is
+    created on Github its number will follow the next open Issue number
     increment.
 
     Github records merged as a boolean and it limits 'state' to only be 'open'
@@ -188,10 +188,9 @@ class Commit:
     """
     Model a Github commit, with just data of interest.
 
-    An author wrote the patch while the committer applied the patch,
-    perhaps with a merge? Note that author maybe None - this was noted
-    in a case where a user was labeled but not clickable in the
-    Github site.
+    An author wrote the patch while the committer applied the patch, perhaps
+    with a merge? Note that author maybe None - this was noted in a case where a
+    user was labeled but not clickable in the Github site.
 
     Expect a PyGithub Commit as returned from the API:
         https://pygithub.readthedocs.io/en/latest/github_objects/Commit.html
@@ -202,8 +201,8 @@ class Commit:
         Initialize Commit object based on a Github commit object.
 
         Note that using just `commit.last_modified` gives `None` somehow, so we
-        use `commit.commit.last_modified` instead. Though
-        `commit.stats.last_modified` also works).
+        use `commit.commit.last_modified` instead. Though,
+        `commit.stats.last_modified` also works.
         """
         self.sha = commit.sha
         self.url = commit.html_url
