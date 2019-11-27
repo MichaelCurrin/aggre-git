@@ -1,0 +1,8 @@
+{
+    "terminal.integrated.cwd": "aggregit",
+    "code-runner.cwd": "aggregit",
+
+    "python.pythonPath": "venv/bin/python",
+
+    "editor.rulers": [80],
+}
