@@ -77,8 +77,8 @@ class PullRequest:
         https://pygithub.readthedocs.io/en/latest/github_objects/PullRequest.html
 
     The ID attribute on the source PR object is a hash, which we do not need.
-    Therefore use the number. Note that a PR is also an Issue, so when a PR
-    is created on Github its number will follow the next open Issue number
+    Therefore use the number. Note that a PR is also an Issue, so when a PR is
+    created on Github its number will follow the next open Issue number
     increment.
 
     Github records merged as a boolean and it limits 'state' to only be 'open'
@@ -90,6 +90,11 @@ class PullRequest:
     All values which are from `int` columns are across users, so bear this in
     mind when interpreting the values. For example, multiple users may
     contribute commits to a PR and the commit count is the sum of all.
+
+    The .get_commits call uses pagination and returns only one commit by default
+    unless you slice it. Note the API returns 250 commits on a page.
+    See https://developer.github.com/v3/pulls/#list-commits-on-a-pull-request
+    and the github.PaginatedList.PaginatedList class.
     """
     STATUS_MERGED = "Merged"
     STATUS_CLOSED = "Closed"
@@ -114,7 +119,7 @@ class PullRequest:
             self.merged_at = None
             self.merged_by = None
 
-        self.closed = (pr.state == 'closed')
+        self.closed = pr.state == 'closed'
         self.closed_at = pr.closed_at.date() if self.closed else None
 
         if self.merged:
@@ -136,10 +141,17 @@ class PullRequest:
         # This is a plain list and not a paginated list.
         self.assignees = pr.assignees
 
+        # Note this assumes at least 1 commit in branch and could give an error
+        # otherwise.
+        self.first_commit = Commit(pr.get_commits()[0])
+        # Negative indexing does not work here so rather use .reversed method.
+        self.latest_commit = Commit(pr.get_commits().reversed[0])
+
         self.reviews = [Review(review) for review in pr.get_reviews()
                         if review.state in Review.STATES]
 
-        self.jira_ticket = lib.extract_jira_ticket(pr.body)
+        self.jira_ticket = lib.extract_jira_ticket(pr.body) or \
+            lib.extract_jira_ticket(pr.title)
 
     def status_changed_at(self):
         """
@@ -188,10 +200,9 @@ class Commit:
     """
     Model a Github commit, with just data of interest.
 
-    An author wrote the patch while the committer applied the patch,
-    perhaps with a merge? Note that author maybe None - this was noted
-    in a case where a user was labeled but not clickable in the
-    Github site.
+    An author wrote the patch while the committer applied the patch, perhaps
+    with a merge? Note that author maybe None - this was noted in a case where a
+    user was labeled but not clickable in the Github site.
 
     Expect a PyGithub Commit as returned from the API:
         https://pygithub.readthedocs.io/en/latest/github_objects/Commit.html
@@ -202,12 +213,13 @@ class Commit:
         Initialize Commit object based on a Github commit object.
 
         Note that using just `commit.last_modified` gives `None` somehow, so we
-        use `commit.commit.last_modified` instead. Though
-        `commit.stats.last_modified` also works).
+        use `commit.commit.last_modified` instead. Though,
+        `commit.stats.last_modified` also works.
         """
         self.sha = commit.sha
         self.url = commit.html_url
 
+        # Just a str.
         self.author = commit.author
         self.committer = commit.committer
         self.last_modified = lib.parse_datetime(commit.commit.last_modified)

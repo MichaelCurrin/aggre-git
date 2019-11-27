@@ -14,10 +14,11 @@ from .connection import CONN
 from etc import config
 
 
-# Match a URL a like "https://jira.myorg.com/browse/ABC-123", where domain can
-# either be jira.com or include your organization's name. Extract just the
-# ticket portion.
-JIRA_PATTERN = re.compile(r"https:\/\/jira.+/browse/([A-Z]+-\d+)")
+# Match a ticket number like "ABC-123".
+JIRA_TICKET_PATTERN = re.compile(r"[A-Z]+-\d+")
+# Match a URL like "https://jira.myorg.com/browse/ABC-123", where domain could
+# optionally include organization's name. Extract just the ticket portion.
+JIRA_URL_PATTERN = re.compile(r"https:\/\/jira.+/browse/([A-Z]+-\d+)")
 
 
 def parse_datetime(standard_datetime):
@@ -42,8 +43,7 @@ def display(user: github.NamedUser.NamedUser):
     """
     Return an easy to read reference for a Github user account.
 
-    :return: Return a label if the user object is None. Otherwise return
-        the user's name is set otherwise the username including an "@" prefix.
+    :return: User's name if available otherwise handle.
     """
     if user:
         if user.name:
@@ -116,20 +116,55 @@ def write_csv(path, header, data):
     """
     print(f"Writing to {path}")
     with open(path, 'w') as f_out:
-        writer = csv.DictWriter(f_out, fieldnames=header)
+        writer = csv.DictWriter(f_out, fieldnames=header,
+                                quoting=csv.QUOTE_NONNUMERIC)
         writer.writeheader()
         writer.writerows(data)
 
 
 def extract_jira_ticket(text):
     """
-    Extract Jira ticket ID from a Jira URL in the text, if on can be found.
+    Extract Jira ticket ID if one can be found.
 
-    :param text: Text to search, such as a PR description.
+    :param text: Text to search, such as a PR description. Expect it to contain
+        a Jira URL otherwise fallback to checking for a plain ticket number.
 
     :return: The first Jira ticket ID if found e.g. "ABC-123". Or, None
         if no match.
-    """
-    match = JIRA_PATTERN.search(text)
 
-    return match.group(1) if match else None
+    >>> extract_jira_ticket("https://jira.com/browse/ABC-123")
+    'ABC-123'
+
+    >>> extract_jira_ticket("https://jira.myorg.com/browse/DEF-12")
+    'DEF-12'
+
+    >>> extract_jira_ticket("XYZ-4001")
+    'XYZ-4001'
+
+    >>> extract_jira_ticket("See ticket XYZ-4001, kind regards.")
+    'XYZ-4001'
+
+    >>> extract_jira_ticket("abc")
+
+    >>> extract_jira_ticket("123-ABC")
+
+    >>> extract_jira_ticket("https://jira.com/browse/abc-123")
+
+    """
+    match = JIRA_URL_PATTERN.search(text)
+
+    if match:
+        return match.group(1)
+
+    match = JIRA_TICKET_PATTERN.search(text)
+
+    if match:
+        return match.group()
+
+    return None
+
+
+if __name__ == '__main__':
+    # Test with python -m lib.__init__
+    import doctest
+    doctest.testmod()

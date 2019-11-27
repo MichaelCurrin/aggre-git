@@ -1,40 +1,25 @@
 # Installation Instructions
 
+## Project Requirements
 
-## Setup system environment
+You need the following to run this project:
 
-Note that **Python 3.6** or higher is required to run this project.
-
-- For Linux
-   ```bash
-   $ sudo apt-get install python3
-   ```
-- For Mac
-   ```bash
-   $ brew install python@3
-   ```
+- Github account
+- Github API token with access to repos
+- Internet connection
+- Python 3.6+
 
 
-## Setup project environment
+## Install project dependencies
 
-1. Clone the repo.
-   ```bash
-   $ git clone git@github.com:MichaelCurrin/aggre-git.git
-   $ cd aggre-git
-   ```
-2. Create a virtual environment named `venv`. Make sure it is activated whenever installing project dependencies or running the project application.
-   ```bash
-   $ python3 -m venv venv
-   $ source venv/bin/activate
-   ```
-3. Install Python packages.
-   ```bash
-   $ pip install --upgrade pip
-   $ pip install -r requirements.txt
-   ```
+It is usually best-practice in Python projects to install into a sandboxed _virtual environment_, which is set to a specific Python version and contains on the packages you install into it so that your Python projects do not get affected.
+
+Follow this guide to [Setup a Python 3 Virtual Environment](https://gist.github.com/MichaelCurrin/3a4d14ba1763b4d6a1884f56a01412b7). 
+
+You can then continue to the [Usage](/docs/usage.md) doc.
+
 
 ## Configure the project
-
 
 ### Create local config file
 

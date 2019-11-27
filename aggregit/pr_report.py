@@ -40,9 +40,9 @@ def to_row(repo, author, pr):
     pr_data = PullRequest(pr)
 
     out_row = {
-        'Repo URL': repo.html_url,
         'Repo Owner': lib.display(repo.owner),
         'Repo Name': repo.name,
+        'Repo URL': repo.html_url,
 
         'Author': lib.display(author),
         'PR ID': f"#{pr_data.number}",
@@ -52,8 +52,13 @@ def to_row(repo, author, pr):
         'PR URL': pr_data.url,
         'Jira Ticket': pr_data.jira_ticket,
 
-        'Created At': pr_data.created_at,
-        'Updated At': pr_data.updated_at,
+        'PR Updated At': pr_data.updated_at,
+        'PR Created At': pr_data.created_at,
+
+        'Latest Commit At': pr_data.latest_commit.last_modified.date(),
+        'Latest Commit Author': pr_data.latest_commit.author.login,
+        'First Commit At': pr_data.first_commit.last_modified.date(),
+        'First Commit Author': pr_data.first_commit.author.login,
 
         'Status': pr_data.status,
 
@@ -131,7 +136,10 @@ def main():
         'Repo Owner', 'Repo Name', 'Repo URL',
         'PR ID', 'PR Title', 'PR From Branch', 'PR To Branch',
         'Author', 'PR URL', 'Jira Ticket',
-        'Status', 'Status Changed At', 'Updated At', 'Created At',
+        'Status', 'Status Changed At',
+        'PR Updated At', 'PR Created At',
+        'Latest Commit At', 'First Commit At',
+        'Latest Commit Author', 'First Commit Author',
         'Commits', 'Changed Files', 'Added Lines', 'Deleted Lines',
         'Changed Lines',
         'Comments', 'Merged By', 'Reviewers',

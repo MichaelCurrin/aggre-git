@@ -10,23 +10,20 @@ import os
 
 def parse_cutoff_date(value):
     """
-    Convert a cutoff date to a datetime.
-
-    This is for easily comparing a manually value against a datetime value in
-    a Github object.
+    Convert a cutoff date from various formats to a datetime object.
 
     :param value: Cutoff date to convert. One of:
         - Date in 'YYYY-MM-DD' format e.g. '2019-01-01'
         - Integer as number of days ago e.g. 1.
         - Or anything else. Return None for no limit.
 
-    :return datetime.datetime cutoff: None, or parsed cutoff date as a datetime
-        object with time set to midnight.
+    :return datetime.datetime cutoff: Parsed cutoff date as a datetime
+        object with time set to midnight, or None if input value was None.
     """
     if isinstance(value, str):
         cutoff = datetime.datetime.strptime(value, '%Y-%m-%d')
     elif isinstance(value, int):
-        date = datetime.date.today() - datetime.timedelta(days=value)
+        date = datetime.date.today() - datetime.timedelta(days=value) + datetime.timedelta(days=1)
         cutoff = datetime.datetime(date.year, date.month, date.day)
     else:
         cutoff = None
