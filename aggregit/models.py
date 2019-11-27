@@ -218,6 +218,7 @@ class Commit:
         self.sha = commit.sha
         self.url = commit.html_url
 
+        # Just a str.
         self.author = commit.author
         self.committer = commit.committer
         self.last_modified = lib.parse_datetime(commit.commit.last_modified)
