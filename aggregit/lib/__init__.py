@@ -115,7 +115,8 @@ def write_csv(path, header, data):
     """
     print(f"Writing to {path}")
     with open(path, 'w') as f_out:
-        writer = csv.DictWriter(f_out, fieldnames=header)
+        writer = csv.DictWriter(f_out, fieldnames=header,
+                                quoting=csv.QUOTE_NONNUMERIC)
         writer.writeheader()
         writer.writerows(data)
 
