@@ -52,11 +52,11 @@ def to_row(repo, author, pr):
         'PR URL': pr_data.url,
         'Jira Ticket': pr_data.jira_ticket,
 
-        'PR Created At': pr_data.created_at,
         'PR Updated At': pr_data.updated_at,
+        'PR Created At': pr_data.created_at,
 
-        'First Commit At': pr_data.first_commit.last_modified.date(),
         'Latest Commit At': pr_data.latest_commit.last_modified.date(),
+        'First Commit At': pr_data.first_commit.last_modified.date(),
 
         'Status': pr_data.status,
 
