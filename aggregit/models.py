@@ -150,7 +150,8 @@ class PullRequest:
         self.reviews = [Review(review) for review in pr.get_reviews()
                         if review.state in Review.STATES]
 
-        self.jira_ticket = lib.extract_jira_ticket(pr.body)
+        self.jira_ticket = lib.extract_jira_ticket(pr.body) or \
+            lib.extract_jira_ticket(pr.title)
 
     def status_changed_at(self):
         """
