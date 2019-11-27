@@ -42,8 +42,7 @@ def display(user: github.NamedUser.NamedUser):
     """
     Return an easy to read reference for a Github user account.
 
-    :return: Return a label if the user object is None. Otherwise return
-        the user's name is set otherwise the username including an "@" prefix.
+    :return: User's name if available otherwise handle.
     """
     if user:
         if user.name:
