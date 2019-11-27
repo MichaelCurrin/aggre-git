@@ -114,7 +114,7 @@ class PullRequest:
             self.merged_at = None
             self.merged_by = None
 
-        self.closed = (pr.state == 'closed')
+        self.closed = pr.state == 'closed'
         self.closed_at = pr.closed_at.date() if self.closed else None
 
         if self.merged:
