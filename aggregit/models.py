@@ -90,6 +90,11 @@ class PullRequest:
     All values which are from `int` columns are across users, so bear this in
     mind when interpreting the values. For example, multiple users may
     contribute commits to a PR and the commit count is the sum of all.
+
+    The .get_commits call uses pagination and returns only one commit by default
+    unless you slice it. Note the API returns 250 commits on a page.
+    See https://developer.github.com/v3/pulls/#list-commits-on-a-pull-request
+    and the github.PaginatedList.PaginatedList class.
     """
     STATUS_MERGED = "Merged"
     STATUS_CLOSED = "Closed"
@@ -135,6 +140,12 @@ class PullRequest:
 
         # This is a plain list and not a paginated list.
         self.assignees = pr.assignees
+
+        # Note this assumes at least 1 commit in branch and could give an error
+        # otherwise.
+        self.first_commit = Commit(pr.get_commits()[0])
+        # Negative indexing does not work here so rather use .reversed method.
+        self.latest_commit = Commit(pr.get_commits().reversed[0])
 
         self.reviews = [Review(review) for review in pr.get_reviews()
                         if review.state in Review.STATES]
