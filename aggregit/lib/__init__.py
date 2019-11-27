@@ -14,10 +14,11 @@ from .connection import CONN
 from etc import config
 
 
-# Match a URL a like "https://jira.myorg.com/browse/ABC-123", where domain can
-# either be jira.com or include your organization's name. Extract just the
-# ticket portion.
-JIRA_PATTERN = re.compile(r"https:\/\/jira.+/browse/([A-Z]+-\d+)")
+# Match a ticket number like "ABC-123".
+JIRA_TICKET_PATTERN = re.compile(r"[A-Z]+-\d+")
+# Match a URL like "https://jira.myorg.com/browse/ABC-123", where domain could
+# optionally include organization's name. Extract just the ticket portion.
+JIRA_URL_PATTERN = re.compile(r"https:\/\/jira.+/browse/([A-Z]+-\d+)")
 
 
 def parse_datetime(standard_datetime):
@@ -150,6 +151,20 @@ def extract_jira_ticket(text):
     >>> extract_jira_ticket("https://jira.com/browse/abc-123")
 
     """
-    match = JIRA_PATTERN.search(text)
+    match = JIRA_URL_PATTERN.search(text)
 
-    return match.group(1) if match else None
+    if match:
+        return match.group(1)
+
+    match = JIRA_TICKET_PATTERN.search(text)
+
+    if match:
+        return match.group()
+
+    return None
+
+
+if __name__ == '__main__':
+    # Test with python -m lib.__init__
+    import doctest
+    doctest.testmod()
