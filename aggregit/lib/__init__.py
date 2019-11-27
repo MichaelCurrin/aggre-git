@@ -123,12 +123,32 @@ def write_csv(path, header, data):
 
 def extract_jira_ticket(text):
     """
-    Extract Jira ticket ID from a Jira URL in the text, if on can be found.
+    Extract Jira ticket ID if one can be found.
 
-    :param text: Text to search, such as a PR description.
+    :param text: Text to search, such as a PR description. Expect it to contain
+        a Jira URL otherwise fallback to checking for a plain ticket number.
 
     :return: The first Jira ticket ID if found e.g. "ABC-123". Or, None
         if no match.
+
+    >>> extract_jira_ticket("https://jira.com/browse/ABC-123")
+    'ABC-123'
+
+    >>> extract_jira_ticket("https://jira.myorg.com/browse/DEF-12")
+    'DEF-12'
+
+    >>> extract_jira_ticket("XYZ-4001")
+    'XYZ-4001'
+
+    >>> extract_jira_ticket("See ticket XYZ-4001, kind regards.")
+    'XYZ-4001'
+
+    >>> extract_jira_ticket("abc")
+
+    >>> extract_jira_ticket("123-ABC")
+
+    >>> extract_jira_ticket("https://jira.com/browse/abc-123")
+
     """
     match = JIRA_PATTERN.search(text)
 
