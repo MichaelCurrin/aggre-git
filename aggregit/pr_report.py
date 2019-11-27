@@ -56,7 +56,9 @@ def to_row(repo, author, pr):
         'PR Created At': pr_data.created_at,
 
         'Latest Commit At': pr_data.latest_commit.last_modified.date(),
+        'Latest Commit Author': pr_data.latest_commit.author.login,
         'First Commit At': pr_data.first_commit.last_modified.date(),
+        'First Commit Author': pr_data.first_commit.author.login,
 
         'Status': pr_data.status,
 
@@ -137,6 +139,7 @@ def main():
         'Status', 'Status Changed At',
         'PR Updated At', 'PR Created At',
         'Latest Commit At', 'First Commit At',
+        'Latest Commit Author', 'First Commit Author',
         'Commits', 'Changed Files', 'Added Lines', 'Deleted Lines',
         'Changed Lines',
         'Comments', 'Merged By', 'Reviewers',
