@@ -14,12 +14,16 @@ Also requires configured usernames, such that only PRs created by these users
 are included. A commit doesn't have to have an author - if blank assume it
 was by the PR author (as it probably was).
 """
+import datetime
 import traceback
 from collections import Counter
 
-from etc import config
 import lib
+from etc import config
 from models import PullRequest, Review
+
+
+ONE_DAY = datetime.timedelta(days=1)
 
 
 def to_row(repo, author, pr):
@@ -40,6 +44,13 @@ def to_row(repo, author, pr):
     """
     pr_data = PullRequest(pr)
 
+    latest_commit_at = pr_data.latest_commit.datetime.date()
+    oldest_commit_at = pr_data.oldest_commit.datetime.date()
+    days_between_commits = (latest_commit_at - oldest_commit_at + ONE_DAY).days
+
+    latest_commit_author = lib.display(pr_data.latest_commit.author)
+    oldest_commit_author = lib.display(pr_data.oldest_commit.author)
+
     out_row = {
         'Repo Owner': lib.display(repo.owner),
         'Repo Name': repo.name,
@@ -56,14 +67,16 @@ def to_row(repo, author, pr):
         'PR Updated At': pr_data.updated_at,
         'PR Created At': pr_data.created_at,
 
-        'Latest Commit At': pr_data.latest_commit.datetime.date(),
-        'Latest Commit Author': lib.display(pr_data.latest_commit.author),
-        'Oldest Commit At': pr_data.oldest_commit.datetime.date(),
-        'Oldest Commit Author': lib.display(pr_data.oldest_commit.author),
+        'Latest Commit At': latest_commit_at,
+        'Latest Commit Author': latest_commit_author,
+        'Oldest Commit At': oldest_commit_at,
+        'Oldest Commit Author': oldest_commit_author,
+        'Days Between Commits': days_between_commits,
 
         'Status': pr_data.status,
 
-        'Merged/Closed At': pr_data.status_changed_at(),
+        'Merged/Closed WOY': pr_data.status_changed_week_of_year(),
+        'Merged/Closed Date': pr_data.status_changed_at(),
         'Merged By': pr_data.merged_by_name(),
 
         'Reviewers': ", ".join(pr_data.reviewer_names()),
@@ -114,7 +127,7 @@ def main():
 
         for pr in repo.get_pulls(state=config.PR_STATE):
             if config.MIN_DATE and pr.updated_at < config.MIN_DATE:
-                print("Remaining PRs are inactive")
+                print("Remaining PRs were updated before the min cuttoff date")
                 break
 
             author = pr.user
@@ -138,9 +151,9 @@ def main():
         'Repo Owner', 'Repo Name', 'Repo URL',
         'PR ID', 'PR Title', 'PR From Branch', 'PR To Branch',
         'Author', 'PR URL', 'Jira Ticket',
-        'Status', 'Merged/Closed At',
+        'Status', 'Merged/Closed WOY', 'Merged/Closed Date',
         'PR Updated At', 'PR Created At',
-        'Latest Commit At', 'Oldest Commit At',
+        'Latest Commit At', 'Oldest Commit At', 'Days Between Commits',
         'Latest Commit Author', 'Oldest Commit Author',
         'Commits', 'Changed Files', 'Added Lines', 'Deleted Lines',
         'Changed Lines',
