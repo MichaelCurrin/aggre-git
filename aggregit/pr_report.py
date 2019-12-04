@@ -56,9 +56,9 @@ def to_row(repo, author, pr):
         'PR Created At': pr_data.created_at,
 
         'Latest Commit At': pr_data.latest_commit.last_modified.date(),
-        'Latest Commit Author': pr_data.latest_commit.author.login,
+        'Latest Commit Author': lib.display(pr_data.latest_commit.author),
         'First Commit At': pr_data.first_commit.last_modified.date(),
-        'First Commit Author': pr_data.first_commit.author.login,
+        'First Commit Author': lib.display(pr_data.first_commit.author),
 
         'Status': pr_data.status,
 
