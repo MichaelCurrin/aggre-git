@@ -8,6 +8,9 @@ import datetime
 import os
 
 
+_VALID_PR_STATES = ('open', 'closed', 'merged', 'all')
+
+
 def parse_cutoff_date(value):
     """
     Convert a cutoff date from various formats to a datetime object.
@@ -56,7 +59,8 @@ MIN_DATE = parse_cutoff_date(MIN_DATE)
 
 assert ACCESS_TOKEN, "Please set the ACCESS_TOKEN value in the local config" \
                      " file"
-
+assert PR_STATE in _VALID_PR_STATES, \
+    f"Expected one of {_VALID_PR_STATES!r} but got: {PR_STATE!r}"
 
 if __name__ == '__main__':
     test()
