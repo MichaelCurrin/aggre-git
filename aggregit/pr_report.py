@@ -62,7 +62,7 @@ def to_row(repo, author, pr):
 
         'Status': pr_data.status,
 
-        'Status Changed At': pr_data.status_changed_at(),
+        'Merged/Closed At': pr_data.status_changed_at(),
         'Merged By': pr_data.merged_by_name(),
 
         'Reviewers': ", ".join(pr_data.reviewer_names()),
@@ -136,7 +136,7 @@ def main():
         'Repo Owner', 'Repo Name', 'Repo URL',
         'PR ID', 'PR Title', 'PR From Branch', 'PR To Branch',
         'Author', 'PR URL', 'Jira Ticket',
-        'Status', 'Status Changed At',
+        'Status', 'Merged/Closed At',
         'PR Updated At', 'PR Created At',
         'Latest Commit At', 'Oldest Commit At',
         'Latest Commit Author', 'Oldest Commit Author',
