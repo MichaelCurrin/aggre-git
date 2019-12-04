@@ -212,10 +212,6 @@ class Commit:
     def __init__(self, commit: github.GitCommit.GitCommit):
         """
         Initialize Commit object based on a Github commit object.
-
-        Note that using just `commit.last_modified` gives `None` somehow, so we
-        use `commit.commit.last_modified` instead. Though,
-        `commit.stats.last_modified` also works.
         """
         self.sha = commit.sha
         self.url = commit.html_url
@@ -223,7 +219,9 @@ class Commit:
         # Just a str.
         self.author = commit.author
         self.committer = commit.committer
-        self.last_modified = lib.parse_datetime(commit.commit.last_modified)
+        # No parsing needed as this is already datetime object.
+        self.datetime = \
+            commit.commit.author.date or commit.commit.committer.date
         self.message = commit.commit.message
 
         self.files = commit.files
