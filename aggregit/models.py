@@ -166,6 +166,16 @@ class PullRequest:
         """
         return self.closed_at
 
+    def status_changed_week_of_year(self):
+        """
+        If merged or closed, get the week of the year an an int.
+        """
+        if not self.closed_at:
+            return None
+
+        return lib.week_of_year(self.closed_at)
+
+
     def merged_by_name(self):
         """
         Get the display name for the user who merged the PR, if it was merged.
