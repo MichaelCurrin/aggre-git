@@ -127,7 +127,8 @@ def main():
 
         for pr in repo.get_pulls(state=config.PR_STATE):
             if config.MIN_DATE and pr.updated_at < config.MIN_DATE:
-                print("Remaining PRs were updated before the min cuttoff date")
+                print(f"Skipping PRs which were updated before the"
+                      f" configured min cuttoff date: {config.MIN_DATE}")
                 break
 
             author = pr.user
