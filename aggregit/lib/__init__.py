@@ -164,6 +164,27 @@ def extract_jira_ticket(text):
     return None
 
 
+def week_of_year(value):
+    """
+    Return week of year from 00 to 53 as a datetime object.
+
+    Here we considered Monday as the first day of the week.
+
+    From:
+        https://stackoverflow.com/questions/2600775/how-to-get-week-number-in-python
+
+    >>> week_of_year(datetime.date(2010, 1, 1))
+    '00'
+    >>> week_of_year(datetime.datetime(2010, 1, 1))
+    '00'
+    >>> week_of_year(datetime.datetime(2010, 1, 5))
+    '01'
+    >>> week_of_year(datetime.datetime(2010, 12, 31))
+    '52'
+    """
+    return value.strftime('%W')
+
+
 if __name__ == '__main__':
     # Test with python -m lib.__init__
     import doctest
