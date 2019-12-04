@@ -14,6 +14,7 @@ Also requires configured usernames, such that only PRs created by these users
 are included. A commit doesn't have to have an author - if blank assume it
 was by the PR author (as it probably was).
 """
+import traceback
 from collections import Counter
 
 from etc import config
@@ -125,8 +126,9 @@ def main():
                     # Keep the report generation robust by logging and skipping
                     # over any errors. Create a bug issue in the aggre-git repo
                     # on Github so that the error will be addressed.
-                    print(f"Could not fetch or parse PR."
-                          f" {type(e).__name__}: {str(e)}")
+                    print("Could not fetch or parse the PR.")
+                    traceback.print_exc()
+                    print("---")
                 else:
                     out_data.append(out_row)
             else:
