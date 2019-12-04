@@ -55,10 +55,10 @@ def to_row(repo, author, pr):
         'PR Updated At': pr_data.updated_at,
         'PR Created At': pr_data.created_at,
 
-        'Latest Commit At': pr_data.latest_commit.last_modified.date(),
+        'Latest Commit At': pr_data.latest_commit.datetime.date(),
         'Latest Commit Author': lib.display(pr_data.latest_commit.author),
-        'First Commit At': pr_data.first_commit.last_modified.date(),
-        'First Commit Author': lib.display(pr_data.first_commit.author),
+        'Oldest Commit At': pr_data.oldest_commit.datetime.date(),
+        'Oldest Commit Author': lib.display(pr_data.oldest_commit.author),
 
         'Status': pr_data.status,
 
@@ -138,8 +138,8 @@ def main():
         'Author', 'PR URL', 'Jira Ticket',
         'Status', 'Status Changed At',
         'PR Updated At', 'PR Created At',
-        'Latest Commit At', 'First Commit At',
-        'Latest Commit Author', 'First Commit Author',
+        'Latest Commit At', 'Oldest Commit At',
+        'Latest Commit Author', 'Oldest Commit Author',
         'Commits', 'Changed Files', 'Added Lines', 'Deleted Lines',
         'Changed Lines',
         'Comments', 'Merged By', 'Reviewers',

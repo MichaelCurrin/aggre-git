@@ -141,11 +141,12 @@ class PullRequest:
         # This is a plain list and not a paginated list.
         self.assignees = pr.assignees
 
-        # Note this assumes at least 1 commit in branch and could give an error
-        # otherwise.
-        self.first_commit = Commit(pr.get_commits()[0])
+        # Avoid 'first' and 'last' names to avoid confusion with the list
+        # indexes. Note this assumes at least 1 commit in branch and could give
+        # an error otherwise.
         # Negative indexing does not work here so rather use .reversed method.
         self.latest_commit = Commit(pr.get_commits().reversed[0])
+        self.oldest_commit = Commit(pr.get_commits()[0])
 
         self.reviews = [Review(review) for review in pr.get_reviews()
                         if review.state in Review.STATES]
