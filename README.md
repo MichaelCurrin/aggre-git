@@ -1,6 +1,12 @@
 # Aggre-Git
 > Report on aggregated Github activity data, based around PRs and users within your organization
 
+[![GitHub tag](https://img.shields.io/github/tag/MichaelCurrin/aggre-git)](https://github.com/MichaelCurrin/aggre-git/tags/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](#license)
+
+- Report on historical Github activity for your user or organization. 
+- Reads from the Github REST API, accessed through a Python library called PyGithub - see [homepage](https://pygithub.readthedocs.io/en/latest/introduction.html) and [Github repo](https://github.com/PyGithub/PyGithub).
+
 
 ## Purpose
 
@@ -17,9 +23,14 @@ Therefore if you want to do reporting at scale, use this other project instead. 
 
 See the following within the [docs](/docs/) directory:
 
-- [Installation](docs/installation.md)
-- [Usage](docs/usage.md)
+- [Installation](/docs/installation.md)
+- [Usage](/docs/usage.md)
 
 For collaborators - if you want to make the project better, see the [contribution guidelines](CONTRIBUTING.md).
 
 For info on the _PyGithub_ library, go to their [docs](https://pygithub.readthedocs.io/en/latest/) and their [examples](https://pygithub.readthedocs.io/en/latest/examples.html) of library usage.
+
+
+## License
+
+Released under [MIT](/LICENSE).
