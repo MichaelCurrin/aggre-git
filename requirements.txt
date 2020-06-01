@@ -1,2 +1,1 @@
-PyGithub==1.40
-pylint
+PyGithub~=1.40
