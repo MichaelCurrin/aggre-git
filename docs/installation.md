@@ -4,8 +4,8 @@
 
 You need the following to run this project:
 
-- Github account
-- Github API token with access to repos
+- GitHub account
+- GitHub API token with access to repos
 - Internet connection
 - Python 3.6+
 
@@ -40,7 +40,7 @@ You can then continue to the [Usage](/docs/usage.md) doc.
 The minimum requirement to run the project is to create a Github token for your account and set it locally.
 
 1. Go to the [Tokens](https://github.com/settings/tokens) page within the Developer Settings area of your Github account.
-2. Create a new token. The following scopes are recommended to be set:
+1. Create a new token. The following scopes are recommended to be set:
     * ☑ repo 
         - Tick the top level for access to private repos. Otherwise just tick _repo:status_ and _public:repo_.
     * ☐ admin:org
@@ -50,5 +50,5 @@ The minimum requirement to run the project is to create a Github token for your 
     * ☐ user
         - ☑ read
         - ☑ email
-3. Copy the generated token value.
-4. Open `configlocal.py` and paste your value for `ACCESS_TOKEN`.
+1. Copy the generated token value.
+1. Open `configlocal.py` and paste your value for `ACCESS_TOKEN`.
