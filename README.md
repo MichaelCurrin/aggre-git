@@ -4,8 +4,11 @@
 [![GitHub tag](https://img.shields.io/github/tag/MichaelCurrin/aggre-git)](https://github.com/MichaelCurrin/aggre-git/tags/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](#license)
 
-- Report on historical Github activity for your user or organization. 
-- Reads from the Github REST API, accessed through a Python library called PyGithub - see [homepage](https://pygithub.readthedocs.io/en/latest/introduction.html) and [Github repo](https://github.com/PyGithub/PyGithub).
+
+## Features
+
+- Report on historical GitHub activity for your user or organization. 
+- Read from the GitHub REST API, accessed through a Python library called _PyGithub_ - see the [homepage](https://pygithub.readthedocs.io/en/latest/introduction.html) and [GitHub repo](https://github.com/PyGithub/PyGithub).
 
 
 ## Purpose
@@ -21,16 +24,20 @@ Therefore if you want to do reporting at scale, use this other project instead. 
 
 ## Documentation
 
-See the following within the [docs](/docs/) directory:
+<div align="center">
+  
+[![view - Documentation](https://img.shields.io/badge/view-Documentation-blue?style=for-the-badge)](/docs/)
 
-- [Installation](/docs/installation.md)
-- [Usage](/docs/usage.md)
+</div>
 
-For collaborators - if you want to make the project better, see the [contribution guidelines](CONTRIBUTING.md).
 
-For info on the _PyGithub_ library, go to their [docs](https://pygithub.readthedocs.io/en/latest/) and their [examples](https://pygithub.readthedocs.io/en/latest/examples.html) of library usage.
+## Contributing
+
+If you want to make the project better, see the [Contributing](/CONTRIBUTING.md) doc.
+
 
 
 ## License
 
-Released under [MIT](/LICENSE).
+Released under [MIT](/LICENSE) by [@MichaelCurrin](https://github.com/MichaelCurrin).
+
