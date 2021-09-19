@@ -21,7 +21,9 @@ import lib
 
 class Review:
     """
-    Model a Git pull request review, with just data of interest.
+    Model a GitHub Pull Request review.
+
+    Focussed on just data of interest for this project.
 
     Notes on states of PR Reviews:
         The web UI gives the following options when writing a PR review.
@@ -33,10 +35,10 @@ class Review:
         The GitHub API docs also covers a dismissed state. There is a pending
         state as well which came up in testing, but this appears to be hidden
         from other users and has no value for this project so can be ignored.
-        To exclude it, apply a filter to only create a Review instance
-        from a review which has a state which is in the Review.STATES values.
+        To exclude it, apply a filter to only create a `Review` instance
+        from a review which has a state which is in the `Review.STATES` values.
 
-        See:
+        See GH docs on PR reviews
             https://help.github.com/articles/about-pull-request-reviews/
     """
 
@@ -70,6 +72,7 @@ class Review:
 
     def summary(self):
         reviewer = lib.display(self.reviewer)
+
         return f"{self.submitted_at} {reviewer} {self.state}"
 
 
@@ -95,10 +98,10 @@ class PullRequest:
     mind when interpreting the values. For example, multiple users may
     contribute commits to a PR and the commit count is the sum of all.
 
-    The .get_commits call uses pagination and returns only one commit by default
-    unless you slice it. Note the API returns 250 commits on a page.
-    See https://developer.github.com/v3/pulls/#list-commits-on-a-pull-request
-    and the github.PaginatedList.PaginatedList class.
+    The .get_commits call uses pagination and returns only one commit by
+    default unless you slice it. Note the API returns 250 commits on a page.
+    For `github.PaginatedList.PaginatedList` class, see:
+        https://developer.github.com/v3/pulls/#list-commits-on-a-pull-request
     """
 
     STATUS_MERGED = "Merged"
@@ -149,6 +152,7 @@ class PullRequest:
         # This is paged commits - so its hard to check if there are zero
         # commits which could cause error in the next part.
         commits = pr.get_commits()
+
         # Avoid 'first' and 'last' names to avoid confusion with the list
         # indexes.
         # Negative indexing does not work here so rather use .reversed method.
@@ -169,7 +173,7 @@ class PullRequest:
         """
         If merged or closed, get the date that the change happened on.
 
-        :return: Closed at date of PR. If it was merged, this will be the same
+        :return: Close date of PR. If it was merged, this will be the same
             as the merged date. If the PR is still open, the value will be
             `None`.
         """
@@ -192,19 +196,17 @@ class PullRequest:
 
     def assignee_names(self):
         """
-        Get names of assignees of the PR, if any.
+        Get display names of assignees of the PR, if any.
 
-        Return a sorted list of display names for users who are assigned.
         This makes more sense for Issues than PRs.
         """
-        return sorted(lib.display(user) for user in self.assignees)
+        names = [lib.display(user) for user in self.assignees]
+
+        return sorted(names)
 
     def reviewer_names(self):
         """
-        Get names of reviewers of the PR, if any.
-
-        Return a sorted list of display names for users which performed a
-        review-related action on the PR.
+        Get dislay names of reviewers of the PR, if any.
         """
         names = set(lib.display(review.reviewer) for review in self.reviews)
 
@@ -239,6 +241,7 @@ class Commit:
         # Just a str.
         self.author = commit.author
         self.committer = commit.committer
+
         # No parsing needed as this is already datetime object.
         self.datetime = commit.commit.author.date or commit.commit.committer.date
         self.message = commit.commit.message
@@ -270,6 +273,7 @@ class Commit:
         Summarize attributes when printing an instance.
         """
         login = self.author.login if self.author else "(not set)"
+
         return (
             f"<Commit sha: '{self.short_sha}', author: '{login}'"
             f" message: '{self.short_message}', ...>"
