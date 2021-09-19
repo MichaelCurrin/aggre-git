@@ -1,6 +1,5 @@
 # Usage Instructions
 
-
 You may with to occasionally change your configured settings. See [Configure the project](installation.md#configure-the-project) instructions.
 
 
