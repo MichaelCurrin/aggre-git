@@ -12,8 +12,10 @@ def main():
     try:
         o = CONN.get_organization(config.REPO_OWNER)
     except UnknownObjectException:
-        msg = f"Could not find organization: {config.REPO_OWNER}." \
-              f" Did you provide a user by accident?"
+        msg = (
+            f"Could not find organization: {config.REPO_OWNER}."
+            f" Did you provide a user by accident?"
+        )
         raise ValueError(msg)
 
     teams = list(o.get_teams())
@@ -30,5 +32,5 @@ def main():
         print()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

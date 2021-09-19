@@ -88,5 +88,5 @@ def validate_config():
         check_user(username)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     validate_config()

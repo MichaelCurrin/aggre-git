@@ -52,41 +52,34 @@ def to_row(repo, author, pr):
     oldest_commit_author = lib.display(pr_data.oldest_commit.author)
 
     out_row = {
-        'Repo Owner': lib.display(repo.owner),
-        'Repo Name': repo.name,
-        'Repo URL': repo.html_url,
-
-        'Author': lib.display(author),
-        'PR ID': f"#{pr_data.number}",
-        'PR Title': pr_data.title,
-        'PR From Branch': pr_data.from_branch_name,
-        'PR To Branch': pr_data.to_branch_name,
-        'PR URL': pr_data.url,
-        'Jira Ticket': pr_data.jira_ticket,
-
-        'PR Updated At': pr_data.updated_at,
-        'PR Created At': pr_data.created_at,
-
-        'Latest Commit At': latest_commit_at,
-        'Latest Commit Author': latest_commit_author,
-        'Oldest Commit At': oldest_commit_at,
-        'Oldest Commit Author': oldest_commit_author,
-        'Days Between Commits': days_between_commits,
-
-        'Status': pr_data.status,
-
-        'Merged/Closed WOY': pr_data.status_changed_week_of_year(),
-        'Merged/Closed Date': pr_data.status_changed_at(),
-        'Merged By': pr_data.merged_by_name(),
-
-        'Reviewers': ", ".join(pr_data.reviewer_names()),
-
-        'Comments': pr_data.comment_count,
-        'Commits': pr_data.commit_count,
-        'Changed Files': pr_data.changed_files,
-        'Added Lines': pr_data.additions,
-        'Deleted Lines': pr_data.deletions,
-        'Changed Lines': pr_data.additions + pr.deletions,
+        "Repo Owner": lib.display(repo.owner),
+        "Repo Name": repo.name,
+        "Repo URL": repo.html_url,
+        "Author": lib.display(author),
+        "PR ID": f"#{pr_data.number}",
+        "PR Title": pr_data.title,
+        "PR From Branch": pr_data.from_branch_name,
+        "PR To Branch": pr_data.to_branch_name,
+        "PR URL": pr_data.url,
+        "Jira Ticket": pr_data.jira_ticket,
+        "PR Updated At": pr_data.updated_at,
+        "PR Created At": pr_data.created_at,
+        "Latest Commit At": latest_commit_at,
+        "Latest Commit Author": latest_commit_author,
+        "Oldest Commit At": oldest_commit_at,
+        "Oldest Commit Author": oldest_commit_author,
+        "Days Between Commits": days_between_commits,
+        "Status": pr_data.status,
+        "Merged/Closed WOY": pr_data.status_changed_week_of_year(),
+        "Merged/Closed Date": pr_data.status_changed_at(),
+        "Merged By": pr_data.merged_by_name(),
+        "Reviewers": ", ".join(pr_data.reviewer_names()),
+        "Comments": pr_data.comment_count,
+        "Commits": pr_data.commit_count,
+        "Changed Files": pr_data.changed_files,
+        "Added Lines": pr_data.additions,
+        "Deleted Lines": pr_data.deletions,
+        "Changed Lines": pr_data.additions + pr.deletions,
     }
 
     review_states = Counter([r.state for r in pr_data.reviews])
@@ -127,8 +120,10 @@ def main():
 
         for pr in repo.get_pulls(state=config.PR_STATE):
             if config.MIN_DATE and pr.updated_at < config.MIN_DATE:
-                print(f"Skipping PRs which were updated before the"
-                      f" configured min cuttoff date: {config.MIN_DATE}")
+                print(
+                    f"Skipping PRs which were updated before the"
+                    f" configured min cuttoff date: {config.MIN_DATE}"
+                )
                 break
 
             author = pr.user
@@ -149,20 +144,38 @@ def main():
                 print(f"PR #{pr.number} - skipping")
 
     header = (
-        'Repo Owner', 'Repo Name', 'Repo URL',
-        'PR ID', 'PR Title', 'PR From Branch', 'PR To Branch',
-        'Author', 'PR URL', 'Jira Ticket',
-        'Status', 'Merged/Closed WOY', 'Merged/Closed Date',
-        'PR Updated At', 'PR Created At',
-        'Latest Commit At', 'Oldest Commit At', 'Days Between Commits',
-        'Latest Commit Author', 'Oldest Commit Author',
-        'Commits', 'Changed Files', 'Added Lines', 'Deleted Lines',
-        'Changed Lines',
-        'Comments', 'Merged By', 'Reviewers',
+        "Repo Owner",
+        "Repo Name",
+        "Repo URL",
+        "PR ID",
+        "PR Title",
+        "PR From Branch",
+        "PR To Branch",
+        "Author",
+        "PR URL",
+        "Jira Ticket",
+        "Status",
+        "Merged/Closed WOY",
+        "Merged/Closed Date",
+        "PR Updated At",
+        "PR Created At",
+        "Latest Commit At",
+        "Oldest Commit At",
+        "Days Between Commits",
+        "Latest Commit Author",
+        "Oldest Commit Author",
+        "Commits",
+        "Changed Files",
+        "Added Lines",
+        "Deleted Lines",
+        "Changed Lines",
+        "Comments",
+        "Merged By",
+        "Reviewers",
     ) + Review.get_states()
 
     lib.write_csv(config.PR_CSV_PATH, header, out_data)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

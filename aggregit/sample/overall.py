@@ -22,13 +22,13 @@ from lib.connection import CONN
 login = config.USERNAMES[0]
 
 data = {
-    'prs': 0,
-    'commits': {'own': None, 'other': None},
-    'additions': 0,
-    'deletions': 0,
-    'review_comments': {'own': None, 'other': None},
-    'issue_comments': {'own': None, 'other': None},
-    'reviews': {'own': None, 'other': None},
+    "prs": 0,
+    "commits": {"own": None, "other": None},
+    "additions": 0,
+    "deletions": 0,
+    "review_comments": {"own": None, "other": None},
+    "issue_comments": {"own": None, "other": None},
+    "reviews": {"own": None, "other": None},
 }
 
 for repo_name in config.REPO_PATHS:
@@ -45,11 +45,11 @@ for repo_name in config.REPO_PATHS:
 
     # Note - only activity in PRs is counted, not direct commits to a branch.
     # Note state could be set as 'open', 'closed' or 'all'.
-    for pr in repo.get_pulls(state='all'):
+    for pr in repo.get_pulls(state="all"):
         pr_author = pr.user
 
         if pr.user.login == login:
-            data['prs'] += 1
+            data["prs"] += 1
             print("### PR ###")
             print(f"ID: {pr.number}")
             print(f"Title: {pr.title}")
@@ -72,17 +72,15 @@ for repo_name in config.REPO_PATHS:
                     # Sometimes author can be None. Perhaps if the user is
                     # inactive or it was left off the of config file.
                     if commit.author and commit.author.login == login:
-                        data['commits']['own'] += 1
+                        data["commits"]["own"] += 1
 
-                        date = lib.parse_datetime(
-                            commit.stats.last_modified
-                        ).date()
+                        date = lib.parse_datetime(commit.stats.last_modified).date()
                         commit_data = dict(
                             SHA=commit.sha,
                             last_modified=str(date),
                             additions=commit.stats.additions,
                             deletions=commit.stats.deletions,
-                            total=commit.stats.total
+                            total=commit.stats.total,
                         )
                         print(commit_data)
 
@@ -97,11 +95,11 @@ for repo_name in config.REPO_PATHS:
                             print(f"  Blob URL: {file_.blob_url}")
                             # See also file_.patch for the diff.
 
-                            data['additions'] += file_.additions
-                            data['deletions'] += file_.deletions
+                            data["additions"] += file_.additions
+                            data["deletions"] += file_.deletions
                             print()
                     else:
-                        data['commits']['other'] += 1
+                        data["commits"]["other"] += 1
                 print()
         print()
 print()

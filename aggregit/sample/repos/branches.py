@@ -42,7 +42,9 @@ def display_commit(commit):
     print(commit.last_modified)
     message = shorten(commit.commit.message.replace("\n", "\t"), 80)
     print(message)
-    print(f"{commit.stats.total} | +{commit.stats.additions} | -{commit.stats.deletions})")
+    print(
+        f"{commit.stats.total} | +{commit.stats.additions} | -{commit.stats.deletions})"
+    )
     print()
 
 
@@ -119,7 +121,7 @@ def traverse_commits_short(commit, depth=1, parent_index=0, seen_commits=None):
         print(" | ".join(elements))
 
         for i, parent in enumerate(commit.parents):
-            traverse_commits_short(parent, depth+1, i+parent_index, seen_commits)
+            traverse_commits_short(parent, depth + 1, i + parent_index, seen_commits)
     else:
         print("Skipping seen commit and parents")
 
@@ -142,7 +144,7 @@ def main():
     branch_dict = {x.name: x for x in fetched_branches}
 
     branch_list = []
-    for b in ('master', 'develop'):
+    for b in ("master", "develop"):
         branch = branch_dict.pop(b, None)
         if branch:
             branch_list.append(branch)
@@ -165,14 +167,14 @@ def main():
     # then it resets. If you want to avoid counting the same activity across
     # branches then this must be handled differently.
 
-    repo = CONN.get_repo('MichaelCurrin/aggre-git')
+    repo = CONN.get_repo("MichaelCurrin/aggre-git")
     for branch in repo.get_branches():
         head_commit = branch.commit
         traverse_commits_short(head_commit)
 
         # Use this instead for more verbose output including the files.
-        #traverse_commits_detailed(head_commit)
+        # traverse_commits_detailed(head_commit)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

@@ -26,9 +26,9 @@ def main():
                     print(str(rev.submitted_at.date()))
                     print(rev.user.login)
             else:
-                print('skip')
+                print("skip")
             print()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

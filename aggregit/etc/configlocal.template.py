@@ -19,9 +19,7 @@ ACCESS_TOKEN = ""
 
 # Filter activity to those by Github usernames. Set as None or empty tuple
 # to disable filter.
-USERNAMES = (
-    'MichaelCurrin',
-)
+USERNAMES = ("MichaelCurrin",)
 
 # Boolean value to switch between two inputs for reporting.
 # - True: Use `REPO_OWNER` value. (So `REPO_PATHS` could be empty tuple or `None`.)
@@ -30,12 +28,10 @@ BY_OWNER = False
 
 # Filter to activity within ALL repos owned by this account. This can be a
 # Github user or organization.
-REPO_OWNER = 'MichaelCurrin'
+REPO_OWNER = "MichaelCurrin"
 
 # Filter to activity within these Github repos. Format: 'username/repo-name'.
-REPO_PATHS = (
-    'MichaelCurrin/aggre-git',
-)
+REPO_PATHS = ("MichaelCurrin/aggre-git",)
 
 
 # Cutoff date for activity.
@@ -57,4 +53,4 @@ MIN_DATE = None
 #####################
 
 # Include only PRs in this state. Must be one of 'open', 'closed' or 'all'.
-PR_STATE = 'all'
+PR_STATE = "all"

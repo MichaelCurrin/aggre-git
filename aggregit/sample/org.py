@@ -37,7 +37,7 @@ def extract(org):
         repos=repos,
         private_repos=org.total_private_repos,
         issues=issues,
-        teams=teams
+        teams=teams,
     )
 
     return details
@@ -49,5 +49,5 @@ def main():
     print(details)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

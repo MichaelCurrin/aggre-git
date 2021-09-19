@@ -38,47 +38,47 @@ from lib.connection import CONN
 
 
 def report(pr):
-    print('User')
+    print("User")
     user = {
-        'username': pr.user.login,
-        'assignee': pr.assignee.login if pr.assignee else None,
-        'assignees': [u.login for u in pr.assignees],
+        "username": pr.user.login,
+        "assignee": pr.assignee.login if pr.assignee else None,
+        "assignees": [u.login for u in pr.assignees],
     }
     pprint.pprint(user)
     print()
 
-    print('data')
+    print("data")
     body = pr.body.replace("\r\n", "\n")
     jira_ticket = lib.extract_jira_ticket(body)
 
     data = {
-        'state': pr.state,
-        'title': pr.title,
-        'description': body,
-        'jira_ticket': jira_ticket,
-        'additions': pr.additions,
-        'deletions': pr.deletions,
-        'created_at': str(pr.created_at.date()),
-        'comments': pr.comments,
+        "state": pr.state,
+        "title": pr.title,
+        "description": body,
+        "jira_ticket": jira_ticket,
+        "additions": pr.additions,
+        "deletions": pr.deletions,
+        "created_at": str(pr.created_at.date()),
+        "comments": pr.comments,
     }
     if pr.closed_at:
-        data['closed_at'] = str(pr.closed_at.date())
+        data["closed_at"] = str(pr.closed_at.date())
     if pr.merged:
-        data['merge_by'] = pr.merged_by.login
-        data['merged_at'] = str(pr.merged_at.date())
+        data["merge_by"] = pr.merged_by.login
+        data["merged_at"] = str(pr.merged_at.date())
     pprint.pprint(data)
     print()
 
-    print('counts')
+    print("counts")
     counts = {
-        'issue_comments': len(list(pr.get_issue_comments())),
-        'review_comments': len(list(pr.get_review_comments())),
-        'reviews': len(list(pr.get_reviews())),
+        "issue_comments": len(list(pr.get_issue_comments())),
+        "review_comments": len(list(pr.get_review_comments())),
+        "reviews": len(list(pr.get_reviews())),
     }
     print(counts)
     print()
 
-    print('review requests')
+    print("review requests")
     # Tuple of users and teams.
     users, teams = pr.get_review_requests()
     usernames = [u.login for u in users]
@@ -101,5 +101,5 @@ def main():
         print()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

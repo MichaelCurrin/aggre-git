@@ -85,16 +85,16 @@ def to_row(repo, branch, commit_data):
         a single commit.
     """
     out_row = {
-        'Repo Owner': lib.display(repo.owner),
-        'Repo Name': repo.name,
-        'Branch': branch.name,
-        'Commit SHA': commit_data.short_sha,
-        'Commit Modified': commit_data.last_modified.date(),
-        'Commit Author': lib.display(commit_data.author),
-        'Changed Files': commit_data.changed_files,
-        'Added Lines': commit_data.additions,
-        'Deleted Lines': commit_data.deletions,
-        'Changed Lines': commit_data.additions + commit_data.deletions,
+        "Repo Owner": lib.display(repo.owner),
+        "Repo Name": repo.name,
+        "Branch": branch.name,
+        "Commit SHA": commit_data.short_sha,
+        "Commit Modified": commit_data.last_modified.date(),
+        "Commit Author": lib.display(commit_data.author),
+        "Changed Files": commit_data.changed_files,
+        "Added Lines": commit_data.additions,
+        "Deleted Lines": commit_data.deletions,
+        "Changed Lines": commit_data.additions + commit_data.deletions,
     }
 
     return out_row
@@ -142,10 +142,10 @@ def main():
         for branch in fetched_branches:
             if not branch_list:
                 branch_list.append(branch)
-            elif branch.name == 'master':
+            elif branch.name == "master":
                 branch_list.insert(0, branch)
-            elif branch.name in ('develop', 'development'):
-                dev_insert_index = 1 if branch_list[0] == 'master' else 0
+            elif branch.name in ("develop", "development"):
+                dev_insert_index = 1 if branch_list[0] == "master" else 0
                 branch_list.insert(dev_insert_index, branch)
             else:
                 branch_list.append(branch)
@@ -158,8 +158,11 @@ def main():
             print(f"\nFound: {len(commits)}")
 
             if config.USERNAMES:
-                commits = [x for x in commits if
-                           x.author and x.author.login in config.USERNAMES]
+                commits = [
+                    x
+                    for x in commits
+                    if x.author and x.author.login in config.USERNAMES
+                ]
                 print(f"After filtering: {len(commits)}")
 
             for commit in commits:
@@ -167,26 +170,25 @@ def main():
                     out_row = to_row(repo, branch, commit)
                 except Exception as e:
                     # Report error without aborting.
-                    print(f"Could not parse Commit."
-                          f" {type(e).__name__}: {str(e)}")
+                    print(f"Could not parse Commit." f" {type(e).__name__}: {str(e)}")
                 else:
                     out_data.append(out_row)
             print()
 
     header = (
-        'Repo Owner',
-        'Repo Name',
-        'Branch',
-        'Commit SHA',
-        'Commit Modified',
-        'Commit Author',
-        'Changed Files',
-        'Added Lines',
-        'Deleted Lines',
-        'Changed Lines',
+        "Repo Owner",
+        "Repo Name",
+        "Branch",
+        "Commit SHA",
+        "Commit Modified",
+        "Commit Author",
+        "Changed Files",
+        "Added Lines",
+        "Deleted Lines",
+        "Changed Lines",
     )
     lib.write_csv(config.COMMIT_CSV_PATH, header, out_data)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

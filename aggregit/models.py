@@ -41,11 +41,12 @@ class Review:
     Expects a PyGithub Commit object as returned from the API.
         https://pygithub.readthedocs.io/en/latest/github_objects/PullRequestReview.html
     """
+
     STATES = (
-        'APPROVED',
-        'DISMISSED',
-        'CHANGES REQUESTED',
-        'COMMENTED',
+        "APPROVED",
+        "DISMISSED",
+        "CHANGES REQUESTED",
+        "COMMENTED",
     )
 
     def __init__(self, review: github.PullRequestReview.PullRequestReview):
@@ -96,6 +97,7 @@ class PullRequest:
     See https://developer.github.com/v3/pulls/#list-commits-on-a-pull-request
     and the github.PaginatedList.PaginatedList class.
     """
+
     STATUS_MERGED = "Merged"
     STATUS_CLOSED = "Closed"
     STATUS_OPEN = "Open"
@@ -119,7 +121,7 @@ class PullRequest:
             self.merged_at = None
             self.merged_by = None
 
-        self.closed = pr.state == 'closed'
+        self.closed = pr.state == "closed"
         self.closed_at = pr.closed_at.date() if self.closed else None
 
         if self.merged:
@@ -150,11 +152,15 @@ class PullRequest:
         self.latest_commit = Commit(commits.reversed[0])
         self.oldest_commit = Commit(commits[0])
 
-        self.reviews = [Review(review) for review in pr.get_reviews()
-                        if review.state in Review.STATES]
+        self.reviews = [
+            Review(review)
+            for review in pr.get_reviews()
+            if review.state in Review.STATES
+        ]
 
-        self.jira_ticket = lib.extract_jira_ticket(pr.body) or \
-            lib.extract_jira_ticket(pr.title)
+        self.jira_ticket = lib.extract_jira_ticket(pr.body) or lib.extract_jira_ticket(
+            pr.title
+        )
 
     def status_changed_at(self):
         """
@@ -174,7 +180,6 @@ class PullRequest:
             return None
 
         return lib.week_of_year(self.closed_at)
-
 
     def merged_by_name(self):
         """
@@ -232,8 +237,7 @@ class Commit:
         self.author = commit.author
         self.committer = commit.committer
         # No parsing needed as this is already datetime object.
-        self.datetime = \
-            commit.commit.author.date or commit.commit.committer.date
+        self.datetime = commit.commit.author.date or commit.commit.committer.date
         self.message = commit.commit.message
 
         self.files = commit.files
@@ -263,5 +267,7 @@ class Commit:
         Summarize attributes when printing an instance.
         """
         login = self.author.login if self.author else "(not set)"
-        return f"<Commit sha: '{self.short_sha}', author: '{login}'" \
-               f" message: '{self.short_message}', ...>"
+        return (
+            f"<Commit sha: '{self.short_sha}', author: '{login}'"
+            f" message: '{self.short_message}', ...>"
+        )

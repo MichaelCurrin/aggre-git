@@ -16,19 +16,19 @@ def main():
             data = dict(
                 date=str(comment.created_at.date()),
                 username=comment.user.login,
-                reactions=[]
+                reactions=[],
             )
 
             reactions = list(comment.get_reactions())
             for r in reactions:
                 reaction_data = {
-                    'username': r.user.login,
-                    'content': r.content,
-                    'date': str(r.created_at.date())
+                    "username": r.user.login,
+                    "content": r.content,
+                    "date": str(r.created_at.date()),
                 }
-                data['reactions'].append(reaction_data)
+                data["reactions"].append(reaction_data)
                 pprint.pprint(data)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

@@ -19,7 +19,7 @@ def extract(commit):
         last_modified=str(date),
         additions=commit.stats.additions,
         deletions=commit.stats.deletions,
-        total=commit.stats.total
+        total=commit.stats.total,
     )
 
 
@@ -35,5 +35,5 @@ def main():
         print()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

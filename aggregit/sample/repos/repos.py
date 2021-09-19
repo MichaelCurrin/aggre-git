@@ -28,12 +28,12 @@ def display_repo(repo):
 
 
 def main():
-    repo = CONN.get_repo('Python/CPython')
+    repo = CONN.get_repo("Python/CPython")
     display_repo(repo)
 
-    repo = CONN.get_repo('MichaelCurrin/aggre-git')
+    repo = CONN.get_repo("MichaelCurrin/aggre-git")
     display_repo(repo)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

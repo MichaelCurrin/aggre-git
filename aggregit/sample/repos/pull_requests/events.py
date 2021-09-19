@@ -28,18 +28,16 @@ def main():
 
         for e in events:
             data = dict(
-                username=e.actor.login,
-                created_at=str(e.created_at.date()),
-                type=e.type
+                username=e.actor.login, created_at=str(e.created_at.date()), type=e.type
             )
             print(data)
 
             p = e.payload
             payload_data = dict(
-                action=p.get('action'),
-                comments=p.get('comment'),
-                pull_request=p.get('pull_request'),
-                issue=p.get('issue')
+                action=p.get("action"),
+                comments=p.get("comment"),
+                pull_request=p.get("pull_request"),
+                issue=p.get("issue"),
             )
             for k, v in payload_data.items():
                 if v:
@@ -52,5 +50,5 @@ def main():
     pprint.pprint(events_c.most_common())
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

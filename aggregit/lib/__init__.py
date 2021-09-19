@@ -115,9 +115,8 @@ def write_csv(path, header, data):
     :return: None
     """
     print(f"Writing to {path}")
-    with open(path, 'w') as f_out:
-        writer = csv.DictWriter(f_out, fieldnames=header,
-                                quoting=csv.QUOTE_NONNUMERIC)
+    with open(path, "w") as f_out:
+        writer = csv.DictWriter(f_out, fieldnames=header, quoting=csv.QUOTE_NONNUMERIC)
         writer.writeheader()
         writer.writerows(data)
 
@@ -182,10 +181,11 @@ def week_of_year(value):
     >>> week_of_year(datetime.datetime(2010, 12, 31))
     '52'
     """
-    return value.strftime('%W')
+    return value.strftime("%W")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     # Test with python -m lib.__init__
     import doctest
+
     doctest.testmod()

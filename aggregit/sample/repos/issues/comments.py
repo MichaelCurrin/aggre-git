@@ -11,11 +11,13 @@ def main():
         print(repo.name)
 
         for comment in repo.get_issues_comments():
-            data = {'username': comment.user.login,
-                    'date': str(comment.created_at.date())}
+            data = {
+                "username": comment.user.login,
+                "date": str(comment.created_at.date()),
+            }
             print(data)
         print()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
