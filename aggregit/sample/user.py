@@ -1,7 +1,7 @@
 """
 Sample user module.
 
-Gets stats for a username of a user or organization.
+Gets stats a user or org.
 """
 from etc import config
 from lib.connection import CONN
@@ -21,19 +21,25 @@ def print_details(user):
 
     # Orgs seems to be created, not belong to.
     counts = {
-        "Repos": list(user.get_repos()),
-        "Orgs": list(user.get_orgs()),
-        "Events": list(user.get_events()),
-        "Watched": list(user.get_watched()),
-        "Starred": list(user.get_starred()),
+        "Repos": user.get_repos,
+        "Orgs": user.get_orgs,
+        "Events": user.get_events,
+        "Watched": user.get_watched,
+        "Starred": user.get_starred,
     }
     for k, v in counts.items():
-        print(f"{k:7}: {len(v):,d}")
+        result = list(v())
+        print(f"{k:7}: {len(result):,d}")
+        print("")
 
 
 def main():
+    """
+    Main command-line entry-point.
+    """
     login = config.REPO_OWNER
     user = CONN.get_user(login)
+
     print_details(user)
 
 
