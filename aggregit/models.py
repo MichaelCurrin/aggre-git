@@ -10,9 +10,9 @@ and store the commit or pr etc. itself rather. In nested structure.
 Resources for objects which are not modeled use but are still used PyGithub
 objects.
   - Branches:
-      https://pygithub.readthedocs.io/en/latest/github_objects/Branch.html
+        https://pygithub.readthedocs.io/en/latest/github_objects/Branch.html
   - Repos:
-      https://pygithub.readthedocs.io/en/latest/github_objects/Repository.html
+        https://pygithub.readthedocs.io/en/latest/github_objects/Repository.html
 """
 import github
 
@@ -25,6 +25,7 @@ class Review:
 
     Notes on states of PR Reviews:
         The web UI gives the following options when writing a PR review.
+
         - Comment
         - Approve
         - Request changes
@@ -36,10 +37,7 @@ class Review:
         from a review which has a state which is in the Review.STATES values.
 
         See:
-          https://help.github.com/articles/about-pull-request-reviews/
-
-    Expects a PyGithub Commit object as returned from the API.
-        https://pygithub.readthedocs.io/en/latest/github_objects/PullRequestReview.html
+            https://help.github.com/articles/about-pull-request-reviews/
     """
 
     STATES = (
@@ -50,12 +48,16 @@ class Review:
     )
 
     def __init__(self, review: github.PullRequestReview.PullRequestReview):
+        """
+        Expects a PyGithub Commit object as returned from the API.
+            https://pygithub.readthedocs.io/en/latest/github_objects/PullRequestReview.html
+        """
         self._state = review.state
         self.submitted_at = review.submitted_at.date()
         self.reviewer = review.user
 
     @classmethod
-    def format_state(cls, s):
+    def format_state(_cls, s):
         return f"Review {s.replace('_', ' ').title()}"
 
     @classmethod
@@ -67,7 +69,8 @@ class Review:
         return self.format_state(self._state)
 
     def summary(self):
-        return f"{self.submitted_at} {lib.display(self.reviewer)} {self.state}"
+        reviewer = lib.display(self.reviewer)
+        return f"{self.submitted_at} {reviewer} {self.state}"
 
 
 class PullRequest:
