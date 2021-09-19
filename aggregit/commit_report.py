@@ -1,7 +1,7 @@
 """
 Commit report script.
 
-Create a report of Github commits across configured repos and available
+Create a report of GitHub commits across configured repos and available
 branches. The report is bound by the configured usernames, repos and
 minimum date. The result is written out to a CSV.
 """
@@ -24,7 +24,7 @@ def traverse_commits(commit, seen_commits):
 
     For each commit which is returned, print a character to show progress.
 
-    :param commit: A Github commit object to report on.
+    :param commit: A GitHub commit object to report on.
     :param seen_commits: Commit SHA values which have been seen before.
         This should be a set a of str values. This variable is passed by
         reference so additions to it take effect outside of the function.
@@ -102,7 +102,7 @@ def to_row(repo, branch, commit_data):
 
 def main():
     """
-    Main command-line function to create a report of Github commit activity.
+    Main command-line function to create a report of GitHub commit activity.
 
     Fetch and write commits out as a CSV report, where each row includes the
     details of a single commit including stats, metadata and the repo and branch

@@ -33,7 +33,7 @@ def display_commit(commit):
     print(commit.sha)
     print(commit.html_url)
     if commit.author:
-        # This was observed in a case where the commit in the Github site
+        # This was observed in a case where the commit in the GitHub site
         # has an author who wrote the patch but there is no link to his profile
         # so perhaps he was deleted. So author can be None.
         print(commit.author.login)

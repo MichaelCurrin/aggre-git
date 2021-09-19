@@ -36,9 +36,9 @@ You can then continue to the [Usage](/docs/usage.md) doc.
 
 ### Set your token
 
-The minimum requirement to run the project is to create a Github token for your account and set it locally.
+The minimum requirement to run the project is to create a GitHub token for your account and set it locally.
 
-1. Go to the [Tokens](https://github.com/settings/tokens) page within the Developer Settings area of your Github account.
+1. Go to the [Tokens](https://github.com/settings/tokens) page within the Developer Settings area of your GitHub account.
 1. Create a new token. The following scopes are recommended to be set:
     * ☑ repo
         - Tick the top level for access to private repos. Otherwise just tick _repo:status_ and _public:repo_.

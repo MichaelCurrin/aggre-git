@@ -1,9 +1,9 @@
 """
 Sample organization module.
 
-Get stats for an organization on Github.
+Get stats for an organization on GitHub.
 
-For a list of open source repos by organizations on Github, see:
+For a list of open source repos by organizations on GitHub, see:
     https://github.com/collections/open-source-organizations
 """
 from github import UnknownObjectException, GithubException

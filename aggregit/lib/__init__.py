@@ -41,7 +41,7 @@ def parse_datetime(standard_datetime):
 
 def display(user: github.NamedUser.NamedUser):
     """
-    Return an easy to read reference for a Github user account.
+    Return an easy to read reference for a GitHub user account.
 
     :return: User's name if available otherwise handle.
     """
@@ -73,7 +73,7 @@ def get_repos():
     """
     Get repos to report on using configured details.
 
-    :return repos: A list of Github Repository objects. If getting all repos
+    :return repos: A list of GitHub Repository objects. If getting all repos
         for a user, this is a paginated list (requests are not made yet),
         otherwise if getting repos by repo paths then each objects contains
         data from a completed request.

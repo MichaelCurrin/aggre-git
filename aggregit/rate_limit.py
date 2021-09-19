@@ -2,7 +2,7 @@
 """
 Rate limit report.
 
-Get rate limiting status and reset time for the configured Github API token.
+Get rate limiting status and reset time for the configured GitHub API token.
 
 Check in the browser using your browser user rather than a token.
     https://developer.github.com/v3/rate_limit/

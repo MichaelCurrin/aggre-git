@@ -34,9 +34,9 @@ def to_row(repo, author, pr):
     get the counts for each possible review action and add them as columns to
     the row (using zero as default value).
 
-    :param github.Repository.Repository repo: Github repo object.
-    :param github.NamedUser.NamedUser author: Github user object.
-    :param github.PullRequest.PullRequest pr: Github PR object.
+    :param github.Repository.Repository repo: GitHub repo object.
+    :param github.NamedUser.NamedUser author: GitHub user object.
+    :param github.PullRequest.PullRequest pr: GitHub PR object.
 
     :return dict out_row: dict of data around a PR's repo, the PR author and
         the PR itself. The status changed, created and updated date will be kept
@@ -134,7 +134,7 @@ def main():
                 except Exception as e:
                     # Keep the report generation robust by logging and skipping
                     # over any errors. Create a bug issue in the aggre-git repo
-                    # on Github so that the error will be addressed.
+                    # on GitHub so that the error will be addressed.
                     print("Could not fetch or parse the PR.")
                     traceback.print_exc()
                     print("---")

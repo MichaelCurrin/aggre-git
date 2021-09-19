@@ -30,7 +30,7 @@ class Review:
         - Approve
         - Request changes
 
-        The Github API docs also covers a dismissed state. There is a pending
+        The GitHub API docs also covers a dismissed state. There is a pending
         state as well which came up in testing, but this appears to be hidden
         from other users and has no value for this project so can be ignored.
         To exclude it, apply a filter to only create a Review instance
@@ -82,10 +82,10 @@ class PullRequest:
 
     The ID attribute on the source PR object is a hash, which we do not need.
     Therefore use the number. Note that a PR is also an Issue, so when a PR is
-    created on Github its number will follow the next open Issue number
+    created on GitHub its number will follow the next open Issue number
     increment.
 
-    Github records merged as a boolean and it limits 'state' to only be 'open'
+    GitHub records merged as a boolean and it limits 'state' to only be 'open'
     or 'closed' values. For our own easy reporting, we rather use a system of
     three possible values on 'status', with labels set as constants on the
     class. But, we still keep merged- and closed-related values, as there is
@@ -107,7 +107,7 @@ class PullRequest:
 
     def __init__(self, pr: github.PullRequest.PullRequest):
         """
-        Initialize customized PR object based on an existing Github PR object.
+        Initialize customized PR object based on an existing GitHub PR object.
         """
         self.number = pr.number
         self.title = pr.title
@@ -219,11 +219,11 @@ class PullRequest:
 
 class Commit:
     """
-    Model a Github commit, with just data of interest.
+    Model a GitHub commit, with just data of interest.
 
     An author wrote the patch while the committer applied the patch, perhaps
     with a merge? Note that author maybe None - this was noted in a case where a
-    user was labeled but not clickable in the Github site.
+    user was labeled but not clickable in the GitHub site.
 
     Expect a PyGithub Commit as returned from the API:
         https://pygithub.readthedocs.io/en/latest/github_objects/Commit.html
@@ -231,7 +231,7 @@ class Commit:
 
     def __init__(self, commit: github.GitCommit.GitCommit):
         """
-        Initialize Commit object based on a Github commit object.
+        Initialize Commit object based on a GitHub commit object.
         """
         self.sha = commit.sha
         self.url = commit.html_url

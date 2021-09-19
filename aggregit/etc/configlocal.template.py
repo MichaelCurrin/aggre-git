@@ -8,7 +8,7 @@ See docs/installation.md for instructions.
 # Auth #
 ########
 
-# Github API token to authenticate with.
+# GitHub API token to authenticate with.
 # This is MUST be set with a valid value - see docs/installation.md.
 ACCESS_TOKEN = ""
 
@@ -17,7 +17,7 @@ ACCESS_TOKEN = ""
 # Global filters #
 ##################
 
-# Filter activity to those by Github usernames. Set as None or empty tuple
+# Filter activity to those by GitHub usernames. Set as None or empty tuple
 # to disable filter.
 USERNAMES = ("MichaelCurrin",)
 
@@ -27,10 +27,10 @@ USERNAMES = ("MichaelCurrin",)
 BY_OWNER = False
 
 # Filter to activity within ALL repos owned by this account. This can be a
-# Github user or organization.
+# GitHub user or organization.
 REPO_OWNER = "MichaelCurrin"
 
-# Filter to activity within these Github repos. Format: 'username/repo-name'.
+# Filter to activity within these GitHub repos. Format: 'username/repo-name'.
 REPO_PATHS = ("MichaelCurrin/aggre-git",)
 
 
