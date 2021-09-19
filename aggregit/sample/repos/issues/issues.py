@@ -12,10 +12,10 @@ def extract(issue):
     details = {
         "number": issue.number,
         "title": issue.title,
+        "url": issue.html_url,
         "repo": issue.repository.name,
         "created_at": issue.created_at,
         "updated_at": issue.updated_at,
-        "url": issue.html_url,
         "state": issue.state,
         "labels": labels,
         "comment_count": issue.comments,
@@ -48,9 +48,9 @@ def extract(issue):
 def main():
     for repo_name in config.REPO_PATHS:
         repo = CONN.get_repo(repo_name)
-        issues = repo.get_issues()
+        issues_resp = repo.get_issues()
 
-        for issue in issues:
+        for issue in issues_resp:
             issue_data = extract(issue)
             pprint.pprint(issue_data)
         print()
