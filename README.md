@@ -7,7 +7,7 @@
 
 ## Features
 
-- Report on historical GitHub activity for your user or organization. 
+- Report on historical GitHub activity for your user or organization.
 - Read from the GitHub REST API, accessed through a Python library called _PyGithub_ - see the [homepage](https://pygithub.readthedocs.io/en/latest/introduction.html) and [GitHub repo](https://github.com/PyGithub/PyGithub).
 
 
@@ -22,22 +22,21 @@ Therefore if you want to do reporting at scale, use this other project instead. 
 - [Github GraphQL Tool](https://github.com/MichaelCurrin/github-graphql-tool)
 
 
+
 ## Documentation
 
 <div align="center">
-  
-[![view - Documentation](https://img.shields.io/badge/view-Documentation-blue?style=for-the-badge)](/docs/)
+
+[![view - Documentation](https://img.shields.io/badge/view-Documentation-blue?style=for-the-badge)](/docs/ "Go to docs")
 
 </div>
 
 
 ## Contributing
 
-If you want to make the project better, see the [Contributing](/CONTRIBUTING.md) doc.
-
+If you want to make the project better, see the [contribution guidelines](/CONTRIBUTING.md).
 
 
 ## License
 
 Released under [MIT](/LICENSE) by [@MichaelCurrin](https://github.com/MichaelCurrin).
-

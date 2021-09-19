@@ -1,7 +1,15 @@
-# How to contribute to Aggre-Git
+# Contributing
 
-Create a forked repo.
+How to contribute to this repo.
 
-Create a feature branch.
 
-Create a PR to the this repo's `master` branch.
+## Issues
+
+Create an issue on GitHub.
+
+
+## Pull Requests
+
+1. Create a fork of the repo.
+1. Create a feature branch.
+1. Create a PR to the this repo's main branch.
