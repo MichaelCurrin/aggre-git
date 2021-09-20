@@ -65,7 +65,7 @@ def main():
     print(f"By month - {max_groups} months")
     groups = group_by_month(issues)
 
-    print("Month   | PR")
+    print("Month   | PRs")
     print("---     | ---")
     for i, (k, count) in enumerate(groups.items()):
         y, m = k
