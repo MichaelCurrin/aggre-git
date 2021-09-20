@@ -9,13 +9,13 @@ import pprint
 from etc import config
 from lib.connection import CONN
 
-# TODO: Replace
-q = "is:pr is:closed author:MichaelCurrin archived:false org:MichaelCurrin"
+# Merged Pull Requests created by MichaelCurrin in public repos of other users.
+SEARCH_QUERY = "is:pr is:merged author:MichaelCurrin -user:MichaelCurrin -user:2uinc sort:created-desc"
 
 
 def extract(issue):
     """
-    Process the issue.
+    Process a fetched issue and return as a dict of useful fields.
     """
     details = {
         "title": issue.title,
@@ -51,7 +51,7 @@ def main():
 
     If this is too long or slow, use `issues_resp[:5]` for example.
     """
-    issues_resp = CONN.search_issues(q)
+    issues_resp = CONN.search_issues(SEARCH_QUERY)
 
     total = issues_resp.totalCount
 
@@ -60,14 +60,22 @@ def main():
 
     issues = [extract(issue) for issue in issues_resp]
 
-    print("By month")
-    groups = group_by_month(issues)
-    for k, count in groups.items():
-        y, m = k
-        print(f"{y}-{m}: {count}")
+    max_groups = 6
 
-    print("Detailed")
-    for issue in issues:
+    print(f"By month - {max_groups} months")
+    groups = group_by_month(issues)
+
+    print("Month   | PR")
+    print("---     | ---")
+    for i, (k, count) in enumerate(groups.items()):
+        y, m = k
+        print(f"{y}-{m:02d} | {count:3d}")
+        if i + 1 == max_groups:
+            break
+
+    limit = 3
+    print(f"Detailed - {limit} items")
+    for issue in issues[:limit]:
         pprint.pprint(issue)
 
 
