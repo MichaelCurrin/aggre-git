@@ -47,14 +47,10 @@ def group_by_month(issues):
     return counter
 
 
-def main():
+def display(issues_resp):
     """
-    Main command-line entry-point.
-
-    If this is too long or slow, use `issues_resp[:5]` for example.
+    Print report of issues data.
     """
-    issues_resp = CONN.search_issues(SEARCH_QUERY)
-
     total = issues_resp.totalCount
 
     print("Total")
@@ -79,6 +75,16 @@ def main():
     print(f"Detailed - {limit} items")
     for issue in issues[:limit]:
         pprint.pprint(issue)
+
+
+def main():
+    """
+    Main command-line entry-point.
+
+    If this is too long or slow, use `issues_resp[:5]` for example.
+    """
+    issues_resp = CONN.search_issues(SEARCH_QUERY)
+    display(issues_resp)
 
 
 if __name__ == "__main__":
