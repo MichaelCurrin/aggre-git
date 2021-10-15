@@ -58,7 +58,7 @@ def display(issues_resp):
 
     issues = [extract(issue) for issue in issues_resp]
 
-    max_groups = 6
+    max_groups = 7
 
     print(f"By month - {max_groups} months")
     groups = group_by_month(issues)
