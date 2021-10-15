@@ -21,9 +21,8 @@ Note that there are CONN.get_repos() and CONN.get_users() methods but they
 only take a `since` parameter and appear to return *all* objects on Github
 without filtering.
 """
-from github import UnknownObjectException
-
 from etc import config
+from github import UnknownObjectException
 from lib.connection import CONN
 
 

@@ -4,15 +4,14 @@ Initliazation file for library module.
 import csv
 import datetime
 import re
-from textwrap import shorten
 from email.utils import mktime_tz, parsedate_tz
+from textwrap import shorten
 
 import github
+from etc import config
 from github import UnknownObjectException
 
 from .connection import CONN
-from etc import config
-
 
 # Match a ticket number like "ABC-123".
 JIRA_TICKET_PATTERN = re.compile(r"[A-Z]+-\d+")

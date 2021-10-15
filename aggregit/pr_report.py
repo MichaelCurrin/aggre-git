@@ -22,7 +22,6 @@ import lib
 from etc import config
 from models import PullRequest, Review
 
-
 ONE_DAY = datetime.timedelta(days=1)
 
 

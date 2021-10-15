@@ -5,8 +5,8 @@ Create a report of GitHub commits across configured repos and available
 branches. The report is bound by the configured usernames, repos and
 minimum date. The result is written out to a CSV.
 """
-from etc import config
 import lib
+from etc import config
 from models import Commit
 
 

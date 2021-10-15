@@ -5,8 +5,8 @@ Get all commits for configured repos.
 """
 import pprint
 
-from etc import config
 import lib
+from etc import config
 from lib.connection import CONN
 
 

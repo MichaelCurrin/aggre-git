@@ -14,8 +14,8 @@ The commit.author is who wrote the patch.
 The commit.committer is a project maintainer and who merged the patch on behalf
 of the author.
 """
-from etc import config
 import lib
+from etc import config
 from lib.connection import CONN
 
 # TODO: Refactor to do counts for each user with one pass through the repos.

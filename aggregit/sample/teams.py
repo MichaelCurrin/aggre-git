@@ -1,11 +1,10 @@
 """
 Sample teams module.
 """
-from github import UnknownObjectException
-
-from sample import user
 from etc import config
+from github import UnknownObjectException
 from lib.connection import CONN
+from sample import user
 
 
 def main():

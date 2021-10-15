@@ -1,9 +1,8 @@
 """
 Sample team members module.
 """
-from github import UnknownObjectException
-
 from etc import config
+from github import UnknownObjectException
 from lib.connection import CONN
 
 

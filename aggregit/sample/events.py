@@ -2,8 +2,8 @@
 Sample events module.
 """
 import lib
-from lib.connection import CONN
 from etc import config
+from lib.connection import CONN
 
 
 def print_details(event):

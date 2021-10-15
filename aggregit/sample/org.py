@@ -6,9 +6,8 @@ Get stats for an organization on GitHub.
 For a list of open source repos by organizations on GitHub, see:
     https://github.com/collections/open-source-organizations
 """
-from github import UnknownObjectException, GithubException
-
 from etc import config
+from github import GithubException, UnknownObjectException
 from lib.connection import CONN
 
 
