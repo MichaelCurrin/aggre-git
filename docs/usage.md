@@ -3,7 +3,6 @@
 You may with to occasionally change your configured settings. See [Configure the project](installation.md#configure-the-project) instructions.
 
 ```sh
-$ cd path/to/repo
 $ source venv/bin/activate
 $ cd aggregit
 ```
