@@ -130,7 +130,7 @@ def main():
                 print(f"PR #{pr.number} - author: @{author.login}")
                 try:
                     out_row = to_row(repo, author, pr)
-                except Exception as e:
+                except Exception:
                     # Keep the report generation robust by logging and skipping
                     # over any errors. Create a bug issue in the aggre-git repo
                     # on GitHub so that the error will be addressed.

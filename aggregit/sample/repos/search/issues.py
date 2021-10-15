@@ -6,11 +6,13 @@ Handle a search for Issues and Pull Requests.
 import collections
 import pprint
 
-from etc import config
 from lib.connection import CONN
 
 # Merged Pull Requests created by MichaelCurrin in public repos of other users.
-SEARCH_QUERY = "is:pr is:merged author:MichaelCurrin -user:MichaelCurrin -user:2uinc sort:created-desc"
+username = "MichaelCurrin"
+SEARCH_QUERY = (
+    f"is:pr is:merged author:{username} -user:{username} -user:2uinc sort:created-desc"
+)
 
 
 def extract(issue):

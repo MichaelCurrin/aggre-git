@@ -38,8 +38,9 @@ def main():
     try:
         for t in o.get_teams():
             print_details(t)
-    except UnknownObjectException as e:
+    except UnknownObjectException:
         msg = f"Unable to access teams for org: {config.REPO_OWNER}"
+
         raise ValueError(msg)
 
 

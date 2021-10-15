@@ -53,9 +53,18 @@ COMMIT_CSV_PATH = os.path.join(OUTPUT_PATH, "commit_report.csv")
 
 # Import, parse and validate user's local config in this config file.
 try:
-    from .configlocal import *
+    from .configlocal import (
+        ACCESS_TOKEN,
+        BY_OWNER,
+        MIN_DATE,
+        PR_STATE,
+        REPO_OWNER,
+        REPO_PATHS,
+        USERNAMES,
+    )
 except ImportError:
     f_path = os.path.join(os.path.dirname(__file__), "configlocal.py")
+
     raise ImportError(f"You need to create a local config file at: {f_path}.")
 
 MIN_DATE = parse_cutoff_date(MIN_DATE)
