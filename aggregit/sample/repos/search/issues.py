@@ -83,6 +83,9 @@ def main():
 
     If this is too long or slow, use `issues_resp[:5]` for example.
     """
+    print(f"Search query:")
+    print(f"    {SEARCH_QUERY}")
+
     issues_resp = CONN.search_issues(SEARCH_QUERY)
     display(issues_resp)
 
