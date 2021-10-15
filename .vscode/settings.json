@@ -1,5 +1,4 @@
 {
-    "terminal.integrated.cwd": "aggregit",
     "code-runner.cwd": "aggregit",
 
     "python.defaultInterpreterPath": "venv/bin/python",
