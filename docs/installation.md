@@ -14,7 +14,18 @@ You need the following to run this project:
 
 It is usually best-practice in Python projects to install into a sandboxed _virtual environment_, which is set to a specific Python version and contains on the packages you install into it so that your Python projects do not get affected.
 
-Follow this guide to [Setup a Python 3 Virtual Environment](https://gist.github.com/MichaelCurrin/3a4d14ba1763b4d6a1884f56a01412b7).
+Create a virtual environment.
+
+```sh
+$ python3 -m venv venv
+$ source venv/bin/activate
+```
+
+Install packages into it.
+
+```sh
+$ make install
+```
 
 You can then continue to the [Usage](/docs/usage.md) doc.
 
