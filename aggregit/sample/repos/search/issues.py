@@ -6,8 +6,8 @@ Handle a search for Issues and Pull Requests.
 import collections
 import pprint
 
+import github.Issue
 from etc import config
-from github import Issue
 from lib.connection import CONN
 
 # Open soure contributions - merged Pull Requests created by the user, in
@@ -19,7 +19,7 @@ SEARCH_QUERY = (
 )
 
 
-def extract(issue: Issue) -> dict:
+def extract(issue: github.Issue) -> dict:
     """
     Process a fetched issue and return as a dict of useful fields.
     """
