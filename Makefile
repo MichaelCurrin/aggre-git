@@ -32,3 +32,8 @@ l lint:
 	flake8 . --exit-zero
 
 checks: fmt-check lint
+
+
+open-source-prs:
+	cd aggregit && \
+		python -m sample.repos.search.issues
