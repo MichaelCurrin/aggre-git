@@ -2,8 +2,8 @@
 Commit report script.
 
 Create a report of GitHub commits across configured repos and available
-branches. The report is bound by the configured usernames, repos and
-minimum date. The result is written out to a CSV.
+branches. The report is bound by the configured usernames, repos and minimum
+date. The result is written out to a CSV.
 """
 import lib
 from etc import config
@@ -14,10 +14,10 @@ def traverse_commits(commit, seen_commits):
     """
     Get the details for a commit and all its parents.
 
-    Return the details for the current commit and recursively return the details
-    of its parents. Note that there may be two parents such as a for a merge
-    commit. In that case, the tree path structure will be flattened out when
-    to the one parent line's commits followed by the other parent line's
+    Return the details for the current commit and recursively return the
+    details of its parents. Note that there may be two parents such as a for a
+    merge commit. In that case, the tree path structure will be flattened out
+    when to the one parent line's commits followed by the other parent line's
     commits, so order is not by time.
 
     Skip any commits which are older than the configured minimum date.
@@ -70,10 +70,11 @@ def traverse_commits(commit, seen_commits):
     for parent in commit.parents:
         if len(commit.parents) >= 2:
             print("\n<", end="")
+
         yield from traverse_commits(parent, seen_commits)
 
 
-def to_row(repo, branch, commit_data):
+def to_row(repo: github.Repository, branch: str, commit_data: Commit) -> dict:
     """
     Format input data around a single commit and return as a row for a CSV.
 
@@ -81,10 +82,10 @@ def to_row(repo, branch, commit_data):
     :param branch: The branch the commit is in.
     :param commit: Instance of Commit, containing data for a single commit.
 
-    :return dict out_row: Formatted dict of repo, branch and commit data for
+    :return: Formatted dict of repo, branch and commit data for
         a single commit.
     """
-    out_row = {
+    return {
         "Repo Owner": lib.display(repo.owner),
         "Repo Name": repo.name,
         "Branch": branch.name,
@@ -97,10 +98,8 @@ def to_row(repo, branch, commit_data):
         "Changed Lines": commit_data.additions + commit_data.deletions,
     }
 
-    return out_row
 
-
-def main():
+def main() -> None:
     """
     Main command-line function to create a report of GitHub commit activity.
 
