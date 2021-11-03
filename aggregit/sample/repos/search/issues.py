@@ -6,36 +6,39 @@ Handle a search for Issues and Pull Requests.
 import collections
 import pprint
 
+from etc import config
+from github import Issue
 from lib.connection import CONN
 
-# Merged Pull Requests created by MichaelCurrin in public repos of other users.
-username = "MichaelCurrin"
+# Open soure contributions - merged Pull Requests created by the user, in
+# public repos of other users. Public filter is used here in case using a token
+# with private access. Using `-is:private` gave inconsisent results.
 SEARCH_QUERY = (
-    f"is:pr is:merged author:{username} -user:{username} -user:2uinc sort:created-desc"
+    f"is:pr is:merged is:public"
+    f" author:{config.REPO_OWNER} -user:{config.REPO_OWNER} sort:created-desc "
 )
 
 
-def extract(issue):
+def extract(issue: Issue) -> dict:
     """
     Process a fetched issue and return as a dict of useful fields.
     """
-    details = {
+    return {
         "title": issue.title,
         "url": issue.html_url,
         "repo": issue.repository.name,
         "state": issue.state,
         "created_at": issue.created_at,
+        "closed_at": issue.closed_at if issue.state == "closed" else None,
     }
 
-    if issue.state == "closed":
-        details["closed_at"] = issue.closed_at
 
-    return details
-
-
-def group_by_month(issues):
+def group_by_month(issues) -> collections.Counter():
     """
     They won't all be merged always so safer to group by created at date.
+
+    Expects `PaginatedList[Issue]`, except that is not valid as a type even when
+    using `github.PaginatedList.PaginatedList`.
     """
     counter = collections.Counter()
 
@@ -47,7 +50,7 @@ def group_by_month(issues):
     return counter
 
 
-def display(issues_resp):
+def display(issues_resp, max_groups=7, max_items=3) -> None:
     """
     Print report of issues data.
     """
@@ -58,9 +61,7 @@ def display(issues_resp):
 
     issues = [extract(issue) for issue in issues_resp]
 
-    max_groups = 7
-
-    print(f"By month - {max_groups} months")
+    print(f"By month view - {max_groups} months")
     groups = group_by_month(issues)
 
     print("Month   | PRs")
@@ -68,20 +69,19 @@ def display(issues_resp):
     for i, (k, count) in enumerate(groups.items()):
         y, m = k
         print(f"{y}-{m:02d} | {count:3d}")
+
         if i + 1 == max_groups:
             break
+    print()
 
-    limit = 3
-    print(f"Detailed - {limit} items")
+    print(f"Detailed view - {limit} items")
     for issue in issues[:limit]:
         pprint.pprint(issue)
 
 
 def main():
     """
-    Main command-line entry-point.
-
-    If this is too long or slow, use `issues_resp[:5]` for example.
+    Command-line entry-point.
     """
     print(f"Search query:")
     print(f"    {SEARCH_QUERY}")
