@@ -89,6 +89,7 @@ def get_repos():
         repos = user.get_repos()
     else:
         repos = []
+
         for repo_path in config.REPO_PATHS:
             print(f"Fetching repo: {repo_path}")
             try:
