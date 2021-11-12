@@ -74,8 +74,8 @@ def display(issues_resp, max_groups=7, max_items=3) -> None:
             break
     print()
 
-    print(f"Detailed view - {limit} items")
-    for issue in issues[:limit]:
+    print(f"Detailed view - {max_items} items")
+    for issue in issues[:max_items]:
         pprint.pprint(issue)
 
 
