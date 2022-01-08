@@ -24,13 +24,14 @@ def parse_datetime(standard_datetime):
     """
     Parse a standardised datetime string to a datetime object.
 
-    :param standard_datetime: datetime value as a string .
+    :param standard_datetime: datetime value as a string.
         e.g. 'Thu, 30 Aug 2018 13:14:09 GMT'
 
-    :return: datetime object in UTC time. Printing this out will reflect
-        in the system's timezone. e.g. entering time 12:00 for +0000 timezone
-        shows as 14:00 if printing in a system set to +0200 timezone,
-        whether doing str(obj) or str(obj.hour).
+    :return: timezone-aware datetime object in UTC time. 
+        Printing this out will reflect in the system's timezone. 
+        e.g. entering time 12:00 for +0000 timezone shows as 14:00 
+        if printing in a system set to +0200 timezone,
+        whether doing `str(obj)` or `str(obj.hour)`.
     """
     time_tuple = parsedate_tz(standard_datetime)
     timestamp = mktime_tz(time_tuple)
@@ -40,17 +41,14 @@ def parse_datetime(standard_datetime):
 
 def display(user: github.NamedUser.NamedUser):
     """
-    Return an easy to read reference for a GitHub user account.
+    Return an easy-to-read reference for a GitHub user account.
 
-    :return: User's name if available otherwise handle.
+    :return: User or org's display otherwise their handle.
     """
     if user:
-        if user.name:
-            return user.name
-        else:
-            return f"@{user.login}"
+        return user.name if user.name else f"@{user.login}"
 
-    return "<NOT USER>"
+    return "<NO USER FOUND>"
 
 
 def truncate(text, limit):
@@ -80,6 +78,7 @@ def get_repos():
     if config.BY_OWNER:
         try:
             user = CONN.get_organization(config.REPO_OWNER)
+            
             print(f"Fetched org: {config.REPO_OWNER}")
         except UnknownObjectException:
             user = CONN.get_user(config.REPO_OWNER)
@@ -97,6 +96,7 @@ def get_repos():
                 repo = CONN.get_repo(repo_path, lazy=False)
             except UnknownObjectException:
                 raise ValueError(f"Bad repo path: {repo_path}")
+                
             repos.append(repo)
     print()
 
@@ -115,6 +115,7 @@ def write_csv(path, header, data):
     :return: None
     """
     print(f"Writing to {path}")
+    
     with open(path, "w") as f_out:
         writer = csv.DictWriter(f_out, fieldnames=header, quoting=csv.QUOTE_NONNUMERIC)
         writer.writeheader()
